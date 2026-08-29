@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 export default function ThreeCanvas3D() {
@@ -34,7 +34,7 @@ export default function ThreeCanvas3D() {
 
     const colorCrimson = new THREE.Color(0x8F3028);
     const colorRose = new THREE.Color(0xc8434e);
-    const colorCream = new THREE.Color(0xf7f0eb);
+    const colorCream = new THREE.Color(0xf7e9e1);
 
     for (let i = 0; i < particleCount; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 50;
@@ -62,7 +62,7 @@ export default function ThreeCanvas3D() {
     const particlePoints = new THREE.Points(geometry, particleMaterial);
     scene.add(particlePoints);
 
-    // 3. Optimized Lightweight Wireframe Torus Objects (reduced segment detail)
+    // 3. Optimized Lightweight Wireframe Torus Objects
     const rings: { mesh: THREE.Mesh; rotX: number; rotY: number }[] = [];
     const ringMaterial = new THREE.MeshBasicMaterial({
       color: 0x8F3028,
@@ -124,7 +124,7 @@ export default function ThreeCanvas3D() {
       // Skip render if tab is hidden
       if (document.hidden) return;
 
-      // Smooth lerp values for 60 FPS fluidity
+      // Smooth lerp values
       currentMouseX += (targetMouseX - currentMouseX) * 0.05;
       currentMouseY += (targetMouseY - currentMouseY) * 0.05;
       currentScrollY += (targetScrollY - currentScrollY) * 0.05;

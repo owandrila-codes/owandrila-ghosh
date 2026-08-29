@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDownRight, Database, Cpu, Terminal, Cloud } from 'lucide-react';
 import FloatingObjects from './FloatingObjects';

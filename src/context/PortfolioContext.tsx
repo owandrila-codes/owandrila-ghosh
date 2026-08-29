@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useMemo, useCallback, ReactNode } from 'react';
+import { createContext, useContext, useState, useMemo, useCallback, type ReactNode } from 'react';
 
 interface PortfolioContextType {
   activeSection: string;
@@ -16,7 +16,7 @@ export function PortfolioProvider({ children }: { children: ReactNode }) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
 
-  // Memoize state setter callbacks so consumers don't re-render on unrelated state changes
+  // Memoize state setter callbacks
   const setActiveSection = useCallback((section: string) => {
     setActiveSectionState(section);
   }, []);
@@ -31,7 +31,7 @@ export function PortfolioProvider({ children }: { children: ReactNode }) {
     setActiveProjectId(null);
   }, []);
 
-  // Memoize context value object to prevent re-renders when parent components re-render
+  // Memoize context value object
   const value = useMemo(
     () => ({
       activeSection,

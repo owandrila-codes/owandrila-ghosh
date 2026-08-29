@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function FloatingObjects() {
   const floatingCards = [
     { name: 'DATA SCIENCE', pos: 'top-20 -left-6 sm:left-4', animClass: 'animate-float-slow' },

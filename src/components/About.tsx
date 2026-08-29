@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Lightbulb, Layers, Laptop, Sparkles, Users, Presentation } from 'lucide-react';
 

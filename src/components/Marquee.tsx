@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function Marquee() {
   const items = [
     'C',
@@ -21,14 +19,14 @@ export default function Marquee() {
   const list = [...items, ...items, ...items];
 
   return (
-    <div className="py-8 bg-[#170a0d] border-y border-[rgba(200,67,78,0.2)] overflow-hidden select-none relative z-10">
+    <div className="py-8 bg-[#170a0d] border-y border-[rgba(200,61,74,0.2)] overflow-hidden select-none relative z-10">
       <div className="animate-marquee flex items-center gap-8 whitespace-nowrap">
         {list.map((item, idx) => (
           <div key={`${item}-${idx}`} className="flex items-center gap-8">
-            <span className="font-display font-black text-xl sm:text-2xl text-[#f7f0eb] tracking-wider uppercase hover:text-[#c8434e] transition-colors">
+            <span className="font-display font-black text-xl sm:text-2xl text-[#f7e9e1] tracking-wider uppercase hover:text-[#c83d4a] transition-colors">
               {item}
             </span>
-            <span className="w-2 h-2 rounded-full bg-[#8F3028]" />
+            <span className="w-2 h-2 rounded-full bg-[#8b1e27]" />
           </div>
         ))}
       </div>

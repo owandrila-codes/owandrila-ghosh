@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function CustomCursor() {
   const [position, setPosition] = useState({ x: -100, y: -100 });
@@ -66,14 +66,14 @@ export default function CustomCursor() {
         <div
           className={`rounded-full transition-all duration-200 flex items-center justify-center ${
             cursorText
-              ? 'w-16 h-16 bg-[#8F3028]/90 text-[#f7f0eb] border border-[#c8434e]'
+              ? 'w-16 h-16 bg-[#8b1e27]/90 text-[#f7e9e1] border border-[#c83d4a]'
               : isHovered
-              ? 'w-10 h-10 bg-[#c8434e]/30 border border-[#c8434e]'
-              : 'w-4 h-4 bg-[#c8434e]'
+              ? 'w-10 h-10 bg-[#c83d4a]/30 border border-[#c83d4a]'
+              : 'w-4 h-4 bg-[#c83d4a]'
           }`}
         >
           {cursorText && (
-            <span className="text-[10px] font-display font-extrabold tracking-widest text-[#f7f0eb] scale-75">
+            <span className="text-[10px] font-display font-extrabold tracking-widest text-[#f7e9e1] scale-75">
               {cursorText}
             </span>
           )}
