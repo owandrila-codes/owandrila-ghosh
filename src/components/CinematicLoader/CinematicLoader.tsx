@@ -11,34 +11,25 @@ export default function CinematicLoader({ onComplete }: CinematicLoaderProps) {
   const [progress, setProgress] = useState(0);
   const [stage, setStage] = useState(1);
   const [isFinished, setIsFinished] = useState(false);
-  const [isBypassed, setIsBypassed] = useState(false);
 
   const handleSkip = useCallback(() => {
     setIsFinished(true);
     setTimeout(() => {
       onComplete();
-    }, 600);
+    }, 500);
   }, [onComplete]);
 
   useEffect(() => {
-    // 1. Check for reduced motion preference
+    // Check reduced motion
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // 2. Check for existing session storage key
-    const hasSeenLoader = sessionStorage.getItem('hasSeenRoseCinematicLoader');
-
-    if (prefersReducedMotion || hasSeenLoader === 'true') {
-      setIsBypassed(true);
+    if (prefersReducedMotion) {
       onComplete();
       return;
     }
 
-    // Save session flag for returning visitors
-    sessionStorage.setItem('hasSeenRoseCinematicLoader', 'true');
-
-    // 3. Smooth Progress & Stage Controller Loop (~7.2 seconds total duration)
+    // Smooth 5-Stage Timeline Controller (~7.5 seconds total)
     const startTime = performance.now();
-    const duration = 7200; // ms
+    const duration = 7500; // ms
 
     let animId: number;
 
@@ -47,12 +38,17 @@ export default function CinematicLoader({ onComplete }: CinematicLoaderProps) {
       const currentProgress = Math.min(100, Math.floor((elapsed / duration) * 100));
       setProgress(currentProgress);
 
-      // Determine stage
-      if (currentProgress < 22) {
+      // 5 Stages matching exact reference timeline:
+      // Stage 1 (0-20%): Rose Appears
+      // Stage 2 (20-45%): Petal Falls
+      // Stage 3 (45-70%): Petal Descends
+      // Stage 4 (70-90%): Petal Disintegrates
+      // Stage 5 (90-100%): Magic Fades
+      if (currentProgress < 20) {
         setStage(1);
-      } else if (currentProgress < 46) {
+      } else if (currentProgress < 45) {
         setStage(2);
-      } else if (currentProgress < 72) {
+      } else if (currentProgress < 70) {
         setStage(3);
       } else if (currentProgress < 90) {
         setStage(4);
@@ -63,19 +59,17 @@ export default function CinematicLoader({ onComplete }: CinematicLoaderProps) {
       if (currentProgress < 100) {
         animId = requestAnimationFrame(tick);
       } else {
-        // Complete sequence
         setTimeout(() => {
           setIsFinished(true);
           setTimeout(() => {
             onComplete();
-          }, 700);
-        }, 300);
+          }, 600);
+        }, 200);
       }
     };
 
     animId = requestAnimationFrame(tick);
 
-    // 4. Keyboard ESC listener to skip intro
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         handleSkip();
@@ -83,7 +77,7 @@ export default function CinematicLoader({ onComplete }: CinematicLoaderProps) {
     };
     window.addEventListener('keydown', handleKeyDown);
 
-    // 5. Safety Hard Fallback Timer (9 seconds max)
+    // Hard Safety Fallback Timer (9s)
     const safetyTimer = setTimeout(() => {
       handleSkip();
     }, 9000);
@@ -95,8 +89,6 @@ export default function CinematicLoader({ onComplete }: CinematicLoaderProps) {
     };
   }, [onComplete, handleSkip]);
 
-  if (isBypassed) return null;
-
   return (
     <AnimatePresence>
       {!isFinished && (
@@ -107,7 +99,7 @@ export default function CinematicLoader({ onComplete }: CinematicLoaderProps) {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="fixed inset-0 z-[9999] bg-[#020202] text-[#f7e9e1] overflow-hidden select-none touch-none"
         >
-          {/* 3D WebGL Rose & Falling Petal Canvas */}
+          {/* Photorealistic 3D Rose & Disintegrating Petal WebGL Engine */}
           <RoseWebGLCanvas stage={stage} progress={progress} />
 
           {/* Luxury Editorial Typography Overlay */}
