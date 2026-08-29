@@ -6,10 +6,12 @@ export default function Contact() {
   const [copied, setCopied] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const emailPlaceholder = 'your-email@example.com';
+  const emailAddress = 'owandrila2006@gmail.com';
+  const linkedinUrl = 'https://www.linkedin.com/in/owandrila-ghosh-5823b7380?utm_source=share_via&utm_content=profile&utm_medium=member_android';
+  const githubUrl = 'https://github.com/owandrila-codes';
 
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText(emailPlaceholder);
+    navigator.clipboard.writeText(emailAddress);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -53,61 +55,71 @@ export default function Contact() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          {/* Left Column: Direct Info & Dual Circular QR Code Cards */}
+          {/* Left Column: Direct Info & Dual Circular Connection Cards */}
           <div className="lg:col-span-7 space-y-8">
             <div className="reference-card p-8 space-y-6">
               <h3 className="font-serif-title text-2xl sm:text-3xl text-[#f7e9e1] italic">
-                Direct Contact &amp; Connect
+                Direct Contact &amp; Socials
               </h3>
 
               {/* Email Row */}
               <div className="flex items-center justify-between p-4 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)]">
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-[#220b0e] text-[#c83d4a]">
+                <div className="flex items-center gap-3 overflow-hidden">
+                  <div className="p-2.5 rounded-xl bg-[#220b0e] text-[#c83d4a] shrink-0">
                     <Mail className="w-5 h-5" />
                   </div>
-                  <div>
+                  <div className="truncate">
                     <span className="text-[10px] font-grotesk font-bold text-[#c83d4a] tracking-widest uppercase block">
-                      EMAIL (PLACEHOLDER)
+                      EMAIL ADDRESS
                     </span>
                     <a
-                      href={`mailto:${emailPlaceholder}`}
-                      className="text-sm font-grotesk font-bold text-[#f7e9e1] hover:text-[#c83d4a] transition-colors"
+                      href={`mailto:${emailAddress}`}
+                      className="text-sm font-grotesk font-bold text-[#f7e9e1] hover:text-[#c83d4a] transition-colors truncate block"
                     >
-                      {emailPlaceholder}
+                      {emailAddress}
                     </a>
                   </div>
                 </div>
 
                 <button
                   onClick={handleCopyEmail}
-                  className="p-2.5 rounded-xl bg-[#220b0e] hover:bg-[#c83d4a] text-[#f7e9e1] transition-all"
+                  className="p-2.5 rounded-xl bg-[#220b0e] hover:bg-[#c83d4a] text-[#f7e9e1] transition-all shrink-0 ml-2"
                   title="Copy email"
                 >
-                  {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                  {copied ? <Check className="w-4 h-4 text-[#f7e9e1]" /> : <Copy className="w-4 h-4" />}
                 </button>
               </div>
 
-              {/* Dual Circular QR Code Cards Block */}
+              {/* Dual Circular QR / Social Cards */}
               <div className="space-y-3 pt-2">
                 <span className="text-xs font-grotesk font-bold text-[#c83d4a] tracking-widest uppercase block">
-                  SCAN TO CONNECT (LINKEDIN &amp; GITHUB)
+                  CONNECT ON LINKEDIN &amp; GITHUB
                 </span>
 
                 <div className="flex items-center gap-6">
-                  {/* LinkedIn QR Circle Card */}
-                  <div className="qr-circle-card group">
+                  {/* LinkedIn Circle Card */}
+                  <a
+                    href={linkedinUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="qr-circle-card group cursor-pointer"
+                  >
                     <Share2 className="w-6 h-6 text-[#c83d4a] group-hover:scale-110 transition-transform" />
                     <span className="text-[9px] font-grotesk font-bold text-[#f7e9e1] uppercase">LinkedIn</span>
-                    <span className="text-[7px] text-[#f7e9e1]/60 font-mono">Scan QR</span>
-                  </div>
+                    <span className="text-[7px] text-[#c83d4a] font-mono font-bold">Connect →</span>
+                  </a>
 
-                  {/* GitHub QR Circle Card */}
-                  <div className="qr-circle-card group">
+                  {/* GitHub Circle Card */}
+                  <a
+                    href={githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="qr-circle-card group cursor-pointer"
+                  >
                     <Code2 className="w-6 h-6 text-[#c83d4a] group-hover:scale-110 transition-transform" />
                     <span className="text-[9px] font-grotesk font-bold text-[#f7e9e1] uppercase">GitHub</span>
-                    <span className="text-[7px] text-[#f7e9e1]/60 font-mono">Scan QR</span>
-                  </div>
+                    <span className="text-[7px] text-[#c83d4a] font-mono font-bold">Follow →</span>
+                  </a>
                 </div>
               </div>
             </div>
