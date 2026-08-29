@@ -131,29 +131,31 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* DEDICATED MOBILE HERO LAYOUT (< md) WITH 3D EMBOSSED DEVELOPER HEADER */}
-      <div className="block md:hidden w-full px-5 text-center relative z-20 space-y-6 max-w-md mx-auto flex flex-col items-center justify-center">
+      {/* DEDICATED MOBILE HERO LAYOUT (< md) - ABSOLUTELY SYMMETRICALLY CENTERED */}
+      <div className="block md:hidden w-full px-4 text-center relative z-20 space-y-6 max-w-sm mx-auto flex flex-col items-center justify-center">
         {/* DEVELOPER Title & Badge */}
-        <div className="space-y-2 text-center flex flex-col items-center justify-center w-full">
+        <div className="space-y-2 text-center flex flex-col items-center justify-center w-full mx-auto">
           <motion.span
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="font-grotesk text-[10px] font-bold tracking-[0.2em] text-[#c83d4a] uppercase bg-[#220b0e] px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.3)] inline-block text-center shadow-inner"
+            className="font-grotesk text-[10px] font-bold tracking-[0.2em] text-[#c83d4a] uppercase bg-[#220b0e] px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.3)] inline-block text-center shadow-inner mx-auto"
           >
             OWANDRILA GHOSH • BCA PORTFOLIO
           </motion.span>
 
-          <motion.h1
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="font-display font-black text-hero-clamp text-3d-emboss uppercase tracking-tight text-center w-full"
-          >
-            DEVELOPER
-          </motion.h1>
+          <div className="w-full flex items-center justify-center text-center mx-auto">
+            <motion.h1
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="font-display font-black text-hero-clamp text-3d-emboss uppercase tracking-normal text-center w-full block mx-auto pl-0 pr-0"
+            >
+              DEVELOPER
+            </motion.h1>
+          </div>
 
-          <div className="text-xs font-grotesk font-extrabold text-[#c83d4a] tracking-widest uppercase pt-1 text-center w-full">
+          <div className="text-xs font-grotesk font-extrabold text-[#c83d4a] tracking-widest uppercase pt-1 text-center w-full mx-auto">
             BCA • DATA SCIENCE • AI
           </div>
         </div>
@@ -163,15 +165,15 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.25 }}
-          className="relative w-full max-w-[260px] aspect-[4/4.8] mx-auto rounded-3xl overflow-hidden bg-gradient-to-b from-[#2d1014] to-[#120608] border-2 border-[rgba(200,61,74,0.4)] shadow-2xl p-3 flex flex-col justify-between items-center"
+          className="relative w-full max-w-[250px] aspect-[4/4.8] mx-auto rounded-3xl overflow-hidden bg-gradient-to-b from-[#2d1014] to-[#120608] border-2 border-[rgba(200,61,74,0.4)] shadow-2xl p-3 flex flex-col justify-between items-center"
         >
-          <div className="flex items-center justify-between w-full border-b border-[rgba(200,61,74,0.25)] pb-1.5 mb-1.5">
-            <span className="font-grotesk text-[9px] font-bold text-[#c83d4a] tracking-widest uppercase text-center w-full">
+          <div className="flex items-center justify-center w-full border-b border-[rgba(200,61,74,0.25)] pb-1.5 mb-1.5 text-center">
+            <span className="font-grotesk text-[9px] font-bold text-[#c83d4a] tracking-widest uppercase text-center block w-full">
               SMARTBAG TEAM LEAD
             </span>
           </div>
 
-          <div className="relative my-auto w-full aspect-[4/4.2] rounded-2xl overflow-hidden border border-[rgba(200,61,74,0.3)] shadow-md">
+          <div className="relative my-auto w-full aspect-[4/4.2] rounded-2xl overflow-hidden border border-[rgba(200,61,74,0.3)] shadow-md mx-auto">
             <img
               src="/owandrila.jpg"
               alt="Owandrila Ghosh"
@@ -180,8 +182,8 @@ export default function Hero() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#120608]/75 via-transparent to-transparent" />
           </div>
 
-          <div className="border-t border-[rgba(200,61,74,0.25)] pt-2 text-center w-full mt-1">
-            <span className="text-[9px] font-grotesk font-bold text-[#f7e9e1] tracking-widest uppercase bg-[#c83d4a] px-2.5 py-0.5 rounded-full inline-block">
+          <div className="border-t border-[rgba(200,61,74,0.25)] pt-2 text-center w-full mt-1 flex justify-center">
+            <span className="text-[9px] font-grotesk font-bold text-[#f7e9e1] tracking-widest uppercase bg-[#c83d4a] px-2.5 py-0.5 rounded-full inline-block text-center">
               DATA SCIENCE &amp; AI
             </span>
           </div>
@@ -202,11 +204,11 @@ export default function Hero() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="flex flex-col items-center justify-center gap-3 pt-2 w-full"
+          className="flex flex-col items-center justify-center gap-3 pt-2 w-full mx-auto"
         >
           <a
             href="#about"
-            className="w-full max-w-xs py-3.5 rounded-full bg-[#c83d4a] active:scale-95 text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-2 min-h-[44px] text-center"
+            className="w-full max-w-xs py-3.5 rounded-full bg-[#c83d4a] active:scale-95 text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-2 min-h-[44px] text-center mx-auto"
           >
             <span>EXPLORE PORTFOLIO</span>
             <ArrowDownRight className="w-4 h-4" />
@@ -214,7 +216,7 @@ export default function Hero() {
 
           <a
             href="#about"
-            className="inline-flex items-center justify-center gap-1.5 text-xs font-grotesk font-bold text-[#c83d4a] tracking-[0.2em] uppercase pt-2 active:opacity-70 text-center"
+            className="inline-flex items-center justify-center gap-1.5 text-xs font-grotesk font-bold text-[#c83d4a] tracking-[0.2em] uppercase pt-2 active:opacity-70 text-center mx-auto"
           >
             <span>SCROLL</span>
             <ArrowDown className="w-3.5 h-3.5 animate-bounce" />
