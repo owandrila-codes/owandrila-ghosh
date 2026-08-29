@@ -17,6 +17,16 @@ export default function CinematicLoader({ onComplete }: CinematicLoaderProps) {
     }, 600);
   }, [onComplete]);
 
+  const handleTimeUpdate = useCallback(() => {
+    if (videoRef.current) {
+      const video = videoRef.current;
+      // Cutoff 2.2 seconds before video end to completely eliminate generic website video frames
+      if (video.duration && video.currentTime >= video.duration - 2.2) {
+        handleSkip();
+      }
+    }
+  }, [handleSkip]);
+
   useEffect(() => {
     // 1. Check for reduced motion preference
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -42,10 +52,10 @@ export default function CinematicLoader({ onComplete }: CinematicLoaderProps) {
     };
     window.addEventListener('keydown', handleKeyDown);
 
-    // 4. Safety Hard Fallback Timer (12 seconds max)
+    // 4. Safety Hard Fallback Timer (10 seconds max)
     const safetyTimer = setTimeout(() => {
       handleSkip();
-    }, 12000);
+    }, 10000);
 
     return () => {
       clearTimeout(safetyTimer);
@@ -73,6 +83,7 @@ export default function CinematicLoader({ onComplete }: CinematicLoaderProps) {
               autoPlay
               muted
               playsInline
+              onTimeUpdate={handleTimeUpdate}
               onEnded={handleSkip}
               className="w-full h-full object-contain max-w-5xl max-h-[90vh]"
             />
