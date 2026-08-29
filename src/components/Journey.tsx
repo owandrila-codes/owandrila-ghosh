@@ -43,7 +43,7 @@ export default function Journey() {
             transition={{ duration: 0.5 }}
             className="font-grotesk text-xs font-bold tracking-[0.3em] text-[#c83d4a] uppercase bg-[#220b0e] px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.3)] inline-block"
           >
-            04 — EDUCATION &amp; JOURNEY
+            03 — EDUCATION &amp; JOURNEY
           </motion.span>
 
           <motion.h2

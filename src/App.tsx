@@ -60,7 +60,7 @@ export default function App() {
             <About />
           </Suspense>
 
-          {/* 03 — EDUCATION & JOURNEY (~100vh) */}
+          {/* 03 — EDUCATION & JOURNEY (~100vh, placed immediately after About) */}
           <Suspense fallback={<SectionFallback />}>
             <Journey />
           </Suspense>
