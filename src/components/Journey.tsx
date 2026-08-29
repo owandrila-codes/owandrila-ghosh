@@ -36,12 +36,12 @@ export default function Journey() {
     <section id="experience" className="py-16 md:py-20 relative z-10 border-t border-[rgba(200,61,74,0.15)] bg-[#100406]/60 overflow-hidden max-w-full">
       <div className="max-w-6xl mx-auto px-5 sm:px-6 space-y-10">
         {/* Section Header */}
-        <div className="text-center space-y-2">
-          <span className="font-grotesk text-xs font-bold tracking-[0.2em] text-[#c83d4a] uppercase bg-[#220b0e] px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.3)] inline-block">
+        <div className="text-center space-y-2 flex flex-col items-center justify-center">
+          <span className="font-grotesk text-xs font-bold tracking-[0.2em] text-[#c83d4a] uppercase bg-[#220b0e] px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.3)] inline-block text-center">
             04 / EDUCATION &amp; MILESTONES
           </span>
 
-          <h2 className="font-display font-black text-3xl sm:text-5xl text-[#f7e9e1] uppercase tracking-tight">
+          <h2 className="font-display font-black text-3xl sm:text-5xl text-[#f7e9e1] uppercase tracking-tight text-center">
             EDUCATION &amp; <span className="font-serif-title italic text-[#c83d4a]">JOURNEY</span>
           </h2>
 
@@ -50,19 +50,19 @@ export default function Journey() {
 
         {/* Education Highlight Summary Card */}
         <div className="max-w-4xl mx-auto">
-          <div className="reference-card p-5 sm:p-6 border-2 border-[rgba(200,61,74,0.35)] shadow-xl flex flex-col sm:flex-row items-center justify-between gap-5">
+          <div className="reference-card p-5 sm:p-6 border-2 border-[rgba(200,61,74,0.35)] shadow-xl flex flex-col sm:flex-row items-center justify-between gap-5 text-center sm:text-left">
             <div className="flex items-center gap-4 text-center sm:text-left flex-col sm:flex-row">
               <div className="p-3 rounded-2xl bg-[#120608] border border-[#c83d4a] shrink-0 text-[#c83d4a]">
                 <BookOpen className="w-6 h-6" />
               </div>
               <div className="space-y-1">
-                <span className="text-[10px] font-grotesk font-bold text-[#c83d4a] uppercase tracking-widest block">
+                <span className="text-[10px] font-grotesk font-bold text-[#c83d4a] uppercase tracking-widest block text-center sm:text-left">
                   PRIMARY QUALIFICATION
                 </span>
-                <h3 className="font-display font-black text-base sm:text-xl text-[#f7e9e1] uppercase">
+                <h3 className="font-display font-black text-base sm:text-xl text-[#f7e9e1] uppercase text-center sm:text-left">
                   BACHELOR OF COMPUTER APPLICATIONS (BCA)
                 </h3>
-                <div className="font-serif-title text-xs sm:text-sm text-[#c83d4a] italic">
+                <div className="font-serif-title text-xs sm:text-sm text-[#c83d4a] italic text-center sm:text-left">
                   Specialization: Data Science &amp; Artificial Intelligence
                 </div>
               </div>
@@ -88,7 +88,7 @@ export default function Journey() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="reference-card p-5 flex flex-col justify-between space-y-4 relative overflow-hidden group active:scale-[0.98] transition-transform"
+              className="reference-card p-5 flex flex-col justify-between space-y-4 relative overflow-hidden group active:scale-[0.98] transition-transform text-center sm:text-left"
             >
               <div className="flex items-center justify-between border-b border-[rgba(200,61,74,0.2)] pb-3">
                 <span className="font-display font-black text-3xl text-[#f7e9e1]">
@@ -116,7 +116,7 @@ export default function Journey() {
                   {item.desc}
                 </p>
 
-                <div className="flex flex-wrap gap-1 pt-1.5">
+                <div className="flex flex-wrap gap-1 pt-1.5 justify-center sm:justify-start">
                   {item.courses.map((c) => (
                     <span key={c} className="text-[8.5px] font-grotesk font-bold text-[#f7e9e1]/80 bg-[#120608] px-2 py-0.5 rounded-md border border-[rgba(200,61,74,0.2)]">
                       • {c}
