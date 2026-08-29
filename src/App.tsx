@@ -11,19 +11,10 @@ const Journey = lazy(() => import('./components/Journey'));
 const Projects = lazy(() => import('./components/Projects'));
 const Contact = lazy(() => import('./components/Contact'));
 
-// Fallback Section Loader Component
-function SectionFallback() {
-  return (
-    <div className="py-20 flex items-center justify-center">
-      <div className="w-8 h-8 rounded-full border-2 border-[#c83d4a] border-t-transparent animate-spin" />
-    </div>
-  );
-}
-
 export default function App() {
   return (
     <div className="relative min-h-screen bg-[#120608] text-[#f7e9e1] selection:bg-[#c83d4a] selection:text-[#f7e9e1] overflow-x-hidden font-sans">
-      {/* Cinematic Enchanted Rose Loading Experience Overlay */}
+      {/* 🌹 Enchanted Rose Loading Experience */}
       <EnchantedRoseLoader />
 
       {/* 3D WebGL Background Scene */}
@@ -43,27 +34,27 @@ export default function App() {
       {/* Main 5-Section 3D Story Experience */}
       <main className="relative z-10 space-y-0">
         {/* 01 — HERO (~100vh) */}
-        <Suspense fallback={<SectionFallback />}>
+        <Suspense fallback={null}>
           <Hero />
         </Suspense>
 
         {/* 02 — ABOUT + SKILLS (~100vh) */}
-        <Suspense fallback={<SectionFallback />}>
+        <Suspense fallback={null}>
           <About />
         </Suspense>
 
         {/* 03 — EDUCATION & JOURNEY (~100vh) */}
-        <Suspense fallback={<SectionFallback />}>
+        <Suspense fallback={null}>
           <Journey />
         </Suspense>
 
         {/* 04 — SELECTED WORK (Pinned 3D Scroll Gallery Stage ~125vh) */}
-        <Suspense fallback={<SectionFallback />}>
+        <Suspense fallback={null}>
           <Projects />
         </Suspense>
 
         {/* 05 — CONTACT (~100vh) */}
-        <Suspense fallback={<SectionFallback />}>
+        <Suspense fallback={null}>
           <Contact />
         </Suspense>
       </main>

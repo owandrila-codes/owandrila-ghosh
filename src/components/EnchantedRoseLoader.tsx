@@ -1,53 +1,61 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// ==========================================
-// CONFIGURATION CONSTANTS
-// Set ALWAYS_SHOW_LOADING to true if you want the rose loader to play on every refresh.
-// Set to false if it should only play once per browser session.
-// ==========================================
+// Configuration Constant: Set true to show loading animation on every page refresh for testing
 const ALWAYS_SHOW_LOADING = true;
 
-interface EnchantedRoseLoaderProps {
-  onComplete?: () => void;
+interface Particle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  size: number;
+  alpha: number;
+  decay: number;
+  color: string;
+  glow: boolean;
 }
 
-export default function EnchantedRoseLoader({ onComplete }: EnchantedRoseLoaderProps) {
-  const [phase, setPhase] = useState<'darkness' | 'reveal' | 'detach' | 'disintegrate' | 'dissolve' | 'done'>('darkness');
+export default function EnchantedRoseLoader({ onComplete }: { onComplete?: () => void }) {
   const [isVisible, setIsVisible] = useState(true);
+  const [phase, setPhase] = useState<'darkness' | 'reveal' | 'detach' | 'descend' | 'disintegrate' | 'hero' | 'done'>('darkness');
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
-    // Session Check
-    if (!ALWAYS_SHOW_LOADING && typeof window !== 'undefined') {
-      const hasSeen = sessionStorage.getItem('hasSeenRoseLoader');
+    // Session Storage Check if ALWAYS_SHOW_LOADING is false
+    if (!ALWAYS_SHOW_LOADING) {
+      const hasSeen = sessionStorage.getItem('hasSeenEnchantedRose');
       if (hasSeen) {
         setIsVisible(false);
         if (onComplete) onComplete();
         return;
       }
-      sessionStorage.setItem('hasSeenRoseLoader', 'true');
     }
 
-    // Accessibility check: prefers-reduced-motion
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      const timer = setTimeout(() => {
+    // Check prefers-reduced-motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      setTimeout(() => {
         setIsVisible(false);
         if (onComplete) onComplete();
-      }, 800);
-      return () => clearTimeout(timer);
+      }, 1000);
+      return;
     }
 
-    // Sequence Timeline
-    const timer1 = setTimeout(() => setPhase('reveal'), 300);       // Phase 2: Rose emerges
-    const timer2 = setTimeout(() => setPhase('detach'), 1100);      // Phase 3: Petal detaches
-    const timer3 = setTimeout(() => setPhase('disintegrate'), 1700); // Phase 4 & 5: Petal falls & turns to dust
-    const timer4 = setTimeout(() => setPhase('dissolve'), 2600);    // Phase 6: Screen dissolves
-    const timer5 = setTimeout(() => {
+    // Sequence Timeline Timers
+    const timer1 = setTimeout(() => setPhase('reveal'), 400);       // Phase 1: 0.0s - 0.4s
+    const timer2 = setTimeout(() => setPhase('detach'), 1200);      // Phase 2: 0.4s - 1.2s
+    const timer3 = setTimeout(() => setPhase('descend'), 1700);     // Phase 3: 1.2s - 1.7s
+    const timer4 = setTimeout(() => setPhase('disintegrate'), 2400); // Phase 4: 1.7s - 2.4s
+    const timer5 = setTimeout(() => setPhase('hero'), 3200);        // Phase 5: 2.4s - 3.2s
+    const timer6 = setTimeout(() => {
       setPhase('done');
       setIsVisible(false);
+      if (!ALWAYS_SHOW_LOADING) {
+        sessionStorage.setItem('hasSeenEnchantedRose', 'true');
+      }
       if (onComplete) onComplete();
-    }, 3200);
+    }, 3800);                                                        // Phase 6: 3.2s - 3.8s
 
     return () => {
       clearTimeout(timer1);
@@ -55,328 +63,283 @@ export default function EnchantedRoseLoader({ onComplete }: EnchantedRoseLoaderP
       clearTimeout(timer3);
       clearTimeout(timer4);
       clearTimeout(timer5);
+      clearTimeout(timer6);
     };
   }, [onComplete]);
 
-  // Particle Disintegration Engine (Canvas 2D)
+  // Particle System Canvas Animation during Disintegration Phase
   useEffect(() => {
-    if (!isVisible || phase === 'done') return;
+    if (phase !== 'disintegrate' && phase !== 'hero') return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     let animationFrameId: number;
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
+    const width = (canvas.width = window.innerWidth);
+    const height = (canvas.height = window.innerHeight);
 
-    const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    };
-    window.addEventListener('resize', handleResize);
+    // Particle Emitter Origin (Lower-middle of screen where petal disintegrates)
+    const emitterX = width / 2 + 25;
+    const emitterY = height * 0.58;
 
-    // Dust Particle Class
-    interface DustParticle {
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      size: number;
-      alpha: number;
-      decay: number;
-      color: string;
-      glow: boolean;
-    }
-
-    const particles: DustParticle[] = [];
-    const colors = [
-      'rgba(200, 61, 74, ',  // Crimson
-      'rgba(139, 30, 39, ',  // Deep Red
-      'rgba(215, 90, 100, ', // Warm Red
-      'rgba(247, 233, 225, ',// Ivory highlight
+    const particleColors = [
+      '#c83d4a', // Crimson accent
+      '#8b1e27', // Deep wine
+      '#4a0e14', // Dark burgundy
+      '#f7e9e1', // Warm ivory highlight
+      '#e65c69', // Bright rose glow
     ];
 
-    let hasSpawnedDisintegration = false;
+    const isMobile = width < 768;
+    const particleCount = isMobile ? 180 : 350;
+    const particles: Particle[] = [];
+
+    for (let i = 0; i < particleCount; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 2.8 + 0.5;
+      particles.push({
+        x: emitterX + (Math.random() - 0.5) * 30,
+        y: emitterY + (Math.random() - 0.5) * 20,
+        vx: Math.cos(angle) * speed * 0.8 + (Math.random() - 0.5) * 1.2,
+        vy: Math.sin(angle) * speed * 0.6 + Math.random() * 1.5 + 0.3,
+        size: Math.random() * 2.5 + 0.8,
+        alpha: Math.random() * 0.9 + 0.1,
+        decay: Math.random() * 0.015 + 0.01,
+        color: particleColors[Math.floor(Math.random() * particleColors.length)],
+        glow: Math.random() > 0.75,
+      });
+    }
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // Spawn ambient floating particles
-      if (Math.random() < 0.3 && particles.length < 120) {
-        particles.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: -Math.random() * 0.6 - 0.2,
-          size: Math.random() * 1.5 + 0.5,
-          alpha: Math.random() * 0.4 + 0.1,
-          decay: Math.random() * 0.005 + 0.002,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          glow: Math.random() > 0.8,
-        });
-      }
+      particles.forEach((p) => {
+        if (p.alpha <= 0) return;
 
-      // Spawn dense dust burst during Disintegrate Phase
-      if (phase === 'disintegrate' && !hasSpawnedDisintegration) {
-        hasSpawnedDisintegration = true;
-        const centerX = width / 2 + 15;
-        const startY = height / 2 + 70;
-
-        const particleCount = width < 768 ? 140 : 260;
-        for (let i = 0; i < particleCount; i++) {
-          const angle = Math.random() * Math.PI * 2;
-          const speed = Math.random() * 2.2 + 0.3;
-          particles.push({
-            x: centerX + (Math.random() - 0.5) * 30,
-            y: startY + (Math.random() - 0.5) * 40,
-            vx: Math.cos(angle) * speed * 0.8 + (Math.random() - 0.5) * 0.5,
-            vy: Math.abs(Math.sin(angle)) * speed * 0.6 + 0.8, // drift downward
-            size: Math.random() * 2.2 + 0.6,
-            alpha: Math.random() * 0.85 + 0.15,
-            decay: Math.random() * 0.015 + 0.008,
-            color: colors[Math.floor(Math.random() * colors.length)],
-            glow: Math.random() > 0.6,
-          });
-        }
-      }
-
-      // Update & Draw Particles
-      for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i];
         p.x += p.vx;
         p.y += p.vy;
         p.alpha -= p.decay;
+        p.vx *= 0.98; // Friction
 
-        if (p.alpha <= 0) {
-          particles.splice(i, 1);
-          continue;
-        }
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = p.color + p.alpha + ')';
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, p.alpha);
 
         if (p.glow) {
           ctx.shadowBlur = 8;
-          ctx.shadowColor = '#c83d4a';
-        } else {
-          ctx.shadowBlur = 0;
+          ctx.shadowColor = p.color;
         }
 
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
-      }
+        ctx.restore();
+      });
 
-      animationFrameId = requestAnimationFrame(render);
+      if (particles.some((p) => p.alpha > 0)) {
+        animationFrameId = requestAnimationFrame(render);
+      }
     };
 
     render();
 
     return () => {
-      window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [isVisible, phase]);
+  }, [phase]);
 
   if (!isVisible) return null;
 
   return (
     <AnimatePresence>
       <motion.div
-        key="rose-loader-overlay"
+        key="enchanted-loader"
         initial={{ opacity: 1 }}
-        animate={{ opacity: phase === 'dissolve' ? 0 : 1 }}
+        animate={{ opacity: phase === 'hero' || phase === 'done' ? 0 : 1 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.7, ease: 'easeInOut' }}
-        className="fixed inset-0 z-[9999] bg-[#100406] flex flex-col items-center justify-center overflow-hidden pointer-events-auto select-none"
+        transition={{ duration: 0.8, ease: 'easeInOut' }}
+        className="fixed inset-0 z-[9999] bg-[#0c0406] flex flex-col items-center justify-between py-12 px-6 overflow-hidden pointer-events-none select-none"
       >
-        {/* Background Atmospheric Canvas Engine */}
-        <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-10" />
-
-        {/* Ambient Radial Burgundy Glow */}
+        {/* Subtle Background Radial Ambient Glow */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
           animate={{
-            opacity: phase === 'darkness' ? 0 : 0.65,
-            scale: phase === 'darkness' ? 0.8 : 1.15,
+            opacity: phase === 'darkness' ? 0.2 : 0.65,
+            scale: phase === 'reveal' ? 1.1 : 1,
           }}
           transition={{ duration: 1.2, ease: 'easeOut' }}
-          className="absolute w-[450px] h-[450px] rounded-full bg-radial from-[#8b1e27]/50 via-[#2d1014]/20 to-transparent blur-3xl pointer-events-none z-0"
+          className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(200,61,74,0.18)_0%,_rgba(139,30,39,0.08)_45%,_transparent_70%)] pointer-events-none"
         />
 
-        {/* Center Container: Enchanted 2.5D Rose & Petals */}
-        <div className="relative z-20 flex flex-col items-center justify-center space-y-6">
+        {/* Ambient Floating Dust Particles Canvas */}
+        <canvas ref={canvasRef} className="absolute inset-0 z-20 pointer-events-none" />
+
+        {/* Top Spacer */}
+        <div className="w-full h-8" />
+
+        {/* Center Suspended Enchanted Rose Container */}
+        <div className="relative w-full max-w-sm h-[360px] flex items-center justify-center my-auto z-10">
           
-          {/* Main Rose Graphic Frame */}
+          {/* Main Swaying Rose Visual */}
           <motion.div
             initial={{ opacity: 0, scale: 0.88, filter: 'blur(10px)' }}
             animate={{
               opacity: phase === 'darkness' ? 0 : 1,
               scale: phase === 'darkness' ? 0.88 : 1,
-              filter: 'blur(0px)',
+              filter: phase === 'darkness' ? 'blur(10px)' : 'blur(0px)',
               y: [0, -6, 0],
+              rotate: [0, 1, -1, 0],
             }}
             transition={{
-              opacity: { duration: 0.8, ease: 'easeOut' },
-              scale: { duration: 0.8, ease: 'easeOut' },
+              opacity: { duration: 0.8 },
+              scale: { duration: 0.8 },
               filter: { duration: 0.8 },
-              y: { duration: 4, repeat: Infinity, ease: 'easeInOut' },
+              y: { duration: 5, repeat: Infinity, ease: 'easeInOut' },
+              rotate: { duration: 7, repeat: Infinity, ease: 'easeInOut' },
             }}
-            className="relative w-44 h-56 sm:w-56 sm:h-72 flex items-center justify-center"
+            className="relative w-52 h-64 flex items-center justify-center"
           >
-            {/* SVG Enchanted Rose Visual */}
+            {/* Soft Ambient Aura behind Rose */}
+            <div className="absolute inset-0 rounded-full bg-[#c83d4a]/20 blur-3xl scale-110 pointer-events-none" />
+
+            {/* High-Detail Enchanted Rose SVG Render */}
             <svg
               viewBox="0 0 200 240"
-              className="w-full h-full drop-shadow-[0_12px_25px_rgba(200,61,74,0.4)]"
+              className="w-full h-full drop-shadow-[0_15px_30px_rgba(200,61,74,0.35)]"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              {/* Stem & Leaves */}
-              <path
-                d="M100 130 Q98 170 102 220"
-                stroke="#4a181e"
-                strokeWidth="4.5"
-                strokeLinecap="round"
-              />
-              <path
-                d="M100 165 Q70 155 60 170 Q80 180 100 168"
-                fill="#3a1016"
-                stroke="#8b1e27"
-                strokeWidth="1.2"
-              />
-              <path
-                d="M101 185 Q130 175 142 190 Q120 200 101 188"
-                fill="#3a1016"
-                stroke="#8b1e27"
-                strokeWidth="1.2"
-              />
-
-              {/* Thorns */}
-              <path d="M98 150 L91 146 L99 155 Z" fill="#6e1b23" />
-              <path d="M102 180 L109 176 L101 185 Z" fill="#6e1b23" />
-
-              {/* Outer Rose Calyx */}
-              <path
-                d="M85 130 C75 140 65 120 75 110 C85 105 95 120 85 130 Z"
-                fill="#5c151c"
-              />
-              <path
-                d="M115 130 C125 140 135 120 125 110 C115 105 105 120 115 130 Z"
-                fill="#5c151c"
-              />
-
-              {/* Layered Petal Crown */}
-              <g id="rose-petals">
-                {/* Back Petals */}
-                <path
-                  d="M100 40 C60 40 50 90 75 125 C100 145 125 125 150 125 C125 90 140 40 100 40 Z"
-                  fill="url(#gradient-petal-back)"
-                />
-                {/* Side Petals */}
-                <path
-                  d="M100 48 C70 52 62 85 82 118 C100 135 118 118 138 85 C130 52 130 48 100 48 Z"
-                  fill="url(#gradient-petal-mid)"
-                />
-                {/* Inner Velvet Core */}
-                <path
-                  d="M100 58 C80 62 76 88 92 110 C100 120 108 110 124 88 C120 62 120 58 100 58 Z"
-                  fill="url(#gradient-petal-core)"
-                />
-                {/* Spiral Bloom Center */}
-                <path
-                  d="M100 66 C90 70 88 85 96 98 C100 102 104 98 112 85 C110 70 110 66 100 66 Z"
-                  fill="#c83d4a"
-                />
-                <circle cx="100" cy="80" r="8" fill="#f7e9e1" opacity="0.25" />
-              </g>
-
-              {/* SVG Gradients */}
               <defs>
-                <linearGradient id="gradient-petal-back" x1="100" y1="40" x2="100" y2="135" gradientUnits="userSpaceOnUse">
+                {/* Petal Gradients */}
+                <radialGradient id="roseCore" cx="50%" cy="40%" r="50%">
+                  <stop offset="0%" stopColor="#f7e9e1" />
+                  <stop offset="35%" stopColor="#e63946" />
+                  <stop offset="75%" stopColor="#8b1e27" />
+                  <stop offset="100%" stopColor="#3a0c11" />
+                </radialGradient>
+
+                <linearGradient id="roseStem" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#2b472a" />
+                  <stop offset="50%" stopColor="#1a3019" />
+                  <stop offset="100%" stopColor="#0f1f0e" />
+                </linearGradient>
+
+                <linearGradient id="petalGlow" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stopColor="#c83d4a" />
                   <stop offset="60%" stopColor="#8b1e27" />
-                  <stop offset="100%" stopColor="#3a0b10" />
+                  <stop offset="100%" stopColor="#4a0e14" />
                 </linearGradient>
-                <linearGradient id="gradient-petal-mid" x1="100" y1="48" x2="100" y2="125" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#e25363" />
-                  <stop offset="50%" stopColor="#c83d4a" />
-                  <stop offset="100%" stopColor="#63141c" />
-                </linearGradient>
-                <linearGradient id="gradient-petal-core" x1="100" y1="58" x2="100" y2="115" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stopColor="#f7e9e1" stopOpacity="0.8" />
-                  <stop offset="30%" stopColor="#c83d4a" />
-                  <stop offset="100%" stopColor="#8b1e27" />
-                </linearGradient>
+
+                <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="3" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
               </defs>
+
+              {/* Stem & Leaves */}
+              <path d="M100 130 Q98 170 102 220" stroke="url(#roseStem)" strokeWidth="4.5" strokeLinecap="round" />
+              <path d="M100 160 Q75 150 60 162 Q80 175 100 168" fill="#1e381c" stroke="#375e34" strokeWidth="1" />
+              <path d="M101 175 Q125 168 140 180 Q120 192 101 182" fill="#1e381c" stroke="#375e34" strokeWidth="1" />
+
+              {/* Outer Layer Petals */}
+              <path d="M60 110 C50 80 80 50 100 65 C120 50 150 80 140 110 C130 145 70 145 60 110 Z" fill="url(#petalGlow)" />
+              <path d="M70 100 C62 72 90 55 100 68 C110 55 138 72 130 100 C120 130 80 130 70 100 Z" fill="#8b1e27" opacity="0.95" />
+
+              {/* Core Layer Bloom Petals */}
+              <path d="M80 92 C76 75 92 64 100 72 C108 64 124 75 120 92 C112 115 88 115 80 92 Z" fill="url(#roseCore)" />
+              <path d="M88 88 C85 76 96 70 100 75 C104 70 115 76 112 88 C108 102 92 102 88 88 Z" fill="#c83d4a" />
+              <ellipse cx="100" cy="80" rx="6" ry="4" fill="#f7e9e1" opacity="0.85" filter="url(#softGlow)" />
+
+              {/* Dew Highlight Drops */}
+              <circle cx="85" cy="98" r="1.5" fill="#f7e9e1" opacity="0.7" />
+              <circle cx="112" cy="105" r="1.2" fill="#f7e9e1" opacity="0.6" />
             </svg>
 
-            {/* Falling Detached Petal Animation */}
-            <AnimatePresence>
-              {(phase === 'detach' || phase === 'disintegrate') && (
-                <motion.div
-                  key="falling-detached-petal"
-                  initial={{ opacity: 1, x: 22, y: 15, rotate: 0, scale: 1 }}
-                  animate={
-                    phase === 'detach'
-                      ? {
-                          x: [22, 38, 48],
-                          y: [15, 45, 80],
-                          rotate: [0, 25, 45],
-                          scale: [1, 1.05, 0.98],
-                        }
-                      : {
-                          x: [48, 65, 80],
-                          y: [80, 135, 175],
-                          rotate: [45, 75, 110],
-                          scale: [0.98, 0.6, 0],
-                          opacity: [1, 0.7, 0],
-                        }
-                  }
-                  transition={{
-                    duration: phase === 'detach' ? 0.6 : 0.8,
-                    ease: 'easeOut',
-                  }}
-                  className="absolute top-24 left-24 w-8 h-10 pointer-events-none"
-                >
-                  <svg viewBox="0 0 40 50" fill="none" className="w-full h-full drop-shadow-[0_4px_10px_rgba(200,61,74,0.6)]">
-                    <path
-                      d="M20 5 C35 10 38 30 25 45 C12 40 5 25 12 10 Z"
-                      fill="url(#detached-petal-grad)"
-                    />
-                    <defs>
-                      <linearGradient id="detached-petal-grad" x1="20" y1="5" x2="20" y2="45" gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" stopColor="#f7e9e1" />
-                        <stop offset="40%" stopColor="#c83d4a" />
-                        <stop offset="100%" stopColor="#8b1e27" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {/* Attached Petal (Before Detaching) */}
+            {(phase === 'darkness' || phase === 'reveal') && (
+              <motion.div className="absolute top-[108px] right-[42px] w-9 h-11 pointer-events-none">
+                <svg viewBox="0 0 40 50" className="w-full h-full drop-shadow-md">
+                  <path
+                    d="M10 5 C25 -2 38 12 30 32 C20 45 2 35 10 5 Z"
+                    fill="url(#petalGlow)"
+                  />
+                </svg>
+              </motion.div>
+            )}
           </motion.div>
 
-          {/* Elegant Typography & Status */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: phase === 'darkness' ? 0 : 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-center space-y-1.5"
-          >
-            <div className="font-grotesk text-xs sm:text-sm font-bold tracking-[0.3em] text-[#f7e9e1] uppercase">
-              OWANDRILA GHOSH
-            </div>
+          {/* Falling Petal Motion (Phases 3 & 4: Detach & Descend) */}
+          {(phase === 'detach' || phase === 'descend') && (
+            <motion.div
+              initial={{ x: 25, y: -20, opacity: 1, rotate: 0, scale: 1 }}
+              animate={{
+                x: [25, 40, 15, 30],
+                y: phase === 'detach' ? 10 : 130,
+                rotate: [0, 25, -15, 40],
+                opacity: phase === 'descend' ? 0.95 : 1,
+                scale: phase === 'descend' ? 0.9 : 1,
+              }}
+              transition={{
+                duration: phase === 'detach' ? 0.5 : 0.8,
+                ease: 'easeInOut',
+              }}
+              className="absolute top-[108px] left-1/2 w-9 h-11 z-30 pointer-events-none"
+            >
+              <svg viewBox="0 0 40 50" className="w-full h-full drop-shadow-[0_4px_12px_rgba(200,61,74,0.6)]">
+                <defs>
+                  <linearGradient id="fallingPetalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#e63946" />
+                    <stop offset="60%" stopColor="#c83d4a" />
+                    <stop offset="100%" stopColor="#5c1219" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M10 5 C25 -2 38 12 30 32 C20 45 2 35 10 5 Z"
+                  fill="url(#fallingPetalGrad)"
+                />
+                <ellipse cx="20" cy="18" rx="4" ry="8" fill="#f7e9e1" opacity="0.3" transform="rotate(-20 20 18)" />
+              </svg>
+            </motion.div>
+          )}
 
-            <div className="flex items-center justify-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#c83d4a] animate-ping" />
-              <span className="font-grotesk text-[10px] font-bold tracking-[0.25em] text-[#c83d4a] uppercase">
-                {phase === 'dissolve' ? 'ENTERING PORTFOLIO...' : 'LOADING...'}
-              </span>
-            </div>
-          </motion.div>
+          {/* Disintegrating Petal Fragment (Phase 5) */}
+          {phase === 'disintegrate' && (
+            <motion.div
+              initial={{ x: 28, y: 130, opacity: 1, scale: 0.9 }}
+              animate={{
+                scale: [0.9, 0.4, 0],
+                opacity: [1, 0.5, 0],
+                filter: ['blur(0px)', 'blur(4px)', 'blur(8px)'],
+              }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+              className="absolute top-[108px] left-1/2 w-8 h-10 z-30 pointer-events-none"
+            >
+              <svg viewBox="0 0 40 50" className="w-full h-full">
+                <path
+                  d="M10 5 C25 -2 38 12 30 32 C20 45 2 35 10 5 Z"
+                  fill="#c83d4a"
+                />
+              </svg>
+            </motion.div>
+          )}
 
         </div>
+
+        {/* Bottom Subtle Typography Branding */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: phase === 'darkness' ? 0 : 1 }}
+          transition={{ duration: 0.8 }}
+          className="text-center space-y-1 z-30 pb-4"
+        >
+          <span className="font-serif-title text-base sm:text-lg text-[#f7e9e1] tracking-[0.25em] uppercase block">
+            OWANDRILA GHOSH
+          </span>
+          <span className="text-[10px] font-grotesk font-bold tracking-[0.3em] text-[#c83d4a] uppercase block animate-pulse">
+            ENTERING...
+          </span>
+        </motion.div>
       </motion.div>
     </AnimatePresence>
   );
