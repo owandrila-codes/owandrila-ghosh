@@ -6,26 +6,21 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSectionId, setActiveSectionId] = useState('hero');
 
-  // Exact 10-section sequence matching DOM order in App.tsx:
+  // Exact 5-section sequence matching DOM order in App.tsx:
+  // 01 Hero -> 02 About & Skills -> 03 Selected Work -> 04 Journey -> 05 Contact
   const sections = [
     { id: 'hero' },
-    { id: 'intro' },
     { id: 'about' },
-    { id: 'stats' },
-    { id: 'skills' },
-    { id: 'experience' },
     { id: 'projects' },
-    { id: 'marquee' },
-    { id: 'statement' },
+    { id: 'experience' },
     { id: 'contact' },
   ];
 
-  // Nav links in exact page flow: ABOUT -> SKILLS -> JOURNEY -> PROJECTS -> CONTACT
+  // Nav links matching exact 5-section flow
   const navLinks = [
     { label: 'ABOUT', href: '#about' },
-    { label: 'SKILLS', href: '#skills' },
+    { label: 'WORK', href: '#projects' },
     { label: 'JOURNEY', href: '#experience' },
-    { label: 'PROJECTS', href: '#projects' },
     { label: 'CONTACT', href: '#contact' },
   ];
 
@@ -79,7 +74,7 @@ export default function Navbar() {
             </div>
           </a>
 
-          {/* Floating Navigation Menu: ABOUT -> SKILLS -> JOURNEY -> PROJECTS -> CONTACT */}
+          {/* Floating Navigation Menu */}
           <nav className="hidden md:flex items-center gap-1 bg-[#170a0d]/90 px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.25)] shadow-lg">
             {navLinks.map((link) => {
               const secId = link.href.replace('#', '');
@@ -115,7 +110,7 @@ export default function Navbar() {
           {/* Mobile Drawer Trigger */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden p-2.5 text-[#f7e9e1] rounded-xl bg-[#170a0d] border border-[rgba(200,61,74,0.3)]"
+            className="md:hidden p-2.5 text-[#f7e9e1] rounded-xl bg-[#170a0d] border border-[rgba(200,61,74,0.3)] cursor-pointer"
             aria-label="Toggle menu"
           >
             {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

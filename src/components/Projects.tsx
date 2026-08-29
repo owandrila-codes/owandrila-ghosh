@@ -1,272 +1,238 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Crown, ArrowUpRight, Layers } from 'lucide-react';
+import { Crown, ArrowUpRight, Brain, Globe } from 'lucide-react';
 
 interface ProjectItem {
   num: string;
   title: string;
   category: string;
-  description: string;
   role: string;
+  description: string;
   highlights: string[];
-  tech: string[];
-  isSpotlight?: boolean;
+  icon: React.ReactNode;
 }
 
 export default function Projects() {
+  const [activeProjectIdx, setActiveProjectIdx] = useState(0);
   const [activeModal, setActiveModal] = useState<ProjectItem | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const projectsGrid: ProjectItem[] = [
+  const projects: ProjectItem[] = [
     {
       num: '01',
-      title: 'SmartBag — Intelligent Companion',
+      title: 'SMARTBAG',
       category: 'HARDWARE & SOFTWARE INNOVATION',
-      description: 'As Team Leader, I guided the SmartBag project, integrating sensor tracking, safety alerts, and travel convenience features.',
       role: 'TEAM LEADER',
+      description: 'A smart technology project focused on practical problem solving, teamwork, planning and innovation.',
       highlights: ['Team Leadership', 'Project Planning', 'Presentation', 'Sensor Tracking'],
-      tech: ['Team Leadership', 'Project Planning', 'Data Tracking', 'Presentation'],
-      isSpotlight: true,
+      icon: <Crown className="w-6 h-6 text-[#c83d4a]" />,
     },
     {
       num: '02',
-      title: 'AI & Data Science Dashboard',
+      title: 'AI / DATA SCIENCE',
       category: 'DATA SCIENCE & AI METRICS',
-      description: 'An interactive visualization concept designed to explore dataset analytics, machine learning model metrics, and automated predictions.',
       role: 'DATA SCIENCE STUDENT',
-      highlights: ['Data Analysis', 'Algorithm Metrics', 'Prediction Visualization'],
-      tech: ['JavaScript', 'Data Science', 'AI Metrics', 'Visualization'],
+      description: 'Data analytics and machine learning model metrics visualization platform.',
+      highlights: ['Dataset Analysis', 'Algorithm Metrics', 'Prediction Models'],
+      icon: <Brain className="w-6 h-6 text-[#c83d4a]" />,
     },
     {
       num: '03',
-      title: 'Google Cloud Data Service',
-      category: 'CLOUD & DATABASE BACKEND',
-      description: 'Backend concept exploring Node.js REST API endpoints, Google Cloud Storage, and SQL database querying for data processing.',
-      role: 'BACKEND DEVELOPER',
-      highlights: ['GCP Infrastructure', 'REST Endpoints', 'SQL Normalization'],
-      tech: ['Node.js', 'Google Cloud', 'SQL', 'REST APIs'],
-    },
-    {
-      num: '04',
-      title: 'Interactive Web Applications',
-      category: 'FRONTEND DEVELOPMENT',
-      description: 'High-performance interactive web experiences built using modern frontend tools, glassmorphism UI tokens, and 3D scroll effects.',
-      role: 'FRONTEND DEVELOPER',
-      highlights: ['Responsive Layouts', 'Glassmorphism UI', '3D Scroll Engine'],
-      tech: ['HTML5', 'CSS3', 'JavaScript', 'Node.js'],
+      title: 'WEB DEVELOPMENT',
+      category: 'CLOUD & WEB PLATFORM',
+      role: 'SOFTWARE DEVELOPER',
+      description: 'Modern high-performance web applications and cloud backend integrations.',
+      highlights: ['Glassmorphism UI', '3D WebGL Canvas', 'GCP Backend'],
+      icon: <Globe className="w-6 h-6 text-[#c83d4a]" />,
     },
   ];
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      const totalScrollable = rect.height - window.innerHeight;
+      if (totalScrollable <= 0) return;
+
+      const progress = Math.max(0, Math.min(1, -rect.top / totalScrollable));
+      if (progress < 0.35) {
+        setActiveProjectIdx(0);
+      } else if (progress < 0.7) {
+        setActiveProjectIdx(1);
+      } else {
+        setActiveProjectIdx(2);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <section id="projects" className="py-24 relative z-10 border-t border-[rgba(200,61,74,0.15)]">
-      <div className="max-w-6xl mx-auto px-6 space-y-16">
+    <section
+      id="projects"
+      ref={containerRef}
+      className="relative min-h-[200vh] border-t border-[rgba(200,61,74,0.15)] bg-[#120608]"
+    >
+      {/* Sticky 100vh Pinned 3D Viewport Stage */}
+      <div className="sticky top-0 h-screen flex flex-col justify-between py-12 px-6 overflow-hidden z-10">
         
         {/* Section Header */}
-        <div className="text-center space-y-3">
-          <motion.span
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="font-grotesk text-xs font-bold tracking-[0.2em] text-[#c83d4a] uppercase bg-[#220b0e] px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.3)] inline-block"
-          >
-            PORTFOLIO SHOWCASE
-          </motion.span>
+        <div className="text-center space-y-2 max-w-4xl mx-auto z-20">
+          <span className="font-grotesk text-xs font-bold tracking-[0.2em] text-[#c83d4a] uppercase bg-[#220b0e] px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.3)] inline-block">
+            03 / PORTFOLIO HIGHLIGHTS
+          </span>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="font-serif-title text-4xl sm:text-6xl text-[#f7e9e1] italic"
-          >
-            Featured Works
-          </motion.h2>
+          <h2 className="font-display font-black text-4xl sm:text-6xl text-[#f7e9e1] uppercase tracking-tight">
+            SELECTED <span className="font-serif-title italic text-[#c83d4a]">WORK</span>
+          </h2>
 
-          <div className="w-24 h-1 bg-gradient-to-r from-[#8b1e27] to-[#c83d4a] mx-auto rounded-full" />
+          <div className="w-20 h-1 bg-gradient-to-r from-[#8b1e27] to-[#c83d4a] mx-auto rounded-full" />
         </div>
 
-        {/* 1. Overlapping 3D MacOS Window Stack Showcase */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="relative min-h-[480px]"
-        >
-          {/* Layer 3: Back Window */}
-          <div className="absolute top-0 left-6 right-6 h-[340px] rounded-3xl bg-[#1c0a0c]/60 border border-[rgba(200,61,74,0.15)] opacity-40 translate-y-[-24px] scale-[0.92] pointer-events-none hidden md:block" />
+        {/* 3D Gallery Stage (3 Cards overlapping with perspective depth) */}
+        <div className="relative w-full max-w-4xl mx-auto h-[420px] my-auto flex items-center justify-center perspective-[1200px]">
+          {projects.map((proj, idx) => {
+            const isCurrent = idx === activeProjectIdx;
+            const isPast = idx < activeProjectIdx;
 
-          {/* Layer 2: Middle Window */}
-          <div className="absolute top-0 left-3 right-3 h-[380px] rounded-3xl bg-[#220b0e]/80 border border-[rgba(200,61,74,0.25)] opacity-75 translate-y-[-12px] scale-[0.96] pointer-events-none hidden md:block" />
+            // Compute 3D Spatial Transforms
+            let opacity = 0;
+            let zIndex = 0;
 
-          {/* Layer 1: Front Spotlight Window */}
-          <div className="relative z-10 reference-card overflow-hidden border-2 border-[rgba(200,61,74,0.4)] shadow-2xl">
-            <div className="bg-[#120608] px-6 py-3 border-b border-[rgba(200,61,74,0.25)] flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-[#ff5f56]" />
-                <span className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
-                <span className="w-3 h-3 rounded-full bg-[#27c93f]" />
-              </div>
-              <div className="font-grotesk text-[11px] font-bold text-[#f7e9e1]/70 bg-[#220b0e] px-4 py-1 rounded-full border border-[rgba(200,61,74,0.3)]">
-                smartbag-companion.tech — Team Leader Spotlight
-              </div>
-              <div className="w-12" />
-            </div>
+            if (isCurrent) {
+              opacity = 1;
+              zIndex = 30;
+            } else if (isPast) {
+              opacity = 0.3;
+              zIndex = 10;
+            } else {
+              opacity = 0.4;
+              zIndex = 20;
+            }
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 p-8 sm:p-10 items-center">
-              <div className="lg:col-span-5 relative">
-                <div className="aspect-[4/3] rounded-2xl bg-gradient-to-br from-[#2d1014] to-[#120608] border border-[rgba(200,61,74,0.3)] flex flex-col justify-between p-6 shadow-xl">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-grotesk font-bold text-[#c83d4a] tracking-widest uppercase">
-                      SPOTLIGHT PROJECT
+            return (
+              <motion.div
+                key={proj.num}
+                animate={{
+                  scale: isCurrent ? 1 : isPast ? 0.88 : 0.94,
+                  opacity: opacity,
+                  y: isCurrent ? 0 : isPast ? -30 : 35,
+                  rotateX: isCurrent ? 0 : isPast ? -8 : 8,
+                }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
+                style={{ zIndex }}
+                className={`absolute inset-0 reference-card p-8 sm:p-10 flex flex-col justify-between border-2 ${
+                  isCurrent ? 'border-[#c83d4a] shadow-2xl bg-[#170a0d]' : 'border-[rgba(200,61,74,0.2)] bg-[#120608]/90'
+                } transition-all duration-500`}
+              >
+                {/* Top Row */}
+                <div className="flex items-center justify-between border-b border-[rgba(200,61,74,0.25)] pb-4">
+                  <div className="flex items-center gap-3">
+                    <span className="font-display font-black text-4xl text-[#f7e9e1]">
+                      {proj.num}
                     </span>
-                    <span className="px-3 py-1 rounded-full bg-[#c83d4a] text-[#f7e9e1] font-grotesk font-extrabold text-[10px] uppercase flex items-center gap-1">
-                      <Crown className="w-3.5 h-3.5" /> TEAM LEAD
+                    <span className="text-xs font-grotesk font-bold text-[#c83d4a] tracking-widest uppercase bg-[#220b0e] px-3 py-1 rounded-full border border-[rgba(200,61,74,0.3)]">
+                      {proj.role}
                     </span>
                   </div>
 
-                  <div className="my-auto text-center space-y-2">
-                    <div className="w-16 h-16 mx-auto rounded-2xl bg-[#8b1e27]/40 border border-[#c83d4a] flex items-center justify-center text-[#f7e9e1]">
-                      <Layers className="w-8 h-8 text-[#c83d4a]" />
-                    </div>
-                    <h3 className="font-display font-extrabold text-2xl text-[#f7e9e1] uppercase">
-                      SMARTBAG
-                    </h3>
-                  </div>
-
-                  <div className="text-[10px] font-grotesk text-[#f7e9e1]/70 uppercase tracking-wider text-center border-t border-[rgba(200,61,74,0.25)] pt-3">
-                    ROLE: TEAM LEADER
+                  <div className="p-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)]">
+                    {proj.icon}
                   </div>
                 </div>
-              </div>
 
-              <div className="lg:col-span-7 space-y-4">
-                <span className="step-cream-tag text-xs inline-block">
-                  TEAM LEADERSHIP &amp; INNOVATION
-                </span>
-
-                <h3 className="font-serif-title text-3xl sm:text-4xl text-[#f7e9e1] italic">
-                  SmartBag — Intelligent Companion
-                </h3>
-
-                <p className="text-sm text-[#f7e9e1]/80 leading-relaxed font-body">
-                  As the <strong>Team Leader</strong>, I led the SmartBag project, gaining hands-on experience in <strong>teamwork, project planning, technical presentation, and innovation</strong>. The project integrates tracking and user convenience features into modern smart gear.
-                </p>
-
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {projectsGrid[0].highlights.map((h) => (
-                    <span key={h} className="px-3 py-1 rounded-xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs font-grotesk font-bold text-[#f7e9e1]">
-                      ✓ {h}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="pt-3 flex flex-wrap gap-4">
-                  <button
-                    onClick={() => setActiveModal(projectsGrid[0])}
-                    className="px-6 py-3 rounded-full bg-[#c83d4a] hover:bg-[#8b1e27] text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest transition-all shadow-lg flex items-center gap-2"
-                  >
-                    <span>Project Breakdown</span>
-                    <ArrowUpRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* 2. Portfolio Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6">
-          {projectsGrid.slice(1).map((proj, idx) => (
-            <motion.div
-              key={proj.num}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: idx * 0.15 }}
-              className="reference-card p-8 flex flex-col justify-between space-y-5 group"
-            >
-              <div className="aspect-[16/9] rounded-2xl bg-gradient-to-br from-[#220b0e] to-[#120608] border border-[rgba(200,61,74,0.3)] flex flex-col justify-between p-5 overflow-hidden group-hover:scale-[1.02] transition-transform duration-300">
-                <div className="flex items-center justify-between">
-                  <span className="font-display font-black text-2xl text-[#f7e9e1]">
-                    {proj.num}
-                  </span>
-                  <span className="text-[10px] font-grotesk font-bold text-[#c83d4a] tracking-widest uppercase bg-[#120608] px-3 py-1 rounded-full border border-[rgba(200,61,74,0.3)]">
+                {/* Center Description */}
+                <div className="my-auto space-y-3">
+                  <span className="text-[10px] font-grotesk font-bold text-[#c83d4a] uppercase tracking-widest block">
                     {proj.category}
                   </span>
-                </div>
 
-                <div className="my-auto text-center">
-                  <h4 className="font-serif-title text-2xl text-[#f7e9e1] italic">
+                  <h3 className="font-serif-title text-3xl sm:text-5xl text-[#f7e9e1] italic">
                     {proj.title}
-                  </h4>
-                </div>
-              </div>
+                  </h3>
 
-              <div className="space-y-3">
-                <p className="text-sm text-[#f7e9e1]/80 leading-relaxed font-body">
-                  {proj.description}
-                </p>
-
-                <div className="flex flex-wrap gap-2">
-                  {proj.tech.map((t) => (
-                    <span key={t} className="px-2.5 py-1 rounded-lg bg-[#120608] border border-[rgba(200,61,74,0.25)] text-[10px] font-grotesk font-bold text-[#f7e9e1]">
-                      {t}
-                    </span>
-                  ))}
+                  <p className="text-sm sm:text-lg text-[#f7e9e1]/85 leading-relaxed font-body max-w-2xl">
+                    "{proj.description}"
+                  </p>
                 </div>
 
-                <div className="pt-2">
+                {/* Bottom Row */}
+                <div className="flex items-center justify-between border-t border-[rgba(200,61,74,0.25)] pt-4">
+                  <div className="flex flex-wrap gap-2">
+                    {proj.highlights.map((h) => (
+                      <span key={h} className="text-[10px] font-grotesk font-bold text-[#f7e9e1]/80 bg-[#120608] px-3 py-1 rounded-xl border border-[rgba(200,61,74,0.25)]">
+                        ✓ {h}
+                      </span>
+                    ))}
+                  </div>
+
                   <button
                     onClick={() => setActiveModal(proj)}
-                    className="inline-flex items-center gap-1.5 text-xs font-grotesk font-bold text-[#c83d4a] hover:text-[#f7e9e1] uppercase tracking-wider transition-colors"
+                    className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#c83d4a] hover:bg-[#8b1e27] text-[#f7e9e1] text-xs font-grotesk font-bold uppercase tracking-wider transition-all shadow-md shrink-0 cursor-pointer"
                   >
-                    <span>View Details</span>
+                    <span>DETAILS</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* 3D Gallery Stage Controls Indicator */}
+        <div className="flex items-center justify-center gap-3 z-20">
+          {projects.map((p, idx) => (
+            <button
+              key={p.num}
+              onClick={() => setActiveProjectIdx(idx)}
+              className={`h-2.5 rounded-full transition-all duration-300 ${
+                idx === activeProjectIdx ? 'w-10 bg-[#c83d4a]' : 'w-2.5 bg-[#f7e9e1]/30 hover:bg-[#f7e9e1]/60'
+              }`}
+              title={`View project ${p.num}`}
+            />
           ))}
         </div>
 
       </div>
 
-      {/* Modal */}
+      {/* Project Breakdown Modal */}
       {activeModal && (
         <div className="fixed inset-0 z-50 bg-[#120608]/90 backdrop-blur-md flex items-center justify-center p-6">
           <div className="reference-card w-full max-w-2xl p-8 border-2 border-[rgba(200,61,74,0.4)] shadow-2xl relative space-y-6">
             <button
               onClick={() => setActiveModal(null)}
-              className="absolute top-6 right-6 p-2 text-[#f7e9e1]/70 hover:text-[#f7e9e1] font-bold text-lg"
+              className="absolute top-6 right-6 p-2 text-[#f7e9e1]/70 hover:text-[#f7e9e1] font-bold text-lg cursor-pointer"
             >
               ✕
             </button>
 
             <div className="space-y-2 border-b border-[rgba(200,61,74,0.25)] pb-4">
               <span className="text-xs font-grotesk font-bold text-[#c83d4a] uppercase tracking-widest block">
-                PROJECT {activeModal.num} BREAKDOWN
+                PROJECT {activeModal.num} HIGHLIGHT
               </span>
-              <h3 className="font-serif-title text-3xl text-[#f7e9e1] italic">
+              <h3 className="font-serif-title text-3xl sm:text-4xl text-[#f7e9e1] italic">
                 {activeModal.title}
               </h3>
             </div>
 
-            <p className="text-sm text-[#f7e9e1]/80 leading-relaxed font-body">
-              {activeModal.description}
+            <p className="text-base text-[#f7e9e1]/90 leading-relaxed font-body">
+              "{activeModal.description}"
             </p>
 
             <div className="space-y-2">
               <span className="text-xs font-grotesk font-bold text-[#c83d4a] uppercase tracking-widest block">
-                ROLE &amp; COMPETENCIES
+                ROLE &amp; FOCUS
               </span>
               <div className="p-4 rounded-xl bg-[#120608] border border-[rgba(200,61,74,0.25)] text-xs text-[#f7e9e1] space-y-1">
                 <div><strong>Role:</strong> {activeModal.role}</div>
-                <div><strong>Focus:</strong> Innovation, Planning, Technical Delivery</div>
+                <div><strong>Category:</strong> {activeModal.category}</div>
               </div>
             </div>
 
             <button
               onClick={() => setActiveModal(null)}
-              className="w-full py-3.5 bg-[#c83d4a] hover:bg-[#8b1e27] text-[#f7e9e1] font-grotesk font-bold text-xs rounded-full uppercase tracking-wider transition-all"
+              className="w-full py-3.5 bg-[#c83d4a] hover:bg-[#8b1e27] text-[#f7e9e1] font-grotesk font-bold text-xs rounded-full uppercase tracking-wider transition-all cursor-pointer"
             >
               CLOSE BREAKDOWN
             </button>

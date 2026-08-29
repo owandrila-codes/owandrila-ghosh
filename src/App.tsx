@@ -1,19 +1,13 @@
 import { Suspense, lazy } from 'react';
 import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
-import Footer from './components/Footer';
 
-// Lazy loading components via React.lazy + Suspense for optimal initial page bundle load
+// Lazy loading 5 core 3D interactive sections for optimal bundle load & fast initial render
 const ThreeCanvas3D = lazy(() => import('./components/ThreeCanvas3D'));
 const Hero = lazy(() => import('./components/Hero'));
-const Intro = lazy(() => import('./components/Intro'));
 const About = lazy(() => import('./components/About'));
-const Stats = lazy(() => import('./components/Stats'));
-const Skills = lazy(() => import('./components/Skills'));
 const Projects = lazy(() => import('./components/Projects'));
 const Journey = lazy(() => import('./components/Journey'));
-const Marquee = lazy(() => import('./components/Marquee'));
-const Statement = lazy(() => import('./components/Statement'));
 const Contact = lazy(() => import('./components/Contact'));
 
 // Fallback Section Loader Component
@@ -42,51 +36,33 @@ export default function App() {
       {/* Sticky Translucent Floating Navbar */}
       <Navbar />
 
-      {/* Main Single Page Experience Lazily Loaded via Suspense */}
+      {/* Main 5-Section 3D Story Experience */}
       <main className="relative z-10 space-y-0">
+        {/* 01 — HERO (~100vh) */}
         <Suspense fallback={<SectionFallback />}>
           <Hero />
         </Suspense>
 
-        <Suspense fallback={<SectionFallback />}>
-          <Intro />
-        </Suspense>
-
+        {/* 02 — ABOUT + SKILLS (~100vh) */}
         <Suspense fallback={<SectionFallback />}>
           <About />
         </Suspense>
 
-        <Suspense fallback={<SectionFallback />}>
-          <Stats />
-        </Suspense>
-
-        <Suspense fallback={<SectionFallback />}>
-          <Skills />
-        </Suspense>
-
-        <Suspense fallback={<SectionFallback />}>
-          <Journey />
-        </Suspense>
-
+        {/* 03 — SELECTED WORK (Pinned 3D Scroll Gallery Stage ~150-200vh) */}
         <Suspense fallback={<SectionFallback />}>
           <Projects />
         </Suspense>
 
+        {/* 04 — JOURNEY (~100vh) */}
         <Suspense fallback={<SectionFallback />}>
-          <Marquee />
+          <Journey />
         </Suspense>
 
-        <Suspense fallback={<SectionFallback />}>
-          <Statement />
-        </Suspense>
-
+        {/* 05 — CONTACT (~100vh) */}
         <Suspense fallback={<SectionFallback />}>
           <Contact />
         </Suspense>
       </main>
-
-      {/* Footer */}
-      <Footer />
     </div>
   );
 }
