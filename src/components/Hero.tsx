@@ -131,8 +131,8 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* DEDICATED MOBILE HERO LAYOUT (< md) - ABSOLUTELY SYMMETRICALLY CENTERED */}
-      <div className="block md:hidden w-full px-4 text-center relative z-20 space-y-6 max-w-sm mx-auto flex flex-col items-center justify-center">
+      {/* DEDICATED MOBILE HERO LAYOUT (< md) - PERFECT FLUID CLAMP FITTING */}
+      <div className="block md:hidden w-full px-4 text-center relative z-20 space-y-6 max-w-sm mx-auto flex flex-col items-center justify-center overflow-hidden">
         {/* DEVELOPER Title & Badge */}
         <div className="space-y-2 text-center flex flex-col items-center justify-center w-full mx-auto">
           <motion.span
@@ -144,12 +144,12 @@ export default function Hero() {
             OWANDRILA GHOSH • BCA PORTFOLIO
           </motion.span>
 
-          <div className="w-full flex items-center justify-center text-center mx-auto">
+          <div className="w-full flex items-center justify-center text-center mx-auto overflow-hidden">
             <motion.h1
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, delay: 0.1 }}
-              className="font-display font-black text-hero-clamp text-3d-emboss uppercase tracking-normal text-center w-full block mx-auto pl-0 pr-0"
+              className="font-display font-black text-[clamp(1.4rem,7.5vw,3.2rem)] text-3d-emboss uppercase tracking-tight text-center w-full block mx-auto leading-none"
             >
               DEVELOPER
             </motion.h1>
@@ -165,7 +165,7 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.25 }}
-          className="relative w-full max-w-[250px] aspect-[4/4.8] mx-auto rounded-3xl overflow-hidden bg-gradient-to-b from-[#2d1014] to-[#120608] border-2 border-[rgba(200,61,74,0.4)] shadow-2xl p-3 flex flex-col justify-between items-center"
+          className="relative w-full max-w-[240px] aspect-[4/4.8] mx-auto rounded-3xl overflow-hidden bg-gradient-to-b from-[#2d1014] to-[#120608] border-2 border-[rgba(200,61,74,0.4)] shadow-2xl p-3 flex flex-col justify-between items-center"
         >
           <div className="flex items-center justify-center w-full border-b border-[rgba(200,61,74,0.25)] pb-1.5 mb-1.5 text-center">
             <span className="font-grotesk text-[9px] font-bold text-[#c83d4a] tracking-widest uppercase text-center block w-full">
@@ -194,7 +194,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-sm text-[#f7e9e1]/90 leading-relaxed font-body max-w-xs mx-auto text-center"
+          className="text-xs sm:text-sm text-[#f7e9e1]/90 leading-relaxed font-body max-w-xs mx-auto text-center"
         >
           "Exploring the intersection of data, artificial intelligence and software development."
         </motion.p>
