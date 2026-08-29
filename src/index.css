@@ -17,6 +17,11 @@
     --deep-red: #8b1e27;
   }
 
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
   html, body {
     font-family: var(--font-body);
     background-color: #120608;
@@ -31,6 +36,13 @@
     -webkit-font-smoothing: antialiased;
     touch-action: manipulation;
   }
+}
+
+/* GPU Hardware Acceleration for Smooth Rendering & Scrolling */
+.smooth-gpu {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
 }
 
 /* Optimized Lightweight Film Grain Texture */
