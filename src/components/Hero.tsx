@@ -131,17 +131,17 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* DEDICATED MOBILE HERO LAYOUT (< md) - PERFECTLY CENTERED */}
+      {/* DEDICATED MOBILE HERO LAYOUT (< md) WITH 3D EMBOSSED DEVELOPER HEADER */}
       <div className="block md:hidden w-full px-5 text-center relative z-20 space-y-6 max-w-md mx-auto flex flex-col items-center justify-center">
-        {/* Name Title */}
+        {/* DEVELOPER Title & Badge */}
         <div className="space-y-2 text-center flex flex-col items-center justify-center w-full">
           <motion.span
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="font-grotesk text-[11px] font-bold tracking-[0.2em] text-[#c83d4a] uppercase bg-[#220b0e] px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.3)] inline-block text-center"
+            className="font-grotesk text-[10px] font-bold tracking-[0.2em] text-[#c83d4a] uppercase bg-[#220b0e] px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.3)] inline-block text-center shadow-inner"
           >
-            OWANDRILA GHOSH
+            OWANDRILA GHOSH • BCA PORTFOLIO
           </motion.span>
 
           <motion.h1
@@ -150,10 +150,7 @@ export default function Hero() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="font-display font-black text-hero-clamp text-3d-emboss uppercase tracking-tight text-center w-full"
           >
-            OWANDRILA <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f7e9e1] via-[#c83d4a] to-[#8b1e27]">
-              GHOSH
-            </span>
+            DEVELOPER
           </motion.h1>
 
           <div className="text-xs font-grotesk font-extrabold text-[#c83d4a] tracking-widest uppercase pt-1 text-center w-full">
