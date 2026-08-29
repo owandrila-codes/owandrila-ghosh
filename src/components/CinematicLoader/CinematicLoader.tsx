@@ -29,6 +29,14 @@ export default function CinematicLoader({ onComplete }: CinematicLoaderProps) {
   const reveal = useCallback(() => {
     if (isRevealedRef.current) return;
     isRevealedRef.current = true;
+
+    // Immediately pause and hide video element so end frames never display
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.style.opacity = '0';
+      videoRef.current.style.display = 'none';
+    }
+
     setIsLeaving(true);
     onComplete();
     setTimeout(() => {
@@ -39,8 +47,8 @@ export default function CinematicLoader({ onComplete }: CinematicLoaderProps) {
   const handleTimeUpdate = useCallback(() => {
     if (videoRef.current) {
       const video = videoRef.current;
-      // Cutoff 2.0 seconds before end to cleanly avoid generic website video frame
-      if (video.duration && video.currentTime >= video.duration - 2.0) {
+      // Cutoff 2.5 seconds before video end to completely eliminate end picture frames
+      if (video.duration && video.currentTime >= video.duration - 2.5) {
         reveal();
       }
     }
@@ -54,7 +62,7 @@ export default function CinematicLoader({ onComplete }: CinematicLoaderProps) {
       return;
     }
 
-    const duration = 9800; // ms
+    const duration = 7800; // ms (smooth 7.8s loader progression)
     const startAt = performance.now();
     let animFrameId: number;
 
