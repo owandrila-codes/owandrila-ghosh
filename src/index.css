@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@500;600;700&family=Syne:wght@700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Mono&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500&family=Space+Grotesk:wght@500;600;700&family=Syne:wght@700;800;900&display=swap');
 @import "tailwindcss";
 
 @layer base {
@@ -6,7 +6,6 @@
     --font-display: 'Syne', 'Space Grotesk', sans-serif;
     --font-grotesk: 'Space Grotesk', sans-serif;
     --font-serif: 'Cormorant Garamond', Georgia, serif;
-    --font-serif-title: 'Playfair Display', 'Cormorant Garamond', serif;
     --font-body: 'Inter', sans-serif;
 
     --bg-dark: #120608;
@@ -67,40 +66,172 @@
   animation: floatDelayed 9s ease-in-out infinite 2s;
 }
 
-/* Rose Loading Animation Keyframes */
-@keyframes mote-float {
-  0% { opacity: 0; transform: translateY(0) scale(0.6); }
-  15% { opacity: 0.9; }
-  50% { opacity: 0.5; }
-  100% { opacity: 0; transform: translateY(-90px) scale(1.1); }
+/* ==========================================================================
+   CINEMATIC LOADER STYLES (MATCHING MAK LOADER EXACTLY)
+   ========================================================================== */
+.cinematic-loader {
+  position: fixed;
+  z-index: 10000;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+  color: #f0ded6;
+  background: #020202;
+  transition: opacity 1.4s cubic-bezier(.22, 1, .36, 1), visibility 1.4s;
 }
 
-.animate-mote-float {
-  animation: mote-float 4.5s ease-in-out infinite;
+.cinematic-loader.is-leaving {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
-@keyframes rose-breathe {
-  0%, 100% { filter: brightness(1); }
-  50% { filter: brightness(1.12); }
+.film {
+  position: absolute;
+  z-index: -3;
+  left: 50%;
+  top: 50%;
+  width: max(100vw, 177.78vh);
+  height: max(56.25vw, 100vh);
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  filter: contrast(1.14) saturate(.82) brightness(.72);
+  opacity: 0;
+  transition: opacity 2s ease;
 }
 
-.animate-rose-breathe {
-  animation: rose-breathe 5s ease-in-out infinite;
+.is-playing .film {
+  opacity: 0.8;
 }
 
-@keyframes dot-blink {
-  0%, 80%, 100% { opacity: 0; }
-  40% { opacity: 1; }
+.atmosphere {
+  position: absolute;
+  z-index: -2;
+  inset: -15%;
+  background: radial-gradient(ellipse 35% 40% at 50% 51%, #8e14262e, transparent 70%),
+              radial-gradient(ellipse 55% 70% at 50% 50%, transparent 30%, #020202e8 80%);
+  animation: breathe 7s ease-in-out infinite;
 }
 
-@keyframes sparkle-spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.vignette {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(180deg, #000000b8 0%, transparent 31%, transparent 64%, #000000e8 100%),
+              radial-gradient(ellipse at center, transparent 33%, #000000c9 100%);
 }
 
-@keyframes sparkle-pulse {
-  0%, 100% { opacity: 0.55; }
-  50% { opacity: 1; }
+.dust, .dust::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: '';
+  background-image: radial-gradient(circle, #e33752 0 1px, transparent 1.4px),
+                    radial-gradient(circle, #f59a9a 0 1px, transparent 1.4px),
+                    radial-gradient(circle, #a80e2b 0 1.5px, transparent 1.8px);
+  background-size: 167px 173px, 263px 227px, 331px 281px;
+  background-position: 4% 31%, 73% 64%, 39% 82%;
+  opacity: .35;
+  animation: dust 9s linear infinite;
+}
+
+.dust::after {
+  opacity: .45;
+  filter: blur(.25px);
+  transform: scale(1.25);
+  animation-duration: 14s;
+  animation-direction: reverse;
+}
+
+.chapter {
+  position: absolute;
+  top: clamp(1.8rem, 5.5vh, 4.5rem);
+  left: 50%;
+  width: min(92vw, 580px);
+  transform: translateX(-50%);
+  text-align: center;
+  text-shadow: 0 2px 18px #000;
+}
+
+.chapter-number {
+  margin: 0 0 .45rem;
+  color: #ba6b78;
+  font: .58rem/1 'DM Mono', monospace;
+  letter-spacing: .26em;
+}
+
+.chapter h1 {
+  margin: 0;
+  font: 500 clamp(1.05rem, 1.6vw, 1.36rem)/1 'Cormorant Garamond', Georgia, serif;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.chapter-copy {
+  margin: .55rem 0 0;
+  color: #e6cec7;
+  font: 400 clamp(.72rem, 1.1vw, .86rem)/1.3 'Cormorant Garamond', Georgia, serif;
+  letter-spacing: .035em;
+}
+
+.skip {
+  position: absolute;
+  right: clamp(1.4rem, 4vw, 4rem);
+  bottom: clamp(1.5rem, 4vh, 3.25rem);
+  border: 1px solid #d6a8a635;
+  border-radius: 999px;
+  padding: .55rem .9rem;
+  color: #d9bfba;
+  background: #05030370;
+  font: .53rem/1 'Montserrat', sans-serif;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.skip:hover, .skip:focus-visible {
+  color: #fff2ee;
+  border-color: #d33a4f;
+  background: #7d122429;
+  outline: none;
+}
+
+@keyframes breathe {
+  50% { transform: scale(1.06); opacity: .75; }
+}
+
+@keyframes dust {
+  to { transform: translate3d(-3%, -7%, 0); }
+}
+
+@media(max-width: 600px) {
+  .film {
+    width: auto;
+    height: 100vh;
+  }
+  .chapter {
+    top: 2rem;
+  }
+  .skip {
+    right: 50%;
+    bottom: 1.55rem;
+    transform: translateX(50%);
+  }
+  .dust {
+    opacity: .2;
+  }
+}
+
+@media(prefers-reduced-motion: reduce) {
+  .cinematic-loader, .film {
+    transition-duration: .35s;
+  }
+  .atmosphere, .dust, .dust::after {
+    animation: none;
+  }
+  .film {
+    opacity: .55;
+  }
 }
 
 /* Custom Scrollbar */
