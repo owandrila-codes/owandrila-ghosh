@@ -1,15 +1,17 @@
 import { motion } from 'framer-motion';
-import { GraduationCap, Award, Compass, CheckCircle2 } from 'lucide-react';
+import { GraduationCap, Award, Compass, BookOpen } from 'lucide-react';
 
 export default function Journey() {
+  const educationTags = ['Data Analytics', 'AI & Machine Learning', 'Data Structures', 'DBMS', 'Web Engineering', 'Cloud Services'];
+
   const milestones = [
     {
       id: '01',
-      title: 'BCA QUALIFICATION',
+      title: 'EDUCATION — BCA DEGREE',
       subtitle: 'Data Science & Artificial Intelligence',
-      desc: 'Specialized undergraduate degree in computer applications focusing on data analytics, AI algorithms, and core software engineering.',
+      desc: 'Specialized undergraduate degree in computer applications with coursework in data analytics, machine learning algorithms, databases, and software engineering.',
       icon: <GraduationCap className="w-6 h-6 text-[#c83d4a]" />,
-      active: true,
+      hasTags: true,
     },
     {
       id: '02',
@@ -17,7 +19,7 @@ export default function Journey() {
       subtitle: 'Team Leader',
       desc: 'Led a smart IoT technology initiative emphasizing teamwork, hardware integration, technical planning, and innovation.',
       icon: <Award className="w-6 h-6 text-[#c83d4a]" />,
-      active: true,
+      hasTags: false,
     },
     {
       id: '03',
@@ -25,7 +27,7 @@ export default function Journey() {
       subtitle: 'Exploring AI, Data, Software & Cloud',
       desc: 'Building intelligent applications, participating in lab problem solving, and expanding cloud infrastructure expertise.',
       icon: <Compass className="w-6 h-6 text-[#c83d4a]" />,
-      active: true,
+      hasTags: false,
     },
   ];
 
@@ -41,7 +43,7 @@ export default function Journey() {
             transition={{ duration: 0.5 }}
             className="font-grotesk text-xs font-bold tracking-[0.3em] text-[#c83d4a] uppercase bg-[#220b0e] px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.3)] inline-block"
           >
-            04 — ACADEMIC &amp; LEADERSHIP PATH
+            04 — EDUCATION &amp; JOURNEY
           </motion.span>
 
           <motion.h2
@@ -51,7 +53,7 @@ export default function Journey() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="font-display font-black text-4xl sm:text-6xl text-3d-emboss uppercase tracking-tight"
           >
-            MY JOURNEY
+            EDUCATION &amp; JOURNEY
           </motion.h2>
         </div>
 
@@ -86,11 +88,24 @@ export default function Journey() {
                 <p className="text-xs text-[#f7e9e1]/80 leading-relaxed font-body font-light pt-1">
                   {m.desc}
                 </p>
+
+                {m.hasTags && (
+                  <div className="pt-2 flex flex-wrap gap-1.5">
+                    {educationTags.map((t) => (
+                      <span
+                        key={t}
+                        className="px-2 py-0.5 rounded-md bg-[#120608] text-[8px] font-grotesk font-semibold text-[#f7e9e1]/80 border border-[rgba(200,61,74,0.25)]"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="flex items-center gap-1.5 pt-2 text-[9px] font-grotesk font-bold text-[#c83d4a] tracking-wider uppercase">
-                <CheckCircle2 className="w-3.5 h-3.5" />
-                <span>MILESTONE VERIFIED</span>
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>ACADEMIC VERIFIED</span>
               </div>
             </motion.div>
           ))}
