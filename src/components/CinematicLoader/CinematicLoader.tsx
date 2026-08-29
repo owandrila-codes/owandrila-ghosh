@@ -1,17 +1,14 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import RoseWebGLCanvas from './RoseWebGLCanvas';
-import LoaderTypography from './LoaderTypography';
 
 interface CinematicLoaderProps {
   onComplete: () => void;
 }
 
 export default function CinematicLoader({ onComplete }: CinematicLoaderProps) {
-  const [progress, setProgress] = useState(0);
-  const [stage, setStage] = useState(1);
   const [isFinished, setIsFinished] = useState(false);
   const [isBypassed, setIsBypassed] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const handleSkip = useCallback(() => {
     setIsFinished(true);
@@ -30,44 +27,12 @@ export default function CinematicLoader({ onComplete }: CinematicLoaderProps) {
       return;
     }
 
-    // 2. Smooth Progress & Stage Controller Loop (~7.2 seconds total duration)
-    const startTime = performance.now();
-    const duration = 7200; // ms
-
-    let animId: number;
-
-    const tick = (now: number) => {
-      const elapsed = now - startTime;
-      const currentProgress = Math.min(100, Math.floor((elapsed / duration) * 100));
-      setProgress(currentProgress);
-
-      // Determine stage
-      if (currentProgress < 22) {
-        setStage(1);
-      } else if (currentProgress < 46) {
-        setStage(2);
-      } else if (currentProgress < 72) {
-        setStage(3);
-      } else if (currentProgress < 90) {
-        setStage(4);
-      } else {
-        setStage(5);
-      }
-
-      if (currentProgress < 100) {
-        animId = requestAnimationFrame(tick);
-      } else {
-        // Complete sequence
-        setTimeout(() => {
-          setIsFinished(true);
-          setTimeout(() => {
-            onComplete();
-          }, 700);
-        }, 300);
-      }
-    };
-
-    animId = requestAnimationFrame(tick);
+    // 2. Play video automatically
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {
+        // Fallback if autoplay is blocked
+      });
+    }
 
     // 3. Keyboard ESC listener to skip intro
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -77,13 +42,12 @@ export default function CinematicLoader({ onComplete }: CinematicLoaderProps) {
     };
     window.addEventListener('keydown', handleKeyDown);
 
-    // 4. Safety Hard Fallback Timer (9 seconds max)
+    // 4. Safety Hard Fallback Timer (12 seconds max)
     const safetyTimer = setTimeout(() => {
       handleSkip();
-    }, 9000);
+    }, 12000);
 
     return () => {
-      cancelAnimationFrame(animId);
       clearTimeout(safetyTimer);
       window.removeEventListener('keydown', handleKeyDown);
     };
@@ -98,14 +62,34 @@ export default function CinematicLoader({ onComplete }: CinematicLoaderProps) {
           key="cinematic-loader"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-0 z-[9999] bg-[#020202] text-[#f7e9e1] overflow-hidden select-none touch-none"
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          className="fixed inset-0 z-[9999] bg-[#020202] text-[#f7e9e1] flex items-center justify-center overflow-hidden select-none touch-none"
         >
-          {/* 3D WebGL Rose & Falling Petal Canvas */}
-          <RoseWebGLCanvas stage={stage} progress={progress} />
+          {/* User's Exact Rose Animation Video */}
+          <div className="relative w-full h-full flex items-center justify-center">
+            <video
+              ref={videoRef}
+              src="/rose-loader.mp4"
+              autoPlay
+              muted
+              playsInline
+              onEnded={handleSkip}
+              className="w-full h-full object-contain max-w-5xl max-h-[90vh]"
+            />
 
-          {/* Luxury Editorial Typography Overlay */}
-          <LoaderTypography stage={stage} progress={progress} onSkip={handleSkip} />
+            {/* Subtle Vignette & Dark Gradient Edges */}
+            <div className="absolute inset-0 pointer-events-none bg-radial-gradient from-transparent via-[#020202]/30 to-[#020202]" />
+          </div>
+
+          {/* Minimal Skip Button */}
+          <div className="absolute bottom-8 z-30 pointer-events-auto">
+            <button
+              onClick={handleSkip}
+              className="text-[10px] font-grotesk tracking-[0.25em] text-[#f7e9e1]/50 hover:text-[#c83d4a] transition-colors uppercase cursor-pointer bg-black/60 px-4 py-2 rounded-full border border-white/10 shadow-lg backdrop-blur-md"
+            >
+              [ SKIP INTRO ]
+            </button>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
