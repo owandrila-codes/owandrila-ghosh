@@ -28,9 +28,9 @@ export default function App() {
       {/* 5-Stage Premium Cinematic Loading Experience */}
       <CinematicLoader onComplete={() => setLoaderFinished(true)} />
 
-      {/* Main Portfolio Container (Ultra-smooth 1.5s crossfade reveal after loading sequence) */}
+      {/* Main Portfolio Container (Ultra-smooth 2.0s crossfade reveal after loading sequence) */}
       <div
-        className={`transition-opacity duration-1500 ease-in-out ${
+        className={`transition-opacity duration-2000 ease-in-out ${
           loaderFinished ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       >

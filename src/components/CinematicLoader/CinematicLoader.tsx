@@ -27,14 +27,14 @@ export default function CinematicLoader({ onComplete }: CinematicLoaderProps) {
     onComplete();
     setTimeout(() => {
       setIsFinished(true);
-    }, 1800);
+    }, 2000);
   }, [onComplete]);
 
   const handleTimeUpdate = useCallback(() => {
     if (videoRef.current) {
       const video = videoRef.current;
-      // Cutoff 2.8 seconds before video end to completely eliminate end picture frames
-      if (video.duration && video.currentTime >= video.duration - 2.8) {
+      // Cutoff 3.0 seconds before end to reduce playback from the back and prevent tail frames
+      if (video.duration && video.currentTime >= video.duration - 3.0) {
         reveal();
       }
     }
