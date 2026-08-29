@@ -29,7 +29,7 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
     scene.fog = new THREE.FogExp2(0x020202, 0.12);
 
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 0, 8);
+    camera.position.set(0, 0, 8.5);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
     renderer.setSize(width, height);
@@ -47,18 +47,19 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
     scene.add(neonMainSpot);
 
     const greenLeafGlow = new THREE.PointLight(0x33ff66, 6, 12);
-    greenLeafGlow.position.set(0, -2.2, 2);
+    greenLeafGlow.position.set(0, -1.5, 2);
     scene.add(greenLeafGlow);
 
-    // --- 3. EXACT NEON TUBE ROSE FROM UPLOADED REFERENCE IMAGE (/neon-rose.png) ---
+    // --- 3. EXACT VERTICAL NEON ROSE FROM UPLOADED IMAGE (/neon-rose.png) ---
     const textureLoader = new THREE.TextureLoader();
     const neonRoseTexture = textureLoader.load('/neon-rose.png');
 
     const roseGroup = new THREE.Group();
-    roseGroup.position.set(0, 0.25, 0);
+    roseGroup.position.set(0, 0.1, 0);
     scene.add(roseGroup);
 
-    const rosePlaneGeom = new THREE.PlaneGeometry(4.2, 3.15);
+    // 1:2 Vertical Aspect Ratio plane matching media_1788021324927.png
+    const rosePlaneGeom = new THREE.PlaneGeometry(3.3, 6.6);
     const rosePlaneMat = new THREE.MeshBasicMaterial({
       map: neonRoseTexture,
       transparent: true,
@@ -68,7 +69,7 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
     const rosePlaneMesh = new THREE.Mesh(rosePlaneGeom, rosePlaneMat);
     roseGroup.add(rosePlaneMesh);
 
-    // --- 4. GLOWING NEON PETAL (DETACHES & FALLS) ---
+    // --- 4. GLOWING NEON PETAL (DETACHES FROM FLOWER HEAD & FALLS) ---
     const createExactNeonPetalTexture = () => {
       const pCanvas = document.createElement('canvas');
       pCanvas.width = 160;
@@ -83,8 +84,8 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
         ctx.shadowBlur = 24;
         ctx.lineCap = 'round';
         ctx.beginPath();
-        ctx.moveTo(30, 100);
-        ctx.bezierCurveTo(20, 40, 100, 20, 130, 80);
+        ctx.moveTo(35, 115);
+        ctx.bezierCurveTo(25, 45, 115, 25, 145, 95);
         ctx.stroke();
 
         ctx.strokeStyle = '#ffffff';
@@ -92,8 +93,8 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
         ctx.shadowColor = '#ffffff';
         ctx.shadowBlur = 8;
         ctx.beginPath();
-        ctx.moveTo(30, 100);
-        ctx.bezierCurveTo(20, 40, 100, 20, 130, 80);
+        ctx.moveTo(35, 115);
+        ctx.bezierCurveTo(25, 45, 115, 25, 145, 95);
         ctx.stroke();
         ctx.restore();
       }
@@ -101,7 +102,7 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
     };
 
     const neonPetalTex = createExactNeonPetalTexture();
-    const fallingPetalGeom = new THREE.PlaneGeometry(1.3, 1.3);
+    const fallingPetalGeom = new THREE.PlaneGeometry(1.25, 1.25);
     const fallingPetalMat = new THREE.MeshBasicMaterial({
       map: neonPetalTex,
       transparent: true,
@@ -109,12 +110,12 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
       opacity: 0,
     });
     const fallingPetal = new THREE.Mesh(fallingPetalGeom, fallingPetalMat);
-    fallingPetal.position.set(0.7, 0.05, 0.45);
+    fallingPetal.position.set(0.35, 1.15, 0.45); // Detaches right beside the flower head
     fallingPetal.rotation.set(0.4, 0.8, -0.5);
     scene.add(fallingPetal);
 
     // --- 5. FINE GLOWING NEON SAND DISINTEGRATION SYSTEM ---
-    const sandCount = 3800;
+    const sandCount = 4000;
     const sandGeom = new THREE.BufferGeometry();
     const sandPositions = new Float32Array(sandCount * 3);
     const sandVelocities = new Float32Array(sandCount * 3);
@@ -123,7 +124,7 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
       const u = Math.random();
       const v = Math.random();
       sandPositions[i * 3] = (u - 0.5) * 0.7;
-      sandPositions[i * 3 + 1] = -1.4 + (v - 0.5) * 0.8;
+      sandPositions[i * 3 + 1] = -1.5 + (v - 0.5) * 0.8;
       sandPositions[i * 3 + 2] = (Math.random() - 0.5) * 0.3;
 
       sandVelocities[i * 3] = (Math.random() - 0.3) * 0.035;
@@ -195,25 +196,25 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
 
       // Gentle Neon Breath Pulse
       roseGroup.rotation.z = Math.sin(elapsedTime * 0.45) * 0.03;
-      roseGroup.position.y = 0.25 + Math.cos(elapsedTime * 0.35) * 0.02;
+      roseGroup.position.y = 0.1 + Math.cos(elapsedTime * 0.35) * 0.02;
 
       // --- STAGE 01 (Neon Rose Emerges 0 to 22%) ---
       if (normProgress <= 0.25) {
         const stage1Alpha = Math.min(1, normProgress / 0.22);
         roseGroup.scale.setScalar(0.75 + stage1Alpha * 0.25);
         rosePlaneMat.opacity = stage1Alpha;
-        fallingPetal.position.set(0.7, 0.05, 0.45);
+        fallingPetal.position.set(0.35, 1.15, 0.45);
         fallingPetal.rotation.set(0.4, 0.8, -0.5);
         fallingPetalMat.opacity = stage1Alpha;
-        camera.position.set(0, 0, 8);
+        camera.position.set(0, 0, 8.5);
       }
 
       // --- STAGE 02 (Neon Petal Detaches & Flutters 20% to 48%) ---
       if (normProgress > 0.2 && normProgress <= 0.5) {
         const fallT = (normProgress - 0.2) / 0.3;
         fallingPetalMat.opacity = 1;
-        fallingPetal.position.x = 0.7 - fallT * 0.35 + Math.sin(fallT * Math.PI * 2.5) * 0.18;
-        fallingPetal.position.y = 0.05 - fallT * 1.5;
+        fallingPetal.position.x = 0.35 - fallT * 0.35 + Math.sin(fallT * Math.PI * 2.5) * 0.2;
+        fallingPetal.position.y = 1.15 - fallT * 2.4;
         fallingPetal.position.z = 0.45 + fallT * 0.4;
         fallingPetal.rotation.x = 0.4 + fallT * 2.8;
         fallingPetal.rotation.y = 0.8 + Math.sin(fallT * Math.PI) * 1.4;
@@ -224,13 +225,13 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
       if (normProgress > 0.45 && normProgress <= 0.7) {
         const descendT = (normProgress - 0.45) / 0.25;
         fallingPetalMat.opacity = 1;
-        fallingPetal.position.y = -1.45 - descendT * 0.65;
-        fallingPetal.position.x = 0.35 + Math.sin(descendT * Math.PI * 3) * 0.22;
+        fallingPetal.position.y = -1.25 - descendT * 0.75;
+        fallingPetal.position.x = 0.2 + Math.sin(descendT * Math.PI * 3) * 0.25;
         fallingPetal.rotation.z += 0.025;
 
         // Camera Follow & Soft Background Blur
-        camera.position.y = -descendT * 0.85;
-        roseGroup.position.y = 0.25 + descendT * 0.5;
+        camera.position.y = -descendT * 0.9;
+        roseGroup.position.y = 0.1 + descendT * 0.5;
         rosePlaneMat.opacity = 1 - descendT * 0.5;
       }
 
