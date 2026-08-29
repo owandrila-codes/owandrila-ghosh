@@ -4,22 +4,20 @@ import { Menu, X, ArrowUpRight } from 'lucide-react';
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeSectionNum, setActiveSectionNum] = useState('01');
   const [activeSectionId, setActiveSectionId] = useState('hero');
 
   // Exact 10-section sequence matching DOM order in App.tsx:
-  // 01 Home -> 02 Intro -> 03 About -> 04 Stats -> 05 Skills -> 06 Journey -> 07 Projects -> 08 Tech -> 09 Vision -> 10 Contact
   const sections = [
-    { num: '01', id: 'hero', label: 'HOME' },
-    { num: '02', id: 'intro', label: 'INTRO' },
-    { num: '03', id: 'about', label: 'ABOUT' },
-    { num: '04', id: 'stats', label: 'STATS' },
-    { num: '05', id: 'skills', label: 'SKILLS' },
-    { num: '06', id: 'experience', label: 'JOURNEY' },
-    { num: '07', id: 'projects', label: 'PROJECTS' },
-    { num: '08', id: 'marquee', label: 'TECH' },
-    { num: '09', id: 'statement', label: 'VISION' },
-    { num: '10', id: 'contact', label: 'CONTACT' },
+    { id: 'hero' },
+    { id: 'intro' },
+    { id: 'about' },
+    { id: 'stats' },
+    { id: 'skills' },
+    { id: 'experience' },
+    { id: 'projects' },
+    { id: 'marquee' },
+    { id: 'statement' },
+    { id: 'contact' },
   ];
 
   // Nav links in exact page flow: ABOUT -> SKILLS -> JOURNEY -> PROJECTS -> CONTACT
@@ -44,7 +42,6 @@ export default function Navbar() {
         if (el) {
           const top = el.offsetTop;
           if (scrollPosition >= top) {
-            setActiveSectionNum(sec.num);
             setActiveSectionId(sec.id);
             break;
           }
@@ -81,13 +78,6 @@ export default function Navbar() {
               </span>
             </div>
           </a>
-
-          {/* Section Indicator Badge */}
-          <div className="hidden lg:flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1b090c] border border-[rgba(200,61,74,0.3)] shadow-inner text-xs font-grotesk font-bold">
-            <span className="text-[#c83d4a]">SCROLL ↓</span>
-            <span className="text-[#f7e9e1]">{activeSectionNum}</span>
-            <span className="text-[#f7e9e1]/60">/ 10</span>
-          </div>
 
           {/* Floating Navigation Menu: ABOUT -> SKILLS -> JOURNEY -> PROJECTS -> CONTACT */}
           <nav className="hidden md:flex items-center gap-1 bg-[#170a0d]/90 px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.25)] shadow-lg">
@@ -137,9 +127,8 @@ export default function Navbar() {
       {mobileOpen && (
         <div className="fixed inset-0 z-40 bg-[#120608]/95 backdrop-blur-xl flex flex-col justify-between p-8 md:hidden">
           <div className="pt-20">
-            <div className="flex items-center justify-between text-[10px] font-grotesk tracking-widest text-[#c83d4a] uppercase font-bold mb-6">
-              <span>3D PORTFOLIO NAVIGATION</span>
-              <span>{activeSectionNum} / 10</span>
+            <div className="text-[10px] font-grotesk tracking-widest text-[#c83d4a] uppercase font-bold mb-6">
+              PORTFOLIO NAVIGATION
             </div>
             <div className="flex flex-col gap-4 font-display font-extrabold text-2xl uppercase tracking-wider">
               {navLinks.map((link) => (
