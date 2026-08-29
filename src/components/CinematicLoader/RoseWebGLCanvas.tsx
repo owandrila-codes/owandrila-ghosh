@@ -42,39 +42,42 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
     const ambientLight = new THREE.AmbientLight(0x28060c, 1.5);
     scene.add(ambientLight);
 
-    const neonMainSpot = new THREE.SpotLight(0xff3355, 12, 22, Math.PI / 3, 0.4, 1);
+    const neonMainSpot = new THREE.SpotLight(0xff2a4b, 14, 24, Math.PI / 3, 0.4, 1);
     neonMainSpot.position.set(2, 5, 6);
     scene.add(neonMainSpot);
 
-    const greenLeafGlow = new THREE.PointLight(0x33ff66, 6, 12);
+    const greenLeafGlow = new THREE.PointLight(0x33ff66, 7, 14);
     greenLeafGlow.position.set(0, -2.2, 2);
     scene.add(greenLeafGlow);
 
-    // --- 3. EXACT NEON TUBE ROSE VECTOR ARTWORK (MATCHING REFERENCE IMAGE 100%) ---
-    const createExactNeonRoseTexture = () => {
+    // --- 3. REDESIGNED HIGH-DEFINITION NEON TUBE ROSE ARTWORK ---
+    const createRedesignedNeonRoseTexture = () => {
       const nCanvas = document.createElement('canvas');
-      nCanvas.width = 600;
-      nCanvas.height = 600;
+      nCanvas.width = 700;
+      nCanvas.height = 700;
       const ctx = nCanvas.getContext('2d');
       if (ctx) {
-        ctx.clearRect(0, 0, 600, 600);
+        ctx.clearRect(0, 0, 700, 700);
+
+        const cx = 350;
+        const cy = 310;
 
         // Ambient Red & Green Bloom Background
-        const redBloom = ctx.createRadialGradient(300, 260, 40, 300, 260, 220);
-        redBloom.addColorStop(0, 'rgba(255, 50, 80, 0.45)');
-        redBloom.addColorStop(0.6, 'rgba(180, 20, 45, 0.15)');
+        const redBloom = ctx.createRadialGradient(cx, cy, 30, cx, cy, 260);
+        redBloom.addColorStop(0, 'rgba(255, 40, 75, 0.48)');
+        redBloom.addColorStop(0.6, 'rgba(190, 15, 45, 0.18)');
         redBloom.addColorStop(1, 'rgba(0, 0, 0, 0)');
         ctx.fillStyle = redBloom;
         ctx.beginPath();
-        ctx.arc(300, 260, 220, 0, Math.PI * 2);
+        ctx.arc(cx, cy, 260, 0, Math.PI * 2);
         ctx.fill();
 
-        const greenBloom = ctx.createRadialGradient(300, 450, 20, 300, 450, 120);
-        greenBloom.addColorStop(0, 'rgba(50, 255, 100, 0.4)');
+        const greenBloom = ctx.createRadialGradient(cx, cy + 190, 20, cx, cy + 190, 140);
+        greenBloom.addColorStop(0, 'rgba(50, 255, 100, 0.45)');
         greenBloom.addColorStop(1, 'rgba(0, 0, 0, 0)');
         ctx.fillStyle = greenBloom;
         ctx.beginPath();
-        ctx.arc(300, 450, 120, 0, Math.PI * 2);
+        ctx.arc(cx, cy + 190, 140, 0, Math.PI * 2);
         ctx.fill();
 
         // Helper function for multi-pass glowing neon tube rendering
@@ -82,134 +85,126 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
           ctx.save();
           // Pass 1: Broad Soft Glow
           ctx.strokeStyle = glowColor;
-          ctx.lineWidth = width * 2.8;
+          ctx.lineWidth = width * 3.0;
           ctx.shadowColor = glowColor;
-          ctx.shadowBlur = 30;
+          ctx.shadowBlur = 32;
           ctx.lineCap = 'round';
           ctx.lineJoin = 'round';
           strokeFn();
 
           // Pass 2: Sharp Bright Tube Body
-          ctx.lineWidth = width * 1.6;
-          ctx.shadowBlur = 15;
+          ctx.lineWidth = width * 1.7;
+          ctx.shadowBlur = 16;
           strokeFn();
 
           // Pass 3: White Hot Center Core
           ctx.strokeStyle = coreColor;
-          ctx.lineWidth = width * 0.65;
+          ctx.lineWidth = width * 0.7;
           ctx.shadowColor = '#ffffff';
-          ctx.shadowBlur = 6;
+          ctx.shadowBlur = 8;
           strokeFn();
           ctx.restore();
         };
 
-        const redGlow = 'rgba(255, 50, 80, 0.95)';
+        const redGlow = 'rgba(255, 42, 75, 0.95)';
         const redCore = '#fff0f3';
         const greenGlow = 'rgba(50, 255, 100, 0.95)';
         const greenCore = '#e6fff0';
-        const tubeWidth = 7.5;
+        const tubeWidth = 8.0;
 
         // --- A. GREEN NEON LEAVES AT BOTTOM ---
         // Left Green Leaf
         drawNeonStroke(() => {
           ctx.beginPath();
-          ctx.moveTo(250, 390);
-          ctx.bezierCurveTo(210, 430, 195, 475, 215, 505);
-          ctx.bezierCurveTo(250, 505, 280, 455, 290, 400);
+          ctx.moveTo(cx - 50, cy + 140);
+          ctx.bezierCurveTo(cx - 110, cy + 180, cx - 150, cy + 240, cx - 115, cy + 280);
+          ctx.bezierCurveTo(cx - 60, cy + 285, cx - 20, cy + 220, cx - 10, cy + 155);
         }, greenGlow, greenCore, tubeWidth);
 
         // Right Green Leaf
         drawNeonStroke(() => {
           ctx.beginPath();
-          ctx.moveTo(350, 390);
-          ctx.bezierCurveTo(390, 430, 405, 475, 385, 505);
-          ctx.bezierCurveTo(350, 505, 320, 455, 310, 400);
+          ctx.moveTo(cx + 50, cy + 140);
+          ctx.bezierCurveTo(cx + 110, cy + 180, cx + 150, cy + 240, cx + 115, cy + 280);
+          ctx.bezierCurveTo(cx + 60, cy + 285, cx + 20, cy + 220, cx + 10, cy + 155);
         }, greenGlow, greenCore, tubeWidth);
 
-        // --- B. EXACT OUTLINE PETALS OF THE NEON ROSE ---
-        // 1. Top Pointed Crown Petal
+        // --- B. REDESIGNED ORGANIC BLOOMING NEON ROSE PETALS ---
+        // 1. Top Crown Petal with Organic Curved Tip
         drawNeonStroke(() => {
           ctx.beginPath();
-          ctx.moveTo(245, 175);
-          ctx.bezierCurveTo(270, 125, 300, 115, 305, 115);
-          ctx.bezierCurveTo(310, 115, 340, 125, 365, 175);
+          ctx.moveTo(cx - 80, cy - 80);
+          ctx.bezierCurveTo(cx - 50, cy - 170, cx + 50, cy - 170, cx + 80, cy - 80);
         }, redGlow, redCore, tubeWidth);
 
-        // 2. Upper Left Scalloped Petal
+        // 2. Outer Left Scalloped Petal
         drawNeonStroke(() => {
           ctx.beginPath();
-          ctx.moveTo(250, 170);
-          ctx.bezierCurveTo(190, 175, 160, 235, 185, 280);
+          ctx.moveTo(cx - 75, cy - 85);
+          ctx.bezierCurveTo(cx - 175, cy - 70, cx - 210, cy + 30, cx - 155, cy + 105);
         }, redGlow, redCore, tubeWidth);
 
-        // 3. Lower Left Scalloped Petal
+        // 3. Outer Right Scalloped Petal
         drawNeonStroke(() => {
           ctx.beginPath();
-          ctx.moveTo(185, 280);
-          ctx.bezierCurveTo(145, 320, 185, 380, 235, 385);
+          ctx.moveTo(cx + 75, cy - 85);
+          ctx.bezierCurveTo(cx + 175, cy - 70, cx + 210, cy + 30, cx + 155, cy + 105);
         }, redGlow, redCore, tubeWidth);
 
-        // 4. Upper Right Scalloped Petal
+        // 4. Lower Left Base Rim Petal
         drawNeonStroke(() => {
           ctx.beginPath();
-          ctx.moveTo(360, 170);
-          ctx.bezierCurveTo(420, 175, 450, 235, 425, 280);
+          ctx.moveTo(cx - 155, cy + 105);
+          ctx.bezierCurveTo(cx - 120, cy + 175, cx - 40, cy + 185, cx, cy + 165);
         }, redGlow, redCore, tubeWidth);
 
-        // 5. Lower Right Scalloped Petal
+        // 5. Lower Right Base Rim Petal
         drawNeonStroke(() => {
           ctx.beginPath();
-          ctx.moveTo(425, 280);
-          ctx.bezierCurveTo(465, 320, 425, 380, 375, 385);
-        }, redGlow, redCore, tubeWidth);
-
-        // 6. Bottom Base Curved Rim
-        drawNeonStroke(() => {
-          ctx.beginPath();
-          ctx.moveTo(220, 375);
-          ctx.bezierCurveTo(270, 420, 330, 420, 390, 375);
+          ctx.moveTo(cx + 155, cy + 105);
+          ctx.bezierCurveTo(cx + 120, cy + 175, cx + 40, cy + 185, cx, cy + 165);
         }, redGlow, redCore, tubeWidth);
 
         // --- C. INTERLOCKING INNER CUP & SPIRAL HEART ---
-        // 7. Middle Left Curved Cup Petal
+        // 6. Mid Left Cup Petal
         drawNeonStroke(() => {
           ctx.beginPath();
-          ctx.moveTo(230, 230);
-          ctx.bezierCurveTo(205, 285, 255, 345, 325, 335);
+          ctx.moveTo(cx - 100, cy - 20);
+          ctx.bezierCurveTo(cx - 130, cy + 50, cx - 60, cy + 120, cx + 20, cy + 110);
         }, redGlow, redCore, tubeWidth);
 
-        // 8. Middle Right Curved Cup Petal
+        // 7. Mid Right Cup Petal
         drawNeonStroke(() => {
           ctx.beginPath();
-          ctx.moveTo(380, 230);
-          ctx.bezierCurveTo(405, 285, 355, 345, 275, 335);
+          ctx.moveTo(cx + 100, cy - 20);
+          ctx.bezierCurveTo(cx + 130, cy + 50, cx + 60, cy + 120, cx - 20, cy + 110);
         }, redGlow, redCore, tubeWidth);
 
-        // 9. Outer Spiral Arch
+        // 8. Inner Upper Arch Petal
         drawNeonStroke(() => {
           ctx.beginPath();
-          ctx.moveTo(255, 210);
-          ctx.bezierCurveTo(240, 160, 360, 160, 345, 210);
+          ctx.moveTo(cx - 65, cy - 35);
+          ctx.bezierCurveTo(cx - 40, cy - 105, cx + 40, cy - 105, cx + 65, cy - 35);
         }, redGlow, redCore, tubeWidth);
 
-        // 10. Inner Spiral Heart Bud
+        // 9. Spiral Heart Core
         drawNeonStroke(() => {
           ctx.beginPath();
-          ctx.moveTo(275, 215);
-          ctx.bezierCurveTo(260, 185, 340, 185, 325, 220);
-          ctx.bezierCurveTo(310, 250, 285, 245, 295, 220);
+          ctx.moveTo(cx - 40, cy - 10);
+          ctx.bezierCurveTo(cx - 20, cy - 65, cx + 35, cy - 65, cx + 30, cy - 10);
+          ctx.bezierCurveTo(cx + 25, cy + 35, cx - 25, cy + 30, cx - 10, cy - 5);
         }, redGlow, redCore, tubeWidth);
       }
       return new THREE.CanvasTexture(nCanvas);
     };
 
-    const neonRoseTexture = createExactNeonRoseTexture();
+    const neonRoseTexture = createRedesignedNeonRoseTexture();
 
     const roseGroup = new THREE.Group();
     roseGroup.position.set(0, 0.25, 0);
     scene.add(roseGroup);
 
-    const rosePlaneGeom = new THREE.PlaneGeometry(4.3, 4.3);
+    const rosePlaneGeom = new THREE.PlaneGeometry(4.4, 4.4);
     const rosePlaneMat = new THREE.MeshBasicMaterial({
       map: neonRoseTexture,
       transparent: true,
@@ -219,40 +214,42 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
     const rosePlaneMesh = new THREE.Mesh(rosePlaneGeom, rosePlaneMat);
     roseGroup.add(rosePlaneMesh);
 
-    // --- 4. GLOWING NEON PETAL (DETACHES & FALLS) ---
-    const createExactNeonPetalTexture = () => {
+    // --- 4. REDESIGNED GLOWING NEON PETAL (DETACHES & FALLS) ---
+    const createRedesignedNeonPetalTexture = () => {
       const pCanvas = document.createElement('canvas');
-      pCanvas.width = 160;
-      pCanvas.height = 160;
+      pCanvas.width = 180;
+      pCanvas.height = 180;
       const ctx = pCanvas.getContext('2d');
       if (ctx) {
-        ctx.clearRect(0, 0, 160, 160);
+        ctx.clearRect(0, 0, 180, 180);
         ctx.save();
-        ctx.strokeStyle = 'rgba(255, 50, 80, 0.95)';
+        ctx.strokeStyle = 'rgba(255, 42, 75, 0.95)';
         ctx.lineWidth = 14;
-        ctx.shadowColor = 'rgba(255, 50, 80, 1)';
-        ctx.shadowBlur = 24;
+        ctx.shadowColor = 'rgba(255, 42, 75, 1)';
+        ctx.shadowBlur = 26;
         ctx.lineCap = 'round';
         ctx.beginPath();
-        ctx.moveTo(30, 100);
-        ctx.bezierCurveTo(20, 40, 100, 20, 130, 80);
+        ctx.moveTo(35, 115);
+        ctx.bezierCurveTo(25, 45, 115, 25, 145, 95);
+        ctx.bezierCurveTo(125, 145, 55, 145, 35, 115);
         ctx.stroke();
 
         ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 5;
+        ctx.lineWidth = 5.5;
         ctx.shadowColor = '#ffffff';
-        ctx.shadowBlur = 8;
+        ctx.shadowBlur = 9;
         ctx.beginPath();
-        ctx.moveTo(30, 100);
-        ctx.bezierCurveTo(20, 40, 100, 20, 130, 80);
+        ctx.moveTo(35, 115);
+        ctx.bezierCurveTo(25, 45, 115, 25, 145, 95);
+        ctx.bezierCurveTo(125, 145, 55, 145, 35, 115);
         ctx.stroke();
         ctx.restore();
       }
       return new THREE.CanvasTexture(pCanvas);
     };
 
-    const neonPetalTex = createExactNeonPetalTexture();
-    const fallingPetalGeom = new THREE.PlaneGeometry(1.3, 1.3);
+    const neonPetalTex = createRedesignedNeonPetalTexture();
+    const fallingPetalGeom = new THREE.PlaneGeometry(1.4, 1.4);
     const fallingPetalMat = new THREE.MeshBasicMaterial({
       map: neonPetalTex,
       transparent: true,
@@ -265,7 +262,7 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
     scene.add(fallingPetal);
 
     // --- 5. FINE GLOWING NEON SAND DISINTEGRATION SYSTEM ---
-    const sandCount = 3800;
+    const sandCount = 4000;
     const sandGeom = new THREE.BufferGeometry();
     const sandPositions = new Float32Array(sandCount * 3);
     const sandVelocities = new Float32Array(sandCount * 3);
@@ -292,7 +289,7 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
     if (ctxSand) {
       const grad = ctxSand.createRadialGradient(8, 8, 0, 8, 8, 8);
       grad.addColorStop(0, 'rgba(255, 180, 200, 1)');
-      grad.addColorStop(0.5, 'rgba(255, 50, 90, 0.85)');
+      grad.addColorStop(0.5, 'rgba(255, 42, 75, 0.85)');
       grad.addColorStop(1, 'rgba(180, 20, 50, 0)');
       ctxSand.fillStyle = grad;
       ctxSand.fillRect(0, 0, 16, 16);
@@ -325,7 +322,7 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
 
     const emberMat = new THREE.PointsMaterial({
       size: 0.05,
-      color: 0xff3366,
+      color: 0xff2a4b,
       transparent: true,
       opacity: 0.5,
       blending: THREE.AdditiveBlending,
