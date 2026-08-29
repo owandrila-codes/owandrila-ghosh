@@ -5,6 +5,11 @@ import { Mail, Share2, Code2, Copy, Check, Send, Sparkles } from 'lucide-react';
 export default function Contact() {
   const [copied, setCopied] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
 
   const emailAddress = 'owandrila2006@gmail.com';
   const linkedinUrl = 'https://www.linkedin.com/in/owandrila-ghosh-5823b7380?utm_source=share_via&utm_content=profile&utm_medium=member_android';
@@ -16,10 +21,28 @@ export default function Contact() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.name || !formData.email || !formData.message) return;
+
+    // Construct Mailto URI to open visitor's email client directly to owandrila2006@gmail.com
+    const subject = encodeURIComponent(`Portfolio Inquiry from ${formData.name}`);
+    const body = encodeURIComponent(
+      `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+    );
+    const mailtoUrl = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
+
+    // Open mail client
+    window.location.href = mailtoUrl;
+
     setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
+    setFormData({ name: '', email: '', message: '' });
+    setTimeout(() => setSubmitted(false), 6000);
   };
 
   return (
@@ -83,7 +106,7 @@ export default function Contact() {
 
                 <button
                   onClick={handleCopyEmail}
-                  className="p-2.5 rounded-xl bg-[#220b0e] hover:bg-[#c83d4a] text-[#f7e9e1] transition-all shrink-0 ml-2"
+                  className="p-2.5 rounded-xl bg-[#220b0e] hover:bg-[#c83d4a] text-[#f7e9e1] transition-all shrink-0 ml-2 cursor-pointer"
                   title="Copy email"
                 >
                   {copied ? <Check className="w-4 h-4 text-[#f7e9e1]" /> : <Copy className="w-4 h-4" />}
@@ -142,6 +165,9 @@ export default function Contact() {
                 </label>
                 <input
                   type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
                   required
                   placeholder="Enter your name..."
                   className="w-full px-5 py-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-sm text-[#f7e9e1] placeholder-[#f7e9e1]/40 focus:border-[#c83d4a] outline-none font-body"
@@ -154,6 +180,9 @@ export default function Contact() {
                 </label>
                 <input
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
                   required
                   placeholder="name@example.com"
                   className="w-full px-5 py-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-sm text-[#f7e9e1] placeholder-[#f7e9e1]/40 focus:border-[#c83d4a] outline-none font-body"
@@ -165,6 +194,9 @@ export default function Contact() {
                   MESSAGE
                 </label>
                 <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
                   required
                   rows={3}
                   placeholder="Write your message here..."
@@ -174,11 +206,17 @@ export default function Contact() {
 
               <button
                 type="submit"
-                className="w-full py-3.5 rounded-full bg-[#c83d4a] hover:bg-[#8b1e27] text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-2"
+                className="w-full py-3.5 rounded-full bg-[#c83d4a] hover:bg-[#8b1e27] text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>{submitted ? 'MESSAGE SENT!' : 'SEND MESSAGE'}</span>
+                <span>{submitted ? 'DISPATCHING EMAIL...' : 'SEND MESSAGE'}</span>
                 <Send className="w-4 h-4" />
               </button>
+
+              {submitted && (
+                <div className="p-3.5 rounded-2xl bg-[#8b1e27]/40 border border-[#c83d4a] text-xs font-grotesk text-[#f7e9e1] text-center shadow-lg">
+                  ✓ Message draft generated! Opening your email app to send to <strong>owandrila2006@gmail.com</strong>.
+                </div>
+              )}
             </motion.form>
           </div>
 
