@@ -59,19 +59,14 @@ export default function Navbar() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          {/* Logo */}
-          <a href="#hero" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#8b1e27] to-[#c83d4a] flex items-center justify-center font-display font-black text-[#f7e9e1] border border-[rgba(200,61,74,0.4)] shadow-md group-hover:scale-105 transition-transform">
-              OG
-            </div>
-            <div className="flex flex-col">
-              <span className="font-display font-extrabold text-base tracking-wider text-[#f7e9e1] uppercase">
-                OWANDRILA
-              </span>
-              <span className="text-[9px] font-grotesk tracking-widest text-[#c83d4a] uppercase font-bold">
-                BCA • DATA SCIENCE &amp; AI
-              </span>
-            </div>
+          {/* Text Logo */}
+          <a href="#hero" className="flex flex-col group">
+            <span className="font-display font-black text-lg tracking-wider text-[#f7e9e1] uppercase group-hover:text-[#c83d4a] transition-colors">
+              OWANDRILA
+            </span>
+            <span className="text-[9px] font-grotesk tracking-widest text-[#c83d4a] uppercase font-bold">
+              BCA • DATA SCIENCE &amp; AI
+            </span>
           </a>
 
           {/* Floating Navigation Menu: ABOUT -> EDUCATION -> WORK -> CONTACT */}
