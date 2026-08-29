@@ -25,12 +25,12 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen bg-[#120608] text-[#f7e9e1] selection:bg-[#c83d4a] selection:text-[#f7e9e1] overflow-x-hidden font-sans">
-      {/* 5-Stage Premium Cinematic WebGL Loading Experience */}
+      {/* 5-Stage Premium Cinematic Loading Experience */}
       <CinematicLoader onComplete={() => setLoaderFinished(true)} />
 
-      {/* Main Portfolio Container (Seamless crossfade reveal after loading sequence) */}
+      {/* Main Portfolio Container (Ultra-smooth 1.5s crossfade reveal after loading sequence) */}
       <div
-        className={`transition-opacity duration-1000 ease-out ${
+        className={`transition-opacity duration-1500 ease-in-out ${
           loaderFinished ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       >
