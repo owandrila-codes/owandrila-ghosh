@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Share2, Code2, Copy, Check, Send, ArrowUp, Star } from 'lucide-react';
+import { Mail, Share2, Code2, Copy, Check, Send, ArrowUp } from 'lucide-react';
 
 export default function Contact() {
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [rating, setRating] = useState(5);
-  const [hoverRating, setHoverRating] = useState(0);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    category: 'Project Collaboration',
     message: '',
   });
 
@@ -30,7 +27,7 @@ export default function Contact() {
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -52,10 +49,8 @@ export default function Contact() {
         body: JSON.stringify({
           Name: formData.name,
           Email: formData.email,
-          Category: formData.category,
-          Rating: `${rating} / 5 Stars`,
           Message: formData.message,
-          _subject: `Portfolio Feedback (${rating}★) from ${formData.name}`,
+          _subject: `Portfolio Message from ${formData.name}`,
           _template: 'table',
           _captcha: 'false',
         }),
@@ -63,15 +58,15 @@ export default function Contact() {
 
       if (response.ok) {
         setSubmitted(true);
-        setFormData({ name: '', email: '', category: 'Project Collaboration', message: '' });
+        setFormData({ name: '', email: '', message: '' });
         setTimeout(() => setSubmitted(false), 6000);
       } else {
         throw new Error('Fallback trigger');
       }
     } catch {
-      const subject = encodeURIComponent(`Portfolio Feedback (${rating}★) from ${formData.name}`);
+      const subject = encodeURIComponent(`Portfolio Message from ${formData.name}`);
       const body = encodeURIComponent(
-        `Name: ${formData.name}\nEmail: ${formData.email}\nCategory: ${formData.category}\nRating: ${rating}/5 Stars\n\nMessage:\n${formData.message}`
+        `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
       );
       window.location.href = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
     } finally {
@@ -103,7 +98,7 @@ export default function Contact() {
         {/* 2-Column Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start max-w-5xl mx-auto w-full">
           
-          {/* Left Column: Touch-Friendly Channel Buttons (min-h-[44px]) */}
+          {/* Left Column: Direct Channels */}
           <div className="lg:col-span-5 space-y-4 w-full">
             <div className="reference-card p-5 space-y-4 text-center flex flex-col items-center">
               <h3 className="font-serif-title text-xl text-[#f7e9e1] italic text-center">
@@ -172,41 +167,22 @@ export default function Contact() {
             </button>
           </div>
 
-          {/* Right Column: FormSubmit Form */}
+          {/* Right Column: FormSubmit Clean Form */}
           <div className="lg:col-span-7 w-full">
             <motion.form
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               onSubmit={handleSubmit}
-              className="reference-card p-5 sm:p-6 space-y-3.5 w-full flex flex-col items-center"
+              className="reference-card p-5 sm:p-6 space-y-4 w-full flex flex-col items-center"
             >
-              <div className="flex items-center justify-between border-b border-[rgba(200,61,74,0.25)] pb-2.5 w-full">
-                <h4 className="font-display font-extrabold text-base text-[#f7e9e1] uppercase">
+              <div className="border-b border-[rgba(200,61,74,0.25)] pb-3 w-full text-center">
+                <h4 className="font-display font-extrabold text-base text-[#f7e9e1] uppercase text-center">
                   Quick Message
                 </h4>
-                {/* Star Rating Selection */}
-                <div className="flex items-center gap-1 bg-[#120608] px-3 py-1 rounded-full border border-[rgba(200,61,74,0.3)]">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      key={star}
-                      type="button"
-                      onClick={() => setRating(star)}
-                      onMouseEnter={() => setHoverRating(star)}
-                      onMouseLeave={() => setHoverRating(0)}
-                      className="p-1 text-[#c83d4a] active:scale-125 transition-transform cursor-pointer min-w-[28px] min-h-[28px] flex items-center justify-center"
-                    >
-                      <Star
-                        className={`w-3.5 h-3.5 ${
-                          star <= (hoverRating || rating) ? 'fill-[#c83d4a] text-[#c83d4a]' : 'text-[#f7e9e1]/30'
-                        }`}
-                      />
-                    </button>
-                  ))}
-                </div>
               </div>
 
-              {/* Name & Email */}
+              {/* Name & Email Inputs */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
                 <input
                   type="text"
@@ -229,30 +205,18 @@ export default function Contact() {
                 />
               </div>
 
-              {/* Category */}
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] outline-none font-body cursor-pointer min-h-[44px] text-center sm:text-left"
-              >
-                <option value="Project Collaboration">Project Collaboration</option>
-                <option value="Data Science & AI Inquiry">Data Science &amp; AI Inquiry</option>
-                <option value="Website & Design Feedback">Website &amp; Design Feedback</option>
-                <option value="General Networking">General Networking</option>
-              </select>
-
-              {/* Message */}
+              {/* Message Textarea */}
               <textarea
                 name="message"
                 value={formData.message}
                 onChange={handleInputChange}
                 required
-                rows={3}
+                rows={4}
                 placeholder="Write your message here..."
                 className="w-full px-4 py-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] placeholder-[#f7e9e1]/40 focus:border-[#c83d4a] outline-none font-body resize-none text-center sm:text-left"
               />
 
+              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={loading}
