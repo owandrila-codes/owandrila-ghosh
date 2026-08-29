@@ -7,26 +7,27 @@ export default function Navbar() {
   const [activeSectionNum, setActiveSectionNum] = useState('01');
   const [activeSectionId, setActiveSectionId] = useState('hero');
 
-  // Exact 10-section sequence matching DOM order in App.tsx
+  // Exact 10-section sequence matching DOM order in App.tsx:
+  // 01 Home -> 02 Intro -> 03 About -> 04 Stats -> 05 Skills -> 06 Journey -> 07 Projects -> 08 Tech -> 09 Vision -> 10 Contact
   const sections = [
     { num: '01', id: 'hero', label: 'HOME' },
     { num: '02', id: 'intro', label: 'INTRO' },
     { num: '03', id: 'about', label: 'ABOUT' },
     { num: '04', id: 'stats', label: 'STATS' },
     { num: '05', id: 'skills', label: 'SKILLS' },
-    { num: '06', id: 'projects', label: 'PROJECTS' },
-    { num: '07', id: 'experience', label: 'JOURNEY' },
+    { num: '06', id: 'experience', label: 'JOURNEY' },
+    { num: '07', id: 'projects', label: 'PROJECTS' },
     { num: '08', id: 'marquee', label: 'TECH' },
     { num: '09', id: 'statement', label: 'VISION' },
     { num: '10', id: 'contact', label: 'CONTACT' },
   ];
 
-  // Nav links in exact DOM scroll sequence
+  // Nav links in exact page flow: ABOUT -> SKILLS -> JOURNEY -> PROJECTS -> CONTACT
   const navLinks = [
     { label: 'ABOUT', href: '#about' },
     { label: 'SKILLS', href: '#skills' },
-    { label: 'PROJECTS', href: '#projects' },
     { label: 'JOURNEY', href: '#experience' },
+    { label: 'PROJECTS', href: '#projects' },
     { label: 'CONTACT', href: '#contact' },
   ];
 
@@ -88,7 +89,7 @@ export default function Navbar() {
             <span className="text-[#f7e9e1]/60">/ 10</span>
           </div>
 
-          {/* Floating Navigation Menu matching exact page scroll order */}
+          {/* Floating Navigation Menu: ABOUT -> SKILLS -> JOURNEY -> PROJECTS -> CONTACT */}
           <nav className="hidden md:flex items-center gap-1 bg-[#170a0d]/90 px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.25)] shadow-lg">
             {navLinks.map((link) => {
               const secId = link.href.replace('#', '');
