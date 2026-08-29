@@ -33,8 +33,8 @@ export default function CinematicLoader({ onComplete }: CinematicLoaderProps) {
   const handleTimeUpdate = useCallback(() => {
     if (videoRef.current) {
       const video = videoRef.current;
-      // Cutoff 2.5 seconds before video end to completely eliminate end picture frames
-      if (video.duration && video.currentTime >= video.duration - 2.5) {
+      // Cutoff earlier (2.8 seconds before end) to trim the tail end of the animation
+      if (video.duration && video.currentTime >= video.duration - 2.8) {
         reveal();
       }
     }
