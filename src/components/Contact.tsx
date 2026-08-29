@@ -4,7 +4,9 @@ import { Mail, Share2, Code2, Copy, Check, Send, Sparkles } from 'lucide-react';
 
 export default function Contact() {
   const [copied, setCopied] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -26,23 +28,47 @@ export default function Contact() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
 
-    // Construct Mailto URI to open visitor's email client directly to owandrila2006@gmail.com
-    const subject = encodeURIComponent(`Portfolio Inquiry from ${formData.name}`);
-    const body = encodeURIComponent(
-      `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-    );
-    const mailtoUrl = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
+    setLoading(true);
+    setErrorMsg('');
 
-    // Open mail client
-    window.location.href = mailtoUrl;
+    try {
+      // Send form data to FormSubmit AJAX endpoint
+      const response = await fetch(`https://formsubmit.co/ajax/${emailAddress}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          _subject: `New Portfolio Message from ${formData.name}`,
+          _template: 'table',
+          _captcha: 'false',
+        }),
+      });
 
-    setSubmitted(true);
-    setFormData({ name: '', email: '', message: '' });
-    setTimeout(() => setSubmitted(false), 6000);
+      if (response.ok) {
+        setSubmitted(true);
+        setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => setSubmitted(false), 6000);
+      } else {
+        throw new Error('Failed to send message');
+      }
+    } catch {
+      setErrorMsg('Failed to send automatically. Opening your email app...');
+      // Fallback to mailto
+      const subject = encodeURIComponent(`Portfolio Inquiry from ${formData.name}`);
+      const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`);
+      window.location.href = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -147,7 +173,7 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Message Form Card */}
+            {/* Message Form Card (Powered by FormSubmit) */}
             <motion.form
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -155,9 +181,14 @@ export default function Contact() {
               onSubmit={handleSubmit}
               className="reference-card p-8 space-y-5"
             >
-              <h4 className="font-display font-extrabold text-xl text-[#f7e9e1] uppercase">
-                Send A Message
-              </h4>
+              <div className="flex items-center justify-between">
+                <h4 className="font-display font-extrabold text-xl text-[#f7e9e1] uppercase">
+                  Send A Message
+                </h4>
+                <span className="text-[10px] font-grotesk font-bold text-[#c83d4a] uppercase bg-[#120608] px-3 py-1 rounded-full border border-[rgba(200,61,74,0.3)]">
+                  POWERED BY FORMSUBMIT
+                </span>
+              </div>
 
               <div className="space-y-1.5">
                 <label className="text-xs font-grotesk font-bold text-[#c83d4a] uppercase tracking-wider block">
@@ -206,15 +237,22 @@ export default function Contact() {
 
               <button
                 type="submit"
-                className="w-full py-3.5 rounded-full bg-[#c83d4a] hover:bg-[#8b1e27] text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+                disabled={loading}
+                className="w-full py-3.5 rounded-full bg-[#c83d4a] hover:bg-[#8b1e27] text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
               >
-                <span>{submitted ? 'DISPATCHING EMAIL...' : 'SEND MESSAGE'}</span>
+                <span>{loading ? 'SENDING VIA FORMSUBMIT...' : submitted ? 'MESSAGE SENT!' : 'SEND MESSAGE'}</span>
                 <Send className="w-4 h-4" />
               </button>
 
               {submitted && (
                 <div className="p-3.5 rounded-2xl bg-[#8b1e27]/40 border border-[#c83d4a] text-xs font-grotesk text-[#f7e9e1] text-center shadow-lg">
-                  ✓ Message draft generated! Opening your email app to send to <strong>owandrila2006@gmail.com</strong>.
+                  ✓ Success! Your message has been sent to <strong>owandrila2006@gmail.com</strong> via FormSubmit.
+                </div>
+              )}
+
+              {errorMsg && (
+                <div className="p-3.5 rounded-2xl bg-[#220b0e] border border-[rgba(200,61,74,0.5)] text-xs font-grotesk text-[#c83d4a] text-center shadow-lg">
+                  {errorMsg}
                 </div>
               )}
             </motion.form>
