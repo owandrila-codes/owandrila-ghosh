@@ -81,19 +81,19 @@ export default function Contact() {
 
   return (
     <section id="contact" className="py-16 relative z-10 border-t border-[rgba(200,61,74,0.15)] bg-[#100406]/90 min-h-screen flex flex-col justify-between max-w-full">
-      <div className="max-w-6xl mx-auto px-5 sm:px-6 w-full space-y-8 my-auto">
+      <div className="max-w-6xl mx-auto px-5 sm:px-6 w-full space-y-8 my-auto flex flex-col items-center justify-center">
         
         {/* Section Header */}
-        <div className="text-center space-y-2">
-          <span className="font-grotesk text-xs font-bold tracking-[0.2em] text-[#c83d4a] uppercase bg-[#220b0e] px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.3)] inline-block">
+        <div className="text-center space-y-2 flex flex-col items-center justify-center w-full">
+          <span className="font-grotesk text-xs font-bold tracking-[0.2em] text-[#c83d4a] uppercase bg-[#220b0e] px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.3)] inline-block text-center">
             05 / CONTACT &amp; CONNECT
           </span>
 
-          <h2 className="font-display font-black text-4xl sm:text-6xl lg:text-7xl text-[#f7e9e1] uppercase tracking-tight">
+          <h2 className="font-display font-black text-4xl sm:text-6xl lg:text-7xl text-[#f7e9e1] uppercase tracking-tight text-center">
             LET'S <span className="font-serif-title italic text-[#c83d4a]">CONNECT</span>
           </h2>
 
-          <p className="text-xs sm:text-lg text-[#f7e9e1]/85 max-w-xl mx-auto font-body">
+          <p className="text-xs sm:text-lg text-[#f7e9e1]/85 max-w-xl mx-auto font-body text-center">
             "Interested in technology, collaboration or building something meaningful?"
           </p>
 
@@ -101,22 +101,22 @@ export default function Contact() {
         </div>
 
         {/* 2-Column Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start max-w-5xl mx-auto w-full">
           
           {/* Left Column: Touch-Friendly Channel Buttons (min-h-[44px]) */}
-          <div className="lg:col-span-5 space-y-4">
-            <div className="reference-card p-5 space-y-4">
-              <h3 className="font-serif-title text-xl text-[#f7e9e1] italic">
+          <div className="lg:col-span-5 space-y-4 w-full">
+            <div className="reference-card p-5 space-y-4 text-center flex flex-col items-center">
+              <h3 className="font-serif-title text-xl text-[#f7e9e1] italic text-center">
                 Direct Channels
               </h3>
 
               {/* Email Row */}
-              <div className="flex items-center justify-between p-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)] min-h-[44px]">
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)] min-h-[44px] w-full">
                 <div className="flex items-center gap-2.5 overflow-hidden">
                   <div className="p-2 rounded-xl bg-[#220b0e] text-[#c83d4a] shrink-0">
                     <Mail className="w-4 h-4" />
                   </div>
-                  <div className="truncate">
+                  <div className="truncate text-left">
                     <span className="text-[9px] font-grotesk font-bold text-[#c83d4a] tracking-widest uppercase block">
                       EMAIL
                     </span>
@@ -139,25 +139,25 @@ export default function Contact() {
               </div>
 
               {/* Social Channels */}
-              <div className="grid grid-cols-2 gap-3 pt-0.5">
+              <div className="grid grid-cols-2 gap-3 pt-0.5 w-full">
                 <a
                   href={linkedinUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-4 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)] active:border-[#c83d4a] flex flex-col items-center justify-center gap-1.5 group transition-all cursor-pointer min-h-[50px] active:scale-95"
+                  className="p-4 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)] active:border-[#c83d4a] flex flex-col items-center justify-center gap-1.5 group transition-all cursor-pointer min-h-[50px] active:scale-95 text-center"
                 >
                   <Share2 className="w-4 h-4 text-[#c83d4a] group-hover:scale-110 transition-transform" />
-                  <span className="text-xs font-grotesk font-bold text-[#f7e9e1] uppercase">LINKEDIN →</span>
+                  <span className="text-xs font-grotesk font-bold text-[#f7e9e1] uppercase text-center">LINKEDIN →</span>
                 </a>
 
                 <a
                   href={githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-4 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)] active:border-[#c83d4a] flex flex-col items-center justify-center gap-1.5 group transition-all cursor-pointer min-h-[50px] active:scale-95"
+                  className="p-4 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)] active:border-[#c83d4a] flex flex-col items-center justify-center gap-1.5 group transition-all cursor-pointer min-h-[50px] active:scale-95 text-center"
                 >
                   <Code2 className="w-4 h-4 text-[#c83d4a] group-hover:scale-110 transition-transform" />
-                  <span className="text-xs font-grotesk font-bold text-[#f7e9e1] uppercase">GITHUB →</span>
+                  <span className="text-xs font-grotesk font-bold text-[#f7e9e1] uppercase text-center">GITHUB →</span>
                 </a>
               </div>
             </div>
@@ -165,7 +165,7 @@ export default function Contact() {
             {/* Back to Top Prompt */}
             <button
               onClick={handleScrollToTop}
-              className="w-full py-3.5 rounded-2xl bg-[#220b0e] active:bg-[#8b1e27] border border-[rgba(200,61,74,0.35)] text-[#f7e9e1] text-xs font-grotesk font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg cursor-pointer min-h-[48px] active:scale-95"
+              className="w-full py-3.5 rounded-2xl bg-[#220b0e] active:bg-[#8b1e27] border border-[rgba(200,61,74,0.35)] text-[#f7e9e1] text-xs font-grotesk font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg cursor-pointer min-h-[48px] active:scale-95 text-center"
             >
               <span>BACK TO TOP</span>
               <ArrowUp className="w-4 h-4 text-[#c83d4a]" />
@@ -173,15 +173,15 @@ export default function Contact() {
           </div>
 
           {/* Right Column: FormSubmit Form */}
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-7 w-full">
             <motion.form
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               onSubmit={handleSubmit}
-              className="reference-card p-5 sm:p-6 space-y-3.5"
+              className="reference-card p-5 sm:p-6 space-y-3.5 w-full flex flex-col items-center"
             >
-              <div className="flex items-center justify-between border-b border-[rgba(200,61,74,0.25)] pb-2.5">
+              <div className="flex items-center justify-between border-b border-[rgba(200,61,74,0.25)] pb-2.5 w-full">
                 <h4 className="font-display font-extrabold text-base text-[#f7e9e1] uppercase">
                   Quick Message
                 </h4>
@@ -207,7 +207,7 @@ export default function Contact() {
               </div>
 
               {/* Name & Email */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
                 <input
                   type="text"
                   name="name"
@@ -215,7 +215,7 @@ export default function Contact() {
                   onChange={handleInputChange}
                   required
                   placeholder="Your Name..."
-                  className="w-full px-4 py-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] placeholder-[#f7e9e1]/40 focus:border-[#c83d4a] outline-none font-body min-h-[44px]"
+                  className="w-full px-4 py-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] placeholder-[#f7e9e1]/40 focus:border-[#c83d4a] outline-none font-body min-h-[44px] text-center sm:text-left"
                 />
 
                 <input
@@ -225,7 +225,7 @@ export default function Contact() {
                   onChange={handleInputChange}
                   required
                   placeholder="Your Email..."
-                  className="w-full px-4 py-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] placeholder-[#f7e9e1]/40 focus:border-[#c83d4a] outline-none font-body min-h-[44px]"
+                  className="w-full px-4 py-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] placeholder-[#f7e9e1]/40 focus:border-[#c83d4a] outline-none font-body min-h-[44px] text-center sm:text-left"
                 />
               </div>
 
@@ -234,7 +234,7 @@ export default function Contact() {
                 name="category"
                 value={formData.category}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] outline-none font-body cursor-pointer min-h-[44px]"
+                className="w-full px-4 py-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] outline-none font-body cursor-pointer min-h-[44px] text-center sm:text-left"
               >
                 <option value="Project Collaboration">Project Collaboration</option>
                 <option value="Data Science & AI Inquiry">Data Science &amp; AI Inquiry</option>
@@ -250,20 +250,20 @@ export default function Contact() {
                 required
                 rows={3}
                 placeholder="Write your message here..."
-                className="w-full px-4 py-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] placeholder-[#f7e9e1]/40 focus:border-[#c83d4a] outline-none font-body resize-none"
+                className="w-full px-4 py-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] placeholder-[#f7e9e1]/40 focus:border-[#c83d4a] outline-none font-body resize-none text-center sm:text-left"
               />
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3.5 rounded-full bg-[#c83d4a] active:bg-[#8b1e27] text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 min-h-[48px] active:scale-95"
+                className="w-full py-3.5 rounded-full bg-[#c83d4a] active:bg-[#8b1e27] text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 min-h-[48px] active:scale-95 text-center"
               >
                 <span>{loading ? 'SENDING...' : submitted ? 'SENT!' : 'SEND MESSAGE'}</span>
                 <Send className="w-3.5 h-3.5" />
               </button>
 
               {submitted && (
-                <div className="p-2.5 rounded-2xl bg-[#8b1e27]/40 border border-[#c83d4a] text-[11px] font-grotesk text-[#f7e9e1] text-center">
+                <div className="p-2.5 rounded-2xl bg-[#8b1e27]/40 border border-[#c83d4a] text-[11px] font-grotesk text-[#f7e9e1] text-center w-full">
                   ✓ Message delivered to <strong>owandrila2006@gmail.com</strong>!
                 </div>
               )}
@@ -273,7 +273,7 @@ export default function Contact() {
         </div>
 
         {/* Footer Credit Line */}
-        <div className="pt-4 text-center text-xs text-[#f7e9e1]/60 font-body border-t border-[rgba(200,61,74,0.15)]">
+        <div className="pt-4 text-center text-xs text-[#f7e9e1]/60 font-body border-t border-[rgba(200,61,74,0.15)] w-full">
           © 2026 Owandrila Ghosh • BCA Data Science &amp; AI Portfolio
         </div>
 
