@@ -24,7 +24,7 @@ export default function Hero() {
             transition={{ duration: 0.6 }}
             className="font-grotesk text-xs font-bold tracking-[0.25em] text-[#c83d4a] uppercase bg-[#220b0e] px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.3)] inline-block shadow-inner text-center"
           >
-            OWANDRILA GHOSH • BCA PORTFOLIO
+            OWANDRILA GHOSH
           </motion.span>
 
           <motion.h1
@@ -131,7 +131,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* DEDICATED MOBILE HERO LAYOUT (< md) - PERFECT FLUID CLAMP FITTING */}
+      {/* DEDICATED MOBILE HERO LAYOUT (< md) */}
       <div className="block md:hidden w-full px-4 text-center relative z-20 space-y-6 max-w-sm mx-auto flex flex-col items-center justify-center overflow-hidden">
         {/* DEVELOPER Title & Badge */}
         <div className="space-y-2 text-center flex flex-col items-center justify-center w-full mx-auto">
@@ -141,7 +141,7 @@ export default function Hero() {
             transition={{ duration: 0.5 }}
             className="font-grotesk text-[10px] font-bold tracking-[0.2em] text-[#c83d4a] uppercase bg-[#220b0e] px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.3)] inline-block text-center shadow-inner mx-auto"
           >
-            OWANDRILA GHOSH • BCA PORTFOLIO
+            OWANDRILA GHOSH
           </motion.span>
 
           <div className="w-full flex items-center justify-center text-center mx-auto overflow-hidden">
