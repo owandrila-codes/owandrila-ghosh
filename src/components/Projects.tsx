@@ -69,154 +69,223 @@ export default function Projects() {
   }, []);
 
   return (
-    <section
-      id="projects"
-      ref={containerRef}
-      className="relative min-h-[125vh] border-t border-[rgba(200,61,74,0.15)] bg-[#120608]"
-    >
-      {/* Sticky Viewport 3D Gallery Stage */}
-      <div className="sticky top-0 h-screen flex flex-col justify-between py-8 px-6 overflow-hidden z-10">
-        
-        {/* Section Header */}
-        <div className="text-center space-y-2 max-w-4xl mx-auto z-20 pt-4">
+    <section id="projects" className="relative border-t border-[rgba(200,61,74,0.15)] bg-[#120608] max-w-full">
+      
+      {/* DESKTOP PINNED 3D GALLERY STAGE (hidden md:block) */}
+      <div
+        ref={containerRef}
+        className="hidden md:block relative min-h-[125vh]"
+      >
+        <div className="sticky top-0 h-screen flex flex-col justify-between py-8 px-6 overflow-hidden z-10">
+          <div className="text-center space-y-2 max-w-4xl mx-auto z-20 pt-4">
+            <span className="font-grotesk text-xs font-bold tracking-[0.2em] text-[#c83d4a] uppercase bg-[#220b0e] px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.3)] inline-block">
+              03 / PORTFOLIO HIGHLIGHTS
+            </span>
+
+            <h2 className="font-display font-black text-3xl sm:text-5xl text-[#f7e9e1] uppercase tracking-tight">
+              SELECTED <span className="font-serif-title italic text-[#c83d4a]">WORK</span>
+            </h2>
+
+            <div className="w-16 h-1 bg-gradient-to-r from-[#8b1e27] to-[#c83d4a] mx-auto rounded-full" />
+          </div>
+
+          <div className="relative w-full max-w-4xl mx-auto h-[400px] my-auto flex items-center justify-center perspective-[1200px]">
+            {projects.map((proj, idx) => {
+              const isCurrent = idx === activeProjectIdx;
+              const isPast = idx < activeProjectIdx;
+              let opacity = isCurrent ? 1 : isPast ? 0.25 : 0.35;
+              let zIndex = isCurrent ? 30 : isPast ? 10 : 20;
+
+              return (
+                <motion.div
+                  key={proj.num}
+                  animate={{
+                    scale: isCurrent ? 1 : isPast ? 0.88 : 0.94,
+                    opacity: opacity,
+                    y: isCurrent ? 0 : isPast ? -25 : 30,
+                    rotateX: isCurrent ? 0 : isPast ? -8 : 8,
+                  }}
+                  transition={{ duration: 0.5, ease: 'easeOut' }}
+                  style={{ zIndex }}
+                  className={`absolute inset-0 reference-card p-6 sm:p-8 flex flex-col justify-between border-2 ${
+                    isCurrent ? 'border-[#c83d4a] shadow-2xl bg-[#170a0d]' : 'border-[rgba(200,61,74,0.2)] bg-[#120608]/90'
+                  } transition-all duration-300`}
+                >
+                  <div className="flex items-center justify-between border-b border-[rgba(200,61,74,0.25)] pb-3">
+                    <div className="flex items-center gap-3">
+                      <span className="font-display font-black text-3xl sm:text-4xl text-[#f7e9e1]">
+                        {proj.num}
+                      </span>
+                      <span className="text-xs font-grotesk font-bold text-[#c83d4a] tracking-widest uppercase bg-[#220b0e] px-3 py-1 rounded-full border border-[rgba(200,61,74,0.3)]">
+                        {proj.role}
+                      </span>
+                    </div>
+
+                    <div className="p-2.5 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)]">
+                      {proj.icon}
+                    </div>
+                  </div>
+
+                  <div className="my-auto space-y-2.5">
+                    <span className="text-[10px] font-grotesk font-bold text-[#c83d4a] uppercase tracking-widest block">
+                      {proj.category}
+                    </span>
+
+                    <h3 className="font-serif-title text-2xl sm:text-4xl text-[#f7e9e1] italic">
+                      {proj.title}
+                    </h3>
+
+                    <p className="text-xs sm:text-base text-[#f7e9e1]/85 leading-relaxed font-body max-w-2xl">
+                      "{proj.description}"
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between border-t border-[rgba(200,61,74,0.25)] pt-3">
+                    <div className="flex flex-wrap gap-1.5">
+                      {proj.highlights.map((h) => (
+                        <span key={h} className="text-[10px] font-grotesk font-bold text-[#f7e9e1]/80 bg-[#120608] px-2.5 py-1 rounded-xl border border-[rgba(200,61,74,0.25)]">
+                          ✓ {h}
+                        </span>
+                      ))}
+                    </div>
+
+                    <button
+                      onClick={() => setActiveModal(proj)}
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#c83d4a] hover:bg-[#8b1e27] text-[#f7e9e1] text-xs font-grotesk font-bold uppercase tracking-wider transition-all shadow-md shrink-0 cursor-pointer"
+                    >
+                      <span>DETAILS</span>
+                      <ArrowUpRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <div className="flex items-center justify-center gap-3 z-20 pb-4">
+            {projects.map((p, idx) => (
+              <button
+                key={p.num}
+                onClick={() => setActiveProjectIdx(idx)}
+                className={`h-2.5 rounded-full transition-all duration-300 ${
+                  idx === activeProjectIdx ? 'w-10 bg-[#c83d4a]' : 'w-2.5 bg-[#f7e9e1]/30 hover:bg-[#f7e9e1]/60'
+                }`}
+                title={`View project ${p.num}`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* DEDICATED MOBILE VERTICAL CINEMATIC STACK (block md:hidden) */}
+      <div className="block md:hidden py-16 px-5 space-y-12 max-w-md mx-auto">
+        <div className="text-center space-y-2">
           <span className="font-grotesk text-xs font-bold tracking-[0.2em] text-[#c83d4a] uppercase bg-[#220b0e] px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.3)] inline-block">
             03 / PORTFOLIO HIGHLIGHTS
           </span>
 
-          <h2 className="font-display font-black text-3xl sm:text-5xl text-[#f7e9e1] uppercase tracking-tight">
+          <h2 className="font-display font-black text-3xl text-[#f7e9e1] uppercase tracking-tight">
             SELECTED <span className="font-serif-title italic text-[#c83d4a]">WORK</span>
           </h2>
 
           <div className="w-16 h-1 bg-gradient-to-r from-[#8b1e27] to-[#c83d4a] mx-auto rounded-full" />
         </div>
 
-        {/* 3D Gallery Stage (3 Cards overlapping with perspective depth) */}
-        <div className="relative w-full max-w-4xl mx-auto h-[400px] my-auto flex items-center justify-center perspective-[1200px]">
-          {projects.map((proj, idx) => {
-            const isCurrent = idx === activeProjectIdx;
-            const isPast = idx < activeProjectIdx;
-
-            // Compute 3D Spatial Transforms
-            let opacity = 0;
-            let zIndex = 0;
-
-            if (isCurrent) {
-              opacity = 1;
-              zIndex = 30;
-            } else if (isPast) {
-              opacity = 0.25;
-              zIndex = 10;
-            } else {
-              opacity = 0.35;
-              zIndex = 20;
-            }
-
-            return (
-              <motion.div
-                key={proj.num}
-                animate={{
-                  scale: isCurrent ? 1 : isPast ? 0.88 : 0.94,
-                  opacity: opacity,
-                  y: isCurrent ? 0 : isPast ? -25 : 30,
-                  rotateX: isCurrent ? 0 : isPast ? -8 : 8,
-                }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
-                style={{ zIndex }}
-                className={`absolute inset-0 reference-card p-6 sm:p-8 flex flex-col justify-between border-2 ${
-                  isCurrent ? 'border-[#c83d4a] shadow-2xl bg-[#170a0d]' : 'border-[rgba(200,61,74,0.2)] bg-[#120608]/90'
-                } transition-all duration-300`}
-              >
-                {/* Top Row */}
+        {/* Vertical Stack of Cards (~75-90vh each) */}
+        <div className="space-y-8">
+          {projects.map((proj, idx) => (
+            <motion.div
+              key={proj.num}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              className="reference-card p-6 flex flex-col justify-between space-y-5 min-h-[75vh] border-2 border-[rgba(200,61,74,0.35)] shadow-2xl active:scale-[0.99] transition-transform"
+            >
+              {/* Top Banner Image / Number */}
+              <div className="space-y-3">
                 <div className="flex items-center justify-between border-b border-[rgba(200,61,74,0.25)] pb-3">
-                  <div className="flex items-center gap-3">
-                    <span className="font-display font-black text-3xl sm:text-4xl text-[#f7e9e1]">
-                      {proj.num}
-                    </span>
-                    <span className="text-xs font-grotesk font-bold text-[#c83d4a] tracking-widest uppercase bg-[#220b0e] px-3 py-1 rounded-full border border-[rgba(200,61,74,0.3)]">
-                      {proj.role}
-                    </span>
-                  </div>
+                  <span className="font-display font-black text-4xl text-[#c83d4a]">
+                    {proj.num}
+                  </span>
+                  <span className="text-[10px] font-grotesk font-bold text-[#f7e9e1] uppercase bg-[#220b0e] px-3 py-1 rounded-full border border-[rgba(200,61,74,0.3)]">
+                    {proj.role}
+                  </span>
+                </div>
 
-                  <div className="p-2.5 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)]">
+                {/* Banner Frame */}
+                <div className="w-full aspect-[16/9] rounded-2xl bg-gradient-to-br from-[#2d1014] to-[#120608] border border-[rgba(200,61,74,0.3)] flex flex-col justify-between p-4 relative overflow-hidden shadow-inner">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[9px] font-grotesk font-bold text-[#c83d4a] uppercase tracking-widest">
+                      PROJECT HIGHLIGHT
+                    </span>
                     {proj.icon}
                   </div>
-                </div>
-
-                {/* Center Description */}
-                <div className="my-auto space-y-2.5">
-                  <span className="text-[10px] font-grotesk font-bold text-[#c83d4a] uppercase tracking-widest block">
-                    {proj.category}
-                  </span>
-
-                  <h3 className="font-serif-title text-2xl sm:text-4xl text-[#f7e9e1] italic">
+                  <div className="font-serif-title text-xl text-[#f7e9e1] italic truncate">
                     {proj.title}
-                  </h3>
-
-                  <p className="text-xs sm:text-base text-[#f7e9e1]/85 leading-relaxed font-body max-w-2xl">
-                    "{proj.description}"
-                  </p>
-                </div>
-
-                {/* Bottom Row */}
-                <div className="flex items-center justify-between border-t border-[rgba(200,61,74,0.25)] pt-3">
-                  <div className="flex flex-wrap gap-1.5">
-                    {proj.highlights.map((h) => (
-                      <span key={h} className="text-[10px] font-grotesk font-bold text-[#f7e9e1]/80 bg-[#120608] px-2.5 py-1 rounded-xl border border-[rgba(200,61,74,0.25)]">
-                        ✓ {h}
-                      </span>
-                    ))}
                   </div>
-
-                  <button
-                    onClick={() => setActiveModal(proj)}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#c83d4a] hover:bg-[#8b1e27] text-[#f7e9e1] text-xs font-grotesk font-bold uppercase tracking-wider transition-all shadow-md shrink-0 cursor-pointer"
-                  >
-                    <span>DETAILS</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </button>
                 </div>
-              </motion.div>
-            );
-          })}
-        </div>
+              </div>
 
-        {/* 3D Gallery Stage Controls Indicator */}
-        <div className="flex items-center justify-center gap-3 z-20 pb-4">
-          {projects.map((p, idx) => (
-            <button
-              key={p.num}
-              onClick={() => setActiveProjectIdx(idx)}
-              className={`h-2.5 rounded-full transition-all duration-300 ${
-                idx === activeProjectIdx ? 'w-10 bg-[#c83d4a]' : 'w-2.5 bg-[#f7e9e1]/30 hover:bg-[#f7e9e1]/60'
-              }`}
-              title={`View project ${p.num}`}
-            />
+              {/* Title & Description */}
+              <div className="space-y-2">
+                <span className="text-[10px] font-grotesk font-bold text-[#c83d4a] uppercase tracking-widest block">
+                  {proj.category}
+                </span>
+
+                <h3 className="font-serif-title text-2xl text-[#f7e9e1] italic">
+                  {proj.title}
+                </h3>
+
+                <p className="text-xs text-[#f7e9e1]/85 leading-relaxed font-body">
+                  "{proj.description}"
+                </p>
+              </div>
+
+              {/* Tech Badges & CTA */}
+              <div className="space-y-4 border-t border-[rgba(200,61,74,0.2)] pt-3">
+                <div className="flex flex-wrap gap-1.5">
+                  {proj.highlights.map((h) => (
+                    <span key={h} className="text-[9px] font-grotesk font-bold text-[#f7e9e1]/80 bg-[#120608] px-2.5 py-1 rounded-xl border border-[rgba(200,61,74,0.25)]">
+                      ✓ {h}
+                    </span>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => setActiveModal(proj)}
+                  className="w-full py-3.5 rounded-full bg-[#c83d4a] active:scale-95 text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest transition-all shadow-md flex items-center justify-center gap-2 min-h-[44px] cursor-pointer"
+                >
+                  <span>VIEW DETAILS</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </button>
+              </div>
+            </motion.div>
           ))}
         </div>
-
       </div>
 
       {/* Project Breakdown Modal */}
       {activeModal && (
-        <div className="fixed inset-0 z-50 bg-[#120608]/90 backdrop-blur-md flex items-center justify-center p-6">
-          <div className="reference-card w-full max-w-2xl p-8 border-2 border-[rgba(200,61,74,0.4)] shadow-2xl relative space-y-6">
+        <div className="fixed inset-0 z-50 bg-[#120608]/95 backdrop-blur-md flex items-center justify-center p-5">
+          <div className="reference-card w-full max-w-xl p-6 border-2 border-[rgba(200,61,74,0.4)] shadow-2xl relative space-y-5 max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setActiveModal(null)}
-              className="absolute top-6 right-6 p-2 text-[#f7e9e1]/70 hover:text-[#f7e9e1] font-bold text-lg cursor-pointer"
+              className="absolute top-5 right-5 p-2 text-[#f7e9e1]/70 active:text-[#f7e9e1] font-bold text-lg min-w-[44px] min-h-[44px] flex items-center justify-center cursor-pointer"
             >
               ✕
             </button>
 
-            <div className="space-y-2 border-b border-[rgba(200,61,74,0.25)] pb-4">
-              <span className="text-xs font-grotesk font-bold text-[#c83d4a] uppercase tracking-widest block">
+            <div className="space-y-1 border-b border-[rgba(200,61,74,0.25)] pb-3">
+              <span className="text-[10px] font-grotesk font-bold text-[#c83d4a] uppercase tracking-widest block">
                 PROJECT {activeModal.num} HIGHLIGHT
               </span>
-              <h3 className="font-serif-title text-3xl sm:text-4xl text-[#f7e9e1] italic">
+              <h3 className="font-serif-title text-2xl sm:text-3xl text-[#f7e9e1] italic">
                 {activeModal.title}
               </h3>
             </div>
 
-            <p className="text-base text-[#f7e9e1]/90 leading-relaxed font-body">
+            <p className="text-sm text-[#f7e9e1]/90 leading-relaxed font-body">
               "{activeModal.description}"
             </p>
 
@@ -224,7 +293,7 @@ export default function Projects() {
               <span className="text-xs font-grotesk font-bold text-[#c83d4a] uppercase tracking-widest block">
                 ROLE &amp; FOCUS
               </span>
-              <div className="p-4 rounded-xl bg-[#120608] border border-[rgba(200,61,74,0.25)] text-xs text-[#f7e9e1] space-y-1">
+              <div className="p-3.5 rounded-xl bg-[#120608] border border-[rgba(200,61,74,0.25)] text-xs text-[#f7e9e1] space-y-1">
                 <div><strong>Role:</strong> {activeModal.role}</div>
                 <div><strong>Category:</strong> {activeModal.category}</div>
               </div>
@@ -232,7 +301,7 @@ export default function Projects() {
 
             <button
               onClick={() => setActiveModal(null)}
-              className="w-full py-3.5 bg-[#c83d4a] hover:bg-[#8b1e27] text-[#f7e9e1] font-grotesk font-bold text-xs rounded-full uppercase tracking-wider transition-all cursor-pointer"
+              className="w-full py-3.5 bg-[#c83d4a] active:scale-95 text-[#f7e9e1] font-grotesk font-bold text-xs rounded-full uppercase tracking-wider transition-all min-h-[44px] cursor-pointer"
             >
               CLOSE BREAKDOWN
             </button>

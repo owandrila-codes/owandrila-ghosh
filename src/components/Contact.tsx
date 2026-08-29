@@ -80,30 +80,20 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-16 relative z-10 border-t border-[rgba(200,61,74,0.15)] bg-[#100406]/90 min-h-screen flex flex-col justify-between">
-      <div className="max-w-6xl mx-auto px-6 w-full space-y-8 my-auto">
+    <section id="contact" className="py-16 relative z-10 border-t border-[rgba(200,61,74,0.15)] bg-[#100406]/90 min-h-screen flex flex-col justify-between max-w-full">
+      <div className="max-w-6xl mx-auto px-5 sm:px-6 w-full space-y-8 my-auto">
         
         {/* Section Header */}
         <div className="text-center space-y-2">
-          <motion.span
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="font-grotesk text-xs font-bold tracking-[0.2em] text-[#c83d4a] uppercase bg-[#220b0e] px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.3)] inline-block"
-          >
+          <span className="font-grotesk text-xs font-bold tracking-[0.2em] text-[#c83d4a] uppercase bg-[#220b0e] px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.3)] inline-block">
             05 / CONTACT &amp; CONNECT
-          </motion.span>
+          </span>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="font-display font-black text-4xl sm:text-6xl lg:text-7xl text-[#f7e9e1] uppercase tracking-tight"
-          >
+          <h2 className="font-display font-black text-4xl sm:text-6xl lg:text-7xl text-[#f7e9e1] uppercase tracking-tight">
             LET'S <span className="font-serif-title italic text-[#c83d4a]">CONNECT</span>
-          </motion.h2>
+          </h2>
 
-          <p className="text-sm sm:text-lg text-[#f7e9e1]/85 max-w-xl mx-auto font-body">
+          <p className="text-xs sm:text-lg text-[#f7e9e1]/85 max-w-xl mx-auto font-body">
             "Interested in technology, collaboration or building something meaningful?"
           </p>
 
@@ -113,15 +103,15 @@ export default function Contact() {
         {/* 2-Column Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start max-w-5xl mx-auto">
           
-          {/* Left Column: Direct Links & Badges */}
+          {/* Left Column: Touch-Friendly Channel Buttons (min-h-[44px]) */}
           <div className="lg:col-span-5 space-y-4">
             <div className="reference-card p-5 space-y-4">
               <h3 className="font-serif-title text-xl text-[#f7e9e1] italic">
                 Direct Channels
               </h3>
 
-              {/* Email Button */}
-              <div className="flex items-center justify-between p-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)]">
+              {/* Email Row */}
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)] min-h-[44px]">
                 <div className="flex items-center gap-2.5 overflow-hidden">
                   <div className="p-2 rounded-xl bg-[#220b0e] text-[#c83d4a] shrink-0">
                     <Mail className="w-4 h-4" />
@@ -141,7 +131,7 @@ export default function Contact() {
 
                 <button
                   onClick={handleCopyEmail}
-                  className="p-2 rounded-xl bg-[#220b0e] hover:bg-[#c83d4a] text-[#f7e9e1] transition-all shrink-0 ml-2 cursor-pointer"
+                  className="p-2.5 rounded-xl bg-[#220b0e] hover:bg-[#c83d4a] text-[#f7e9e1] transition-all shrink-0 ml-2 min-w-[44px] min-h-[44px] flex items-center justify-center cursor-pointer active:scale-95"
                   title="Copy email"
                 >
                   {copied ? <Check className="w-4 h-4 text-[#f7e9e1]" /> : <Copy className="w-4 h-4" />}
@@ -154,20 +144,20 @@ export default function Contact() {
                   href={linkedinUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3.5 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)] hover:border-[#c83d4a] flex flex-col items-center justify-center gap-1.5 group transition-all cursor-pointer"
+                  className="p-4 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)] active:border-[#c83d4a] flex flex-col items-center justify-center gap-1.5 group transition-all cursor-pointer min-h-[50px] active:scale-95"
                 >
                   <Share2 className="w-4 h-4 text-[#c83d4a] group-hover:scale-110 transition-transform" />
-                  <span className="text-xs font-grotesk font-bold text-[#f7e9e1] uppercase">LINKEDIN</span>
+                  <span className="text-xs font-grotesk font-bold text-[#f7e9e1] uppercase">LINKEDIN →</span>
                 </a>
 
                 <a
                   href={githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3.5 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)] hover:border-[#c83d4a] flex flex-col items-center justify-center gap-1.5 group transition-all cursor-pointer"
+                  className="p-4 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)] active:border-[#c83d4a] flex flex-col items-center justify-center gap-1.5 group transition-all cursor-pointer min-h-[50px] active:scale-95"
                 >
                   <Code2 className="w-4 h-4 text-[#c83d4a] group-hover:scale-110 transition-transform" />
-                  <span className="text-xs font-grotesk font-bold text-[#f7e9e1] uppercase">GITHUB</span>
+                  <span className="text-xs font-grotesk font-bold text-[#f7e9e1] uppercase">GITHUB →</span>
                 </a>
               </div>
             </div>
@@ -175,7 +165,7 @@ export default function Contact() {
             {/* Back to Top Prompt */}
             <button
               onClick={handleScrollToTop}
-              className="w-full py-3.5 rounded-2xl bg-[#220b0e] hover:bg-[#8b1e27] border border-[rgba(200,61,74,0.35)] text-[#f7e9e1] text-xs font-grotesk font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg cursor-pointer"
+              className="w-full py-3.5 rounded-2xl bg-[#220b0e] active:bg-[#8b1e27] border border-[rgba(200,61,74,0.35)] text-[#f7e9e1] text-xs font-grotesk font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg cursor-pointer min-h-[48px] active:scale-95"
             >
               <span>BACK TO TOP</span>
               <ArrowUp className="w-4 h-4 text-[#c83d4a]" />
@@ -189,7 +179,7 @@ export default function Contact() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               onSubmit={handleSubmit}
-              className="reference-card p-6 space-y-3.5"
+              className="reference-card p-5 sm:p-6 space-y-3.5"
             >
               <div className="flex items-center justify-between border-b border-[rgba(200,61,74,0.25)] pb-2.5">
                 <h4 className="font-display font-extrabold text-base text-[#f7e9e1] uppercase">
@@ -204,7 +194,7 @@ export default function Contact() {
                       onClick={() => setRating(star)}
                       onMouseEnter={() => setHoverRating(star)}
                       onMouseLeave={() => setHoverRating(0)}
-                      className="p-0.5 text-[#c83d4a] hover:scale-125 transition-transform cursor-pointer"
+                      className="p-1 text-[#c83d4a] active:scale-125 transition-transform cursor-pointer min-w-[28px] min-h-[28px] flex items-center justify-center"
                     >
                       <Star
                         className={`w-3.5 h-3.5 ${
@@ -225,7 +215,7 @@ export default function Contact() {
                   onChange={handleInputChange}
                   required
                   placeholder="Your Name..."
-                  className="w-full px-4 py-2.5 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] placeholder-[#f7e9e1]/40 focus:border-[#c83d4a] outline-none font-body"
+                  className="w-full px-4 py-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] placeholder-[#f7e9e1]/40 focus:border-[#c83d4a] outline-none font-body min-h-[44px]"
                 />
 
                 <input
@@ -235,7 +225,7 @@ export default function Contact() {
                   onChange={handleInputChange}
                   required
                   placeholder="Your Email..."
-                  className="w-full px-4 py-2.5 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] placeholder-[#f7e9e1]/40 focus:border-[#c83d4a] outline-none font-body"
+                  className="w-full px-4 py-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] placeholder-[#f7e9e1]/40 focus:border-[#c83d4a] outline-none font-body min-h-[44px]"
                 />
               </div>
 
@@ -244,7 +234,7 @@ export default function Contact() {
                 name="category"
                 value={formData.category}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2.5 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] outline-none font-body cursor-pointer"
+                className="w-full px-4 py-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] outline-none font-body cursor-pointer min-h-[44px]"
               >
                 <option value="Project Collaboration">Project Collaboration</option>
                 <option value="Data Science & AI Inquiry">Data Science &amp; AI Inquiry</option>
@@ -260,13 +250,13 @@ export default function Contact() {
                 required
                 rows={3}
                 placeholder="Write your message here..."
-                className="w-full px-4 py-2.5 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] placeholder-[#f7e9e1]/40 focus:border-[#c83d4a] outline-none font-body resize-none"
+                className="w-full px-4 py-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] placeholder-[#f7e9e1]/40 focus:border-[#c83d4a] outline-none font-body resize-none"
               />
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 rounded-full bg-[#c83d4a] hover:bg-[#8b1e27] text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                className="w-full py-3.5 rounded-full bg-[#c83d4a] active:bg-[#8b1e27] text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 min-h-[48px] active:scale-95"
               >
                 <span>{loading ? 'SENDING...' : submitted ? 'SENT!' : 'SEND MESSAGE'}</span>
                 <Send className="w-3.5 h-3.5" />

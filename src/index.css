@@ -17,14 +17,16 @@
     --deep-red: #8b1e27;
   }
 
-  body {
+  html, body {
     font-family: var(--font-body);
     background-color: #120608;
     color: #f7e9e1;
     overflow-x: hidden;
+    max-width: 100vw;
     selection-background-color: #c83d4a;
     selection-color: #f7e9e1;
     -webkit-font-smoothing: antialiased;
+    touch-action: manipulation;
   }
 }
 
@@ -72,6 +74,12 @@
     0 6px 15px rgba(0, 0, 0, 0.8);
 }
 
+/* Responsive clamp typography for Hero title */
+.text-hero-clamp {
+  font-size: clamp(2.4rem, 11vw, 7.5rem);
+  line-height: 0.95;
+}
+
 /* 6-Step Workflow Card Pill Accent */
 .step-cream-tag {
   background-color: #f7e9e1;
@@ -96,6 +104,11 @@
   border-color: rgba(200, 61, 74, 0.65);
   transform: translate3d(0, -4px, 0);
   box-shadow: 0 20px 45px rgba(200, 61, 74, 0.25);
+}
+
+/* Mobile active press states */
+.reference-card:active {
+  transform: scale(0.98);
 }
 
 /* Circular QR Code Card */
@@ -163,7 +176,7 @@
   background: #c83d4a;
 }
 
-/* Custom Cursor Rules */
+/* Custom Cursor Rules (Desktop Only) */
 @media (min-width: 1024px) {
   body { cursor: none; }
   a, button, input, textarea, [role="button"] { cursor: none; }
@@ -182,7 +195,7 @@
 /* Typography Utility Classes */
 .font-display { font-family: var(--font-display); }
 .font-grotesk { font-family: var(--font-grotesk); }
-.font-serif-title { font-family: var(--font-serif); font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 600; color: #f7e9e1; }
+.font-serif-title { font-family: var(--font-serif); font-size: clamp(2rem, 5vw, 3.8rem); font-weight: 600; color: #f7e9e1; }
 
 .text-cream { color: #f7e9e1; }
 .text-crimson { color: #c83d4a; }

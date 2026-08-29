@@ -6,8 +6,6 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSectionId, setActiveSectionId] = useState('hero');
 
-  // Exact 5-section sequence matching DOM order in App.tsx:
-  // 01 Hero -> 02 About & Skills -> 03 Education & Journey -> 04 Selected Work -> 05 Contact
   const sections = [
     { id: 'hero' },
     { id: 'about' },
@@ -16,19 +14,17 @@ export default function Navbar() {
     { id: 'contact' },
   ];
 
-  // Nav links matching exact page flow: ABOUT -> EDUCATION -> WORK -> CONTACT
   const navLinks = [
     { label: 'ABOUT', href: '#about' },
-    { label: 'EDUCATION', href: '#experience' },
-    { label: 'WORK', href: '#projects' },
+    { label: 'SKILLS', href: '#about' },
+    { label: 'JOURNEY', href: '#experience' },
+    { label: 'PROJECTS', href: '#projects' },
     { label: 'CONTACT', href: '#contact' },
   ];
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 40);
-
-      // Accurate viewport scroll position detection
       const scrollPosition = window.scrollY + 220;
 
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -45,7 +41,7 @@ export default function Navbar() {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial check
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -54,12 +50,12 @@ export default function Navbar() {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? 'py-3 bg-[#120608]/90 backdrop-blur-md border-b border-[rgba(200,61,74,0.25)] shadow-2xl'
-            : 'py-6 bg-transparent'
+            ? 'py-3 bg-[#120608]/92 backdrop-blur-md border-b border-[rgba(200,61,74,0.25)] shadow-2xl'
+            : 'py-5 md:py-6 bg-transparent'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          {/* Text Logo */}
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 flex items-center justify-between">
+          {/* Left Text Logo */}
           <a href="#hero" className="flex flex-col group">
             <span className="font-display font-black text-lg tracking-wider text-[#f7e9e1] uppercase group-hover:text-[#c83d4a] transition-colors">
               OWANDRILA
@@ -69,7 +65,7 @@ export default function Navbar() {
             </span>
           </a>
 
-          {/* Floating Navigation Menu: ABOUT -> EDUCATION -> WORK -> CONTACT */}
+          {/* Desktop Navigation Menu (md:flex) */}
           <nav className="hidden md:flex items-center gap-1 bg-[#170a0d]/90 px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.25)] shadow-lg">
             {navLinks.map((link) => {
               const secId = link.href.replace('#', '');
@@ -91,7 +87,7 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Contact Action */}
+          {/* Desktop Connect Button */}
           <div className="hidden md:flex items-center gap-3">
             <a
               href="#contact"
@@ -102,31 +98,33 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* Mobile Drawer Trigger */}
+          {/* Mobile Hamburger Button (md:hidden) */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden p-2.5 text-[#f7e9e1] rounded-xl bg-[#170a0d] border border-[rgba(200,61,74,0.3)] cursor-pointer"
-            aria-label="Toggle menu"
+            className="md:hidden min-w-[44px] min-h-[44px] p-2.5 text-[#f7e9e1] rounded-xl bg-[#170a0d] border border-[rgba(200,61,74,0.3)] active:scale-95 transition-transform flex items-center justify-center cursor-pointer"
+            aria-label="Toggle navigation menu"
           >
-            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileOpen ? <X className="w-6 h-6 text-[#c83d4a]" /> : <Menu className="w-6 h-6 text-[#f7e9e1]" />}
           </button>
         </div>
       </header>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Full-Screen Overlay Navigation */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-40 bg-[#120608]/95 backdrop-blur-xl flex flex-col justify-between p-8 md:hidden">
-          <div className="pt-20">
-            <div className="text-[10px] font-grotesk tracking-widest text-[#c83d4a] uppercase font-bold mb-6">
-              PORTFOLIO NAVIGATION
+        <div className="fixed inset-0 z-40 bg-[#120608]/98 backdrop-blur-2xl flex flex-col justify-between p-7 md:hidden animate-in fade-in duration-300">
+          <div className="pt-24 space-y-6">
+            <div className="flex items-center justify-between text-[10px] font-grotesk tracking-widest text-[#c83d4a] uppercase font-bold border-b border-[rgba(200,61,74,0.2)] pb-3">
+              <span>MOBILE PORTFOLIO NAVIGATION</span>
+              <span className="w-2 h-2 rounded-full bg-[#c83d4a] animate-ping" />
             </div>
-            <div className="flex flex-col gap-4 font-display font-extrabold text-2xl uppercase tracking-wider">
+
+            <div className="flex flex-col gap-3 font-display font-extrabold text-2xl uppercase tracking-wider">
               {navLinks.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="text-[#f7e9e1] hover:text-[#c83d4a] transition-colors py-2 border-b border-[rgba(200,61,74,0.15)] flex items-center justify-between"
+                  className="text-[#f7e9e1] active:text-[#c83d4a] py-3.5 border-b border-[rgba(200,61,74,0.15)] flex items-center justify-between min-h-[48px]"
                 >
                   <span>{link.label}</span>
                   <ArrowUpRight className="w-5 h-5 text-[#c83d4a]" />
@@ -135,8 +133,19 @@ export default function Navbar() {
             </div>
           </div>
 
-          <div className="text-xs text-[#f7e9e1]/70 border-t border-[rgba(200,61,74,0.2)] pt-4">
-            OWANDRILA GHOSH • BCA DATA SCIENCE &amp; AI
+          <div className="space-y-3 pt-6 border-t border-[rgba(200,61,74,0.2)]">
+            <a
+              href="#contact"
+              onClick={() => setMobileOpen(false)}
+              className="w-full py-4 rounded-full bg-[#c83d4a] text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest text-center block min-h-[48px] flex items-center justify-center gap-2"
+            >
+              <span>GET IN TOUCH</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </a>
+
+            <div className="text-[11px] text-[#f7e9e1]/60 text-center font-body">
+              OWANDRILA GHOSH • BCA DATA SCIENCE &amp; AI
+            </div>
           </div>
         </div>
       )}
