@@ -1,246 +1,171 @@
-import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Share2, Code2, Copy, Check, Send, ArrowUp } from 'lucide-react';
+import { Mail, Globe, Share2, ArrowUp, Send, CheckCircle } from 'lucide-react';
+import { useState } from 'react';
 
 export default function Contact() {
-  const [copied, setCopied] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  });
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
-  const emailAddress = 'owandrila2006@gmail.com';
-  const linkedinUrl = 'https://www.linkedin.com/in/owandrila-ghosh-5823b7380?utm_source=share_via&utm_content=profile&utm_medium=member_android';
-  const githubUrl = 'https://github.com/owandrila-codes';
-
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText(emailAddress);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email || !formData.message) return;
+    setSubmitted(true);
+    setTimeout(() => {
+      setSubmitted(false);
+      setFormData({ name: '', email: '', message: '' });
+    }, 4000);
   };
 
-  const handleScrollToTop = () => {
+  const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) return;
-
-    setLoading(true);
-
-    try {
-      const response = await fetch(`https://formsubmit.co/ajax/${emailAddress}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          Name: formData.name,
-          Email: formData.email,
-          Message: formData.message,
-          _subject: `Portfolio Message from ${formData.name}`,
-          _template: 'table',
-          _captcha: 'false',
-        }),
-      });
-
-      if (response.ok) {
-        setSubmitted(true);
-        setFormData({ name: '', email: '', message: '' });
-        setTimeout(() => setSubmitted(false), 6000);
-      } else {
-        throw new Error('Fallback trigger');
-      }
-    } catch {
-      const subject = encodeURIComponent(`Portfolio Message from ${formData.name}`);
-      const body = encodeURIComponent(
-        `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-      );
-      window.location.href = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <section id="contact" className="py-16 relative z-10 border-t border-[rgba(200,61,74,0.15)] bg-[#100406]/90 min-h-screen flex flex-col justify-between max-w-full">
-      <div className="max-w-6xl mx-auto px-5 sm:px-6 w-full space-y-8 my-auto flex flex-col items-center justify-center">
-        
-        {/* Section Header */}
-        <div className="text-center space-y-2 flex flex-col items-center justify-center w-full">
-          <span className="font-grotesk text-xs font-bold tracking-[0.2em] text-[#c83d4a] uppercase bg-[#220b0e] px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.3)] inline-block text-center">
-            05 / CONTACT &amp; CONNECT
-          </span>
+    <section id="contact" className="relative min-h-screen py-20 flex flex-col justify-between items-center overflow-hidden z-10">
+      <div className="w-full max-w-4xl mx-auto px-6 relative z-20 my-auto space-y-10 text-center">
+        {/* Section Heading */}
+        <div className="space-y-3">
+          <motion.span
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="font-grotesk text-xs font-bold tracking-[0.3em] text-[#c83d4a] uppercase bg-[#220b0e] px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.3)] inline-block"
+          >
+            05 — GET IN TOUCH
+          </motion.span>
 
-          <h2 className="font-display font-black text-4xl sm:text-6xl lg:text-7xl text-[#f7e9e1] uppercase tracking-tight text-center">
-            LET'S <span className="font-serif-title italic text-[#c83d4a]">CONNECT</span>
-          </h2>
+          <motion.h2
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="font-display font-black text-5xl sm:text-7xl text-3d-emboss uppercase tracking-tight"
+          >
+            LET'S CONNECT
+          </motion.h2>
 
-          <p className="text-xs sm:text-lg text-[#f7e9e1]/85 max-w-xl mx-auto font-body text-center">
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-base sm:text-xl text-[#f7e9e1]/90 font-serif-title italic max-w-xl mx-auto"
+          >
             "Interested in technology, collaboration or building something meaningful?"
-          </p>
-
-          <div className="w-16 h-1 bg-gradient-to-r from-[#8b1e27] to-[#c83d4a] mx-auto rounded-full" />
+          </motion.p>
         </div>
 
-        {/* 2-Column Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start max-w-5xl mx-auto w-full">
-          
-          {/* Left Column: Direct Channels */}
-          <div className="lg:col-span-5 space-y-4 w-full">
-            <div className="reference-card p-5 space-y-4 text-center flex flex-col items-center">
-              <h3 className="font-serif-title text-xl text-[#f7e9e1] italic text-center">
-                Direct Channels
-              </h3>
+        {/* Quick Social & Contact Badges */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.3 }}
+          className="flex flex-wrap justify-center gap-4 pt-2"
+        >
+          <a
+            href="mailto:owandrila2006@gmail.com"
+            className="px-6 py-3 rounded-2xl bg-[#2d1014] hover:bg-[#c83d4a] border border-[rgba(200,61,74,0.4)] text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest transition-all flex items-center gap-2 shadow-lg group"
+          >
+            <Mail className="w-4 h-4 text-[#c83d4a] group-hover:text-[#f7e9e1] transition-colors" />
+            <span>EMAIL</span>
+          </a>
 
-              {/* Email Row */}
-              <div className="flex items-center justify-between p-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)] min-h-[44px] w-full">
-                <div className="flex items-center gap-2.5 overflow-hidden">
-                  <div className="p-2 rounded-xl bg-[#220b0e] text-[#c83d4a] shrink-0">
-                    <Mail className="w-4 h-4" />
-                  </div>
-                  <div className="truncate text-left">
-                    <span className="text-[9px] font-grotesk font-bold text-[#c83d4a] tracking-widest uppercase block">
-                      EMAIL
-                    </span>
-                    <a
-                      href={`mailto:${emailAddress}`}
-                      className="text-xs font-grotesk font-bold text-[#f7e9e1] hover:text-[#c83d4a] transition-colors truncate block"
-                    >
-                      {emailAddress}
-                    </a>
-                  </div>
-                </div>
+          <a
+            href="https://www.linkedin.com/in/owandrila-ghosh-5823b7380"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-6 py-3 rounded-2xl bg-[#2d1014] hover:bg-[#c83d4a] border border-[rgba(200,61,74,0.4)] text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest transition-all flex items-center gap-2 shadow-lg group"
+          >
+            <Share2 className="w-4 h-4 text-[#c83d4a] group-hover:text-[#f7e9e1] transition-colors" />
+            <span>LINKEDIN</span>
+          </a>
 
-                <button
-                  onClick={handleCopyEmail}
-                  className="p-2.5 rounded-xl bg-[#220b0e] hover:bg-[#c83d4a] text-[#f7e9e1] transition-all shrink-0 ml-2 min-w-[44px] min-h-[44px] flex items-center justify-center cursor-pointer active:scale-95"
-                  title="Copy email"
-                >
-                  {copied ? <Check className="w-4 h-4 text-[#f7e9e1]" /> : <Copy className="w-4 h-4" />}
-                </button>
-              </div>
+          <a
+            href="https://github.com/owandrila-codes"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-6 py-3 rounded-2xl bg-[#2d1014] hover:bg-[#c83d4a] border border-[rgba(200,61,74,0.4)] text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest transition-all flex items-center gap-2 shadow-lg group"
+          >
+            <Globe className="w-4 h-4 text-[#c83d4a] group-hover:text-[#f7e9e1] transition-colors" />
+            <span>GITHUB</span>
+          </a>
+        </motion.div>
 
-              {/* Social Channels */}
-              <div className="grid grid-cols-2 gap-3 pt-0.5 w-full">
-                <a
-                  href={linkedinUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-4 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)] active:border-[#c83d4a] flex flex-col items-center justify-center gap-1.5 group transition-all cursor-pointer min-h-[50px] active:scale-95 text-center"
-                >
-                  <Share2 className="w-4 h-4 text-[#c83d4a] group-hover:scale-110 transition-transform" />
-                  <span className="text-xs font-grotesk font-bold text-[#f7e9e1] uppercase text-center">LINKEDIN →</span>
-                </a>
-
-                <a
-                  href={githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-4 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)] active:border-[#c83d4a] flex flex-col items-center justify-center gap-1.5 group transition-all cursor-pointer min-h-[50px] active:scale-95 text-center"
-                >
-                  <Code2 className="w-4 h-4 text-[#c83d4a] group-hover:scale-110 transition-transform" />
-                  <span className="text-xs font-grotesk font-bold text-[#f7e9e1] uppercase text-center">GITHUB →</span>
-                </a>
-              </div>
+        {/* Clean Contact Form */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.4 }}
+          className="reference-card p-6 sm:p-8 rounded-3xl bg-[#2d1014]/70 border border-[rgba(200,61,74,0.35)] shadow-2xl backdrop-blur-md max-w-xl mx-auto text-left"
+        >
+          {submitted ? (
+            <div className="py-8 text-center space-y-3">
+              <CheckCircle className="w-12 h-12 text-[#c83d4a] mx-auto animate-bounce" />
+              <h3 className="font-display text-xl font-bold text-[#f7e9e1]">MESSAGE SENT!</h3>
+              <p className="text-xs text-[#f7e9e1]/80 font-body">Thank you for reaching out. Owandrila will get back to you shortly.</p>
             </div>
-
-            {/* Back to Top Prompt */}
-            <button
-              onClick={handleScrollToTop}
-              className="w-full py-3.5 rounded-2xl bg-[#220b0e] active:bg-[#8b1e27] border border-[rgba(200,61,74,0.35)] text-[#f7e9e1] text-xs font-grotesk font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg cursor-pointer min-h-[48px] active:scale-95 text-center"
-            >
-              <span>BACK TO TOP</span>
-              <ArrowUp className="w-4 h-4 text-[#c83d4a]" />
-            </button>
-          </div>
-
-          {/* Right Column: FormSubmit Clean Form */}
-          <div className="lg:col-span-7 w-full">
-            <motion.form
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              onSubmit={handleSubmit}
-              className="reference-card p-5 sm:p-6 space-y-4 w-full flex flex-col items-center"
-            >
-              <div className="border-b border-[rgba(200,61,74,0.25)] pb-3 w-full text-center">
-                <h4 className="font-display font-extrabold text-base text-[#f7e9e1] uppercase text-center">
-                  Quick Message
-                </h4>
-              </div>
-
-              {/* Name & Email Inputs */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-[10px] font-grotesk font-bold text-[#c83d4a] uppercase tracking-wider mb-1">YOUR NAME</label>
                 <input
                   type="text"
-                  name="name"
+                  required
                   value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="Your Name..."
-                  className="w-full px-4 py-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] placeholder-[#f7e9e1]/40 focus:border-[#c83d4a] outline-none font-body min-h-[44px] text-center sm:text-left"
-                />
-
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="Your Email..."
-                  className="w-full px-4 py-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] placeholder-[#f7e9e1]/40 focus:border-[#c83d4a] outline-none font-body min-h-[44px] text-center sm:text-left"
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="Enter your name"
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] focus:border-[#c83d4a] focus:outline-none transition-colors"
                 />
               </div>
 
-              {/* Message Textarea */}
-              <textarea
-                name="message"
-                value={formData.message}
-                onChange={handleInputChange}
-                required
-                rows={4}
-                placeholder="Write your message here..."
-                className="w-full px-4 py-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] placeholder-[#f7e9e1]/40 focus:border-[#c83d4a] outline-none font-body resize-none text-center sm:text-left"
-              />
+              <div>
+                <label className="block text-[10px] font-grotesk font-bold text-[#c83d4a] uppercase tracking-wider mb-1">YOUR EMAIL</label>
+                <input
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  placeholder="Enter your email address"
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] focus:border-[#c83d4a] focus:outline-none transition-colors"
+                />
+              </div>
 
-              {/* Submit Button */}
+              <div>
+                <label className="block text-[10px] font-grotesk font-bold text-[#c83d4a] uppercase tracking-wider mb-1">MESSAGE</label>
+                <textarea
+                  required
+                  rows={3}
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  placeholder="Write your message..."
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-xs text-[#f7e9e1] focus:border-[#c83d4a] focus:outline-none transition-colors resize-none"
+                />
+              </div>
+
               <button
                 type="submit"
-                disabled={loading}
-                className="w-full py-3.5 rounded-full bg-[#c83d4a] active:bg-[#8b1e27] text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 min-h-[48px] active:scale-95 text-center"
+                className="w-full py-3.5 rounded-xl bg-[#c83d4a] hover:bg-[#8b1e27] text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest transition-all shadow-lg shadow-[#c83d4a]/40 flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>{loading ? 'SENDING...' : submitted ? 'SENT!' : 'SEND MESSAGE'}</span>
+                <span>SEND MESSAGE</span>
                 <Send className="w-3.5 h-3.5" />
               </button>
+            </form>
+          )}
+        </motion.div>
+      </div>
 
-              {submitted && (
-                <div className="p-2.5 rounded-2xl bg-[#8b1e27]/40 border border-[#c83d4a] text-[11px] font-grotesk text-[#f7e9e1] text-center w-full">
-                  ✓ Message delivered to <strong>owandrila2006@gmail.com</strong>!
-                </div>
-              )}
-            </motion.form>
-          </div>
-
-        </div>
-
-        {/* Footer Credit Line */}
-        <div className="pt-4 text-center text-xs text-[#f7e9e1]/60 font-body border-t border-[rgba(200,61,74,0.15)] w-full">
-          © 2026 Owandrila Ghosh • BCA Data Science &amp; AI Portfolio
-        </div>
-
+      {/* Back to Top Action */}
+      <div className="pt-8 pb-4 text-center z-20">
+        <button
+          onClick={scrollToTop}
+          className="inline-flex items-center gap-2 text-xs font-grotesk font-bold text-[#c83d4a] hover:text-[#f7e9e1] tracking-[0.25em] uppercase transition-colors cursor-pointer"
+        >
+          <span>BACK TO TOP</span>
+          <ArrowUp className="w-4 h-4" />
+        </button>
       </div>
     </section>
   );
