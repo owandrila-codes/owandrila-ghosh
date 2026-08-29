@@ -22,7 +22,10 @@
     background-color: #120608;
     color: #f7e9e1;
     overflow-x: hidden;
+    width: 100%;
     max-width: 100vw;
+    margin: 0;
+    padding: 0;
     selection-background-color: #c83d4a;
     selection-color: #f7e9e1;
     -webkit-font-smoothing: antialiased;
@@ -76,8 +79,12 @@
 
 /* Responsive clamp typography for Hero title */
 .text-hero-clamp {
-  font-size: clamp(2.4rem, 11vw, 7.5rem);
-  line-height: 0.95;
+  font-size: clamp(1.85rem, 9.2vw, 7.5rem);
+  line-height: 1;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  letter-spacing: normal;
 }
 
 /* 6-Step Workflow Card Pill Accent */

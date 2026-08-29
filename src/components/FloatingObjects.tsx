@@ -1,15 +1,15 @@
 export default function FloatingObjects() {
   const floatingCards = [
-    { name: 'DATA SCIENCE', pos: 'top-20 -left-6 sm:left-4', animClass: 'animate-float-slow' },
-    { name: 'AI', pos: 'top-40 right-2 sm:right-12', animClass: 'animate-float-delayed' },
-    { name: 'JAVA', pos: 'bottom-32 -left-4 sm:left-10', animClass: 'animate-float-slow' },
-    { name: 'JAVASCRIPT', pos: 'bottom-20 right-4 sm:right-16', animClass: 'animate-float-delayed' },
-    { name: 'GOOGLE CLOUD', pos: 'top-1/3 -left-8 hidden md:block', animClass: 'animate-float-slow' },
-    { name: 'DATABASES', pos: 'bottom-1/3 -right-8 hidden md:block', animClass: 'animate-float-delayed' },
+    { name: 'DATA SCIENCE', pos: 'top-20 left-4 lg:left-10', animClass: 'animate-float-slow' },
+    { name: 'AI', pos: 'top-40 right-4 lg:right-16', animClass: 'animate-float-delayed' },
+    { name: 'JAVA', pos: 'bottom-32 left-6 lg:left-14', animClass: 'animate-float-slow' },
+    { name: 'JAVASCRIPT', pos: 'bottom-20 right-6 lg:right-20', animClass: 'animate-float-delayed' },
+    { name: 'GOOGLE CLOUD', pos: 'top-1/3 left-4', animClass: 'animate-float-slow' },
+    { name: 'DATABASES', pos: 'bottom-1/3 right-4', animClass: 'animate-float-delayed' },
   ];
 
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
+    <div className="hidden md:block absolute inset-0 pointer-events-none overflow-hidden z-10">
       {floatingCards.map((card) => (
         <div
           key={card.name}
