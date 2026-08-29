@@ -11,12 +11,12 @@ export default function Hero() {
   ];
 
   return (
-    <section id="hero" className="relative min-h-screen pt-32 pb-20 flex flex-col items-center justify-center overflow-hidden">
+    <section id="hero" className="relative min-h-screen pt-28 pb-16 flex flex-col items-center justify-center overflow-hidden">
       {/* 3D Floating Objects */}
       <FloatingObjects />
 
       {/* Top 3D Embossed Beveled Header */}
-      <div className="text-center relative z-20 space-y-2 mb-10 px-4">
+      <div className="text-center relative z-20 space-y-2 mb-8 px-4">
         <motion.span
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -38,7 +38,7 @@ export default function Hero() {
 
       {/* "Who Am I?" Section Container */}
       <div className="max-w-6xl mx-auto px-6 relative z-20 w-full">
-        <div className="reference-card p-8 sm:p-12 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        <div className="reference-card p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
           {/* Left Column: Real Portrait Image Frame */}
           <div className="lg:col-span-5 flex justify-center">
@@ -46,7 +46,7 @@ export default function Hero() {
               initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="relative w-full max-w-[320px] aspect-[4/5] rounded-3xl overflow-hidden bg-gradient-to-b from-[#2d1014] to-[#120608] border-2 border-[rgba(200,61,74,0.4)] shadow-2xl p-4 flex flex-col justify-between group"
+              className="relative w-full max-w-[290px] aspect-[4/5] rounded-3xl overflow-hidden bg-gradient-to-b from-[#2d1014] to-[#120608] border-2 border-[rgba(200,61,74,0.4)] shadow-2xl p-4 flex flex-col justify-between group"
             >
               <div className="flex items-center justify-between border-b border-[rgba(200,61,74,0.25)] pb-2 mb-2 z-10">
                 <span className="font-grotesk text-[10px] font-bold text-[#c83d4a] tracking-widest uppercase">
@@ -65,7 +65,7 @@ export default function Hero() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#120608]/80 via-transparent to-transparent" />
               </div>
 
-              <div className="border-t border-[rgba(200,61,74,0.25)] pt-3 text-center mt-2 z-10">
+              <div className="border-t border-[rgba(200,61,74,0.25)] pt-2.5 text-center mt-2 z-10">
                 <span className="text-[10px] font-grotesk font-bold text-[#f7e9e1] tracking-widest uppercase bg-[#c83d4a] px-3 py-1 rounded-full shadow-md inline-block">
                   TEAM LEADER • SMARTBAG
                 </span>
@@ -74,17 +74,17 @@ export default function Hero() {
           </div>
 
           {/* Right Column: "Who Am I?" Text Content */}
-          <div className="lg:col-span-7 space-y-6">
+          <div className="lg:col-span-7 space-y-5">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="space-y-2"
+              className="space-y-1.5"
             >
-              <h2 className="font-serif-title text-4xl sm:text-5xl text-[#f7e9e1] italic">
+              <h2 className="font-serif-title text-3xl sm:text-4xl lg:text-5xl text-[#f7e9e1] italic">
                 Who Am I?
               </h2>
-              <div className="w-20 h-1 bg-gradient-to-r from-[#8b1e27] to-[#c83d4a] rounded-full" />
+              <div className="w-16 h-1 bg-gradient-to-r from-[#8b1e27] to-[#c83d4a] rounded-full" />
             </motion.div>
 
             <motion.p
@@ -100,13 +100,13 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
-              className="text-sm text-[#f7e9e1]/80 leading-relaxed font-body"
+              className="text-xs sm:text-sm text-[#f7e9e1]/80 leading-relaxed font-body"
             >
               With hands-on experience in C, Java, JavaScript, HTML, CSS, Node.js, databases, and Google Cloud services, I continuously expand my skills by working on real-world projects, university computer labs, and hackathons.
             </motion.p>
 
             {/* Badges Grid */}
-            <div className="flex flex-wrap gap-2 pt-2">
+            <div className="flex flex-wrap gap-2 pt-1">
               {metadataBadges.map((b) => (
                 <div key={b.label} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#120608] border border-[rgba(200,61,74,0.3)] text-[10px] font-grotesk font-bold text-[#f7e9e1] tracking-wider">
                   {b.icon}
@@ -120,11 +120,11 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.7 }}
-              className="flex flex-wrap items-center gap-4 pt-4"
+              className="flex flex-wrap items-center gap-4 pt-2"
             >
               <a
                 href="#about"
-                className="px-8 py-3.5 rounded-full bg-[#c83d4a] hover:bg-[#8b1e27] text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest transition-all shadow-lg shadow-[#c83d4a]/40 flex items-center gap-2"
+                className="px-7 py-3 rounded-full bg-[#c83d4a] hover:bg-[#8b1e27] text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest transition-all shadow-lg shadow-[#c83d4a]/40 flex items-center gap-2"
               >
                 <span>Read Full Story</span>
                 <ArrowDownRight className="w-4 h-4" />
@@ -132,7 +132,7 @@ export default function Hero() {
 
               <a
                 href="#contact"
-                className="px-8 py-3.5 rounded-full bg-[#220b0e] hover:bg-[#2d1014] text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest transition-all border border-[rgba(200,61,74,0.4)]"
+                className="px-7 py-3 rounded-full bg-[#220b0e] hover:bg-[#2d1014] text-[#f7e9e1] font-grotesk font-bold text-xs uppercase tracking-widest transition-all border border-[rgba(200,61,74,0.4)]"
               >
                 Get In Touch
               </a>

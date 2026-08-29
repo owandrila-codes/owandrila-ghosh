@@ -80,11 +80,11 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-20 relative z-10 border-t border-[rgba(200,61,74,0.15)] bg-[#100406]/90 min-h-screen flex flex-col justify-between">
-      <div className="max-w-6xl mx-auto px-6 w-full space-y-12 my-auto">
+    <section id="contact" className="py-16 relative z-10 border-t border-[rgba(200,61,74,0.15)] bg-[#100406]/90 min-h-screen flex flex-col justify-between">
+      <div className="max-w-6xl mx-auto px-6 w-full space-y-8 my-auto">
         
         {/* Section Header */}
-        <div className="text-center space-y-3">
+        <div className="text-center space-y-2">
           <motion.span
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -98,31 +98,31 @@ export default function Contact() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="font-display font-black text-5xl sm:text-7xl lg:text-8xl text-[#f7e9e1] uppercase tracking-tight"
+            className="font-display font-black text-4xl sm:text-6xl lg:text-7xl text-[#f7e9e1] uppercase tracking-tight"
           >
             LET'S <span className="font-serif-title italic text-[#c83d4a]">CONNECT</span>
           </motion.h2>
 
-          <p className="text-base sm:text-xl text-[#f7e9e1]/85 max-w-xl mx-auto font-body">
+          <p className="text-sm sm:text-lg text-[#f7e9e1]/85 max-w-xl mx-auto font-body">
             "Interested in technology, collaboration or building something meaningful?"
           </p>
 
-          <div className="w-20 h-1 bg-gradient-to-r from-[#8b1e27] to-[#c83d4a] mx-auto rounded-full" />
+          <div className="w-16 h-1 bg-gradient-to-r from-[#8b1e27] to-[#c83d4a] mx-auto rounded-full" />
         </div>
 
         {/* 2-Column Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start max-w-5xl mx-auto">
           
           {/* Left Column: Direct Links & Badges */}
-          <div className="lg:col-span-5 space-y-5">
-            <div className="reference-card p-6 space-y-5">
-              <h3 className="font-serif-title text-2xl text-[#f7e9e1] italic">
+          <div className="lg:col-span-5 space-y-4">
+            <div className="reference-card p-5 space-y-4">
+              <h3 className="font-serif-title text-xl text-[#f7e9e1] italic">
                 Direct Channels
               </h3>
 
               {/* Email Button */}
-              <div className="flex items-center justify-between p-3.5 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)]">
-                <div className="flex items-center gap-3 overflow-hidden">
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)]">
+                <div className="flex items-center gap-2.5 overflow-hidden">
                   <div className="p-2 rounded-xl bg-[#220b0e] text-[#c83d4a] shrink-0">
                     <Mail className="w-4 h-4" />
                   </div>
@@ -149,14 +149,14 @@ export default function Contact() {
               </div>
 
               {/* Social Channels */}
-              <div className="grid grid-cols-2 gap-3 pt-1">
+              <div className="grid grid-cols-2 gap-3 pt-0.5">
                 <a
                   href={linkedinUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-4 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)] hover:border-[#c83d4a] flex flex-col items-center justify-center gap-2 group transition-all cursor-pointer"
+                  className="p-3.5 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)] hover:border-[#c83d4a] flex flex-col items-center justify-center gap-1.5 group transition-all cursor-pointer"
                 >
-                  <Share2 className="w-5 h-5 text-[#c83d4a] group-hover:scale-110 transition-transform" />
+                  <Share2 className="w-4 h-4 text-[#c83d4a] group-hover:scale-110 transition-transform" />
                   <span className="text-xs font-grotesk font-bold text-[#f7e9e1] uppercase">LINKEDIN</span>
                 </a>
 
@@ -164,9 +164,9 @@ export default function Contact() {
                   href={githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-4 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)] hover:border-[#c83d4a] flex flex-col items-center justify-center gap-2 group transition-all cursor-pointer"
+                  className="p-3.5 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.25)] hover:border-[#c83d4a] flex flex-col items-center justify-center gap-1.5 group transition-all cursor-pointer"
                 >
-                  <Code2 className="w-5 h-5 text-[#c83d4a] group-hover:scale-110 transition-transform" />
+                  <Code2 className="w-4 h-4 text-[#c83d4a] group-hover:scale-110 transition-transform" />
                   <span className="text-xs font-grotesk font-bold text-[#f7e9e1] uppercase">GITHUB</span>
                 </a>
               </div>
@@ -175,7 +175,7 @@ export default function Contact() {
             {/* Back to Top Prompt */}
             <button
               onClick={handleScrollToTop}
-              className="w-full py-4 rounded-2xl bg-[#220b0e] hover:bg-[#8b1e27] border border-[rgba(200,61,74,0.35)] text-[#f7e9e1] text-xs font-grotesk font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg cursor-pointer"
+              className="w-full py-3.5 rounded-2xl bg-[#220b0e] hover:bg-[#8b1e27] border border-[rgba(200,61,74,0.35)] text-[#f7e9e1] text-xs font-grotesk font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg cursor-pointer"
             >
               <span>BACK TO TOP</span>
               <ArrowUp className="w-4 h-4 text-[#c83d4a]" />
@@ -189,10 +189,10 @@ export default function Contact() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               onSubmit={handleSubmit}
-              className="reference-card p-6 sm:p-8 space-y-4"
+              className="reference-card p-6 space-y-3.5"
             >
-              <div className="flex items-center justify-between border-b border-[rgba(200,61,74,0.25)] pb-3">
-                <h4 className="font-display font-extrabold text-lg text-[#f7e9e1] uppercase">
+              <div className="flex items-center justify-between border-b border-[rgba(200,61,74,0.25)] pb-2.5">
+                <h4 className="font-display font-extrabold text-base text-[#f7e9e1] uppercase">
                   Quick Message
                 </h4>
                 {/* Star Rating Selection */}
@@ -273,7 +273,7 @@ export default function Contact() {
               </button>
 
               {submitted && (
-                <div className="p-3 rounded-2xl bg-[#8b1e27]/40 border border-[#c83d4a] text-[11px] font-grotesk text-[#f7e9e1] text-center">
+                <div className="p-2.5 rounded-2xl bg-[#8b1e27]/40 border border-[#c83d4a] text-[11px] font-grotesk text-[#f7e9e1] text-center">
                   ✓ Message delivered to <strong>owandrila2006@gmail.com</strong>!
                 </div>
               )}
@@ -283,7 +283,7 @@ export default function Contact() {
         </div>
 
         {/* Footer Credit Line */}
-        <div className="pt-8 text-center text-xs text-[#f7e9e1]/60 font-body border-t border-[rgba(200,61,74,0.15)]">
+        <div className="pt-4 text-center text-xs text-[#f7e9e1]/60 font-body border-t border-[rgba(200,61,74,0.15)]">
           © 2026 Owandrila Ghosh • BCA Data Science &amp; AI Portfolio
         </div>
 
