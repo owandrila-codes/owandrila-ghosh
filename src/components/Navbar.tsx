@@ -7,20 +7,20 @@ export default function Navbar() {
   const [activeSectionId, setActiveSectionId] = useState('hero');
 
   // Exact 5-section sequence matching DOM order in App.tsx:
-  // 01 Hero -> 02 About & Skills -> 03 Selected Work -> 04 Journey -> 05 Contact
+  // 01 Hero -> 02 About & Skills -> 03 Education & Journey -> 04 Selected Work -> 05 Contact
   const sections = [
     { id: 'hero' },
     { id: 'about' },
-    { id: 'projects' },
     { id: 'experience' },
+    { id: 'projects' },
     { id: 'contact' },
   ];
 
-  // Nav links matching exact 5-section flow
+  // Nav links matching exact page flow: ABOUT -> EDUCATION -> WORK -> CONTACT
   const navLinks = [
     { label: 'ABOUT', href: '#about' },
+    { label: 'EDUCATION', href: '#experience' },
     { label: 'WORK', href: '#projects' },
-    { label: 'JOURNEY', href: '#experience' },
     { label: 'CONTACT', href: '#contact' },
   ];
 
@@ -74,7 +74,7 @@ export default function Navbar() {
             </div>
           </a>
 
-          {/* Floating Navigation Menu */}
+          {/* Floating Navigation Menu: ABOUT -> EDUCATION -> WORK -> CONTACT */}
           <nav className="hidden md:flex items-center gap-1 bg-[#170a0d]/90 px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.25)] shadow-lg">
             {navLinks.map((link) => {
               const secId = link.href.replace('#', '');

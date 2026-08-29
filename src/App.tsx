@@ -6,8 +6,8 @@ import Navbar from './components/Navbar';
 const ThreeCanvas3D = lazy(() => import('./components/ThreeCanvas3D'));
 const Hero = lazy(() => import('./components/Hero'));
 const About = lazy(() => import('./components/About'));
-const Projects = lazy(() => import('./components/Projects'));
 const Journey = lazy(() => import('./components/Journey'));
+const Projects = lazy(() => import('./components/Projects'));
 const Contact = lazy(() => import('./components/Contact'));
 
 // Fallback Section Loader Component
@@ -48,14 +48,14 @@ export default function App() {
           <About />
         </Suspense>
 
-        {/* 03 — SELECTED WORK (Pinned 3D Scroll Gallery Stage ~150-200vh) */}
-        <Suspense fallback={<SectionFallback />}>
-          <Projects />
-        </Suspense>
-
-        {/* 04 — JOURNEY (~100vh) */}
+        {/* 03 — EDUCATION & JOURNEY (~100vh) */}
         <Suspense fallback={<SectionFallback />}>
           <Journey />
+        </Suspense>
+
+        {/* 04 — SELECTED WORK (Pinned 3D Scroll Gallery Stage ~125vh) */}
+        <Suspense fallback={<SectionFallback />}>
+          <Projects />
         </Suspense>
 
         {/* 05 — CONTACT (~100vh) */}
