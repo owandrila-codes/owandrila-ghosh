@@ -7,27 +7,42 @@ export default function Navbar() {
   const [activeSectionNum, setActiveSectionNum] = useState('01');
   const [activeSectionId, setActiveSectionId] = useState('hero');
 
+  // Exact 10-section sequence matching DOM order in App.tsx
   const sections = [
     { num: '01', id: 'hero', label: 'HOME' },
     { num: '02', id: 'intro', label: 'INTRO' },
     { num: '03', id: 'about', label: 'ABOUT' },
-    { num: '04', id: 'skills', label: 'SKILLS' },
-    { num: '05', id: 'experience', label: 'JOURNEY' },
+    { num: '04', id: 'stats', label: 'STATS' },
+    { num: '05', id: 'skills', label: 'SKILLS' },
     { num: '06', id: 'projects', label: 'PROJECTS' },
-    { num: '07', id: 'marquee', label: 'TECH' },
-    { num: '08', id: 'statement', label: 'VISION' },
-    { num: '09', id: 'contact', label: 'CONTACT' },
+    { num: '07', id: 'experience', label: 'JOURNEY' },
+    { num: '08', id: 'marquee', label: 'TECH' },
+    { num: '09', id: 'statement', label: 'VISION' },
+    { num: '10', id: 'contact', label: 'CONTACT' },
+  ];
+
+  // Nav links in exact DOM scroll sequence
+  const navLinks = [
+    { label: 'ABOUT', href: '#about' },
+    { label: 'SKILLS', href: '#skills' },
+    { label: 'PROJECTS', href: '#projects' },
+    { label: 'JOURNEY', href: '#experience' },
+    { label: 'CONTACT', href: '#contact' },
   ];
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 40);
 
-      for (const sec of sections) {
+      // Accurate viewport scroll position detection
+      const scrollPosition = window.scrollY + 220;
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const sec = sections[i];
         const el = document.getElementById(sec.id);
         if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 250 && rect.bottom >= 250) {
+          const top = el.offsetTop;
+          if (scrollPosition >= top) {
             setActiveSectionNum(sec.num);
             setActiveSectionId(sec.id);
             break;
@@ -36,17 +51,10 @@ export default function Navbar() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial check
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const navLinks = [
-    { label: 'ABOUT', href: '#about' },
-    { label: 'SKILLS', href: '#skills' },
-    { label: 'PROJECTS', href: '#projects' },
-    { label: 'JOURNEY', href: '#experience' },
-    { label: 'CONTACT', href: '#contact' },
-  ];
 
   return (
     <>
@@ -77,10 +85,10 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1b090c] border border-[rgba(200,61,74,0.3)] shadow-inner text-xs font-grotesk font-bold">
             <span className="text-[#c83d4a]">SCROLL ↓</span>
             <span className="text-[#f7e9e1]">{activeSectionNum}</span>
-            <span className="text-[#f7e9e1]/60">/ 09</span>
+            <span className="text-[#f7e9e1]/60">/ 10</span>
           </div>
 
-          {/* Floating Navigation Menu */}
+          {/* Floating Navigation Menu matching exact page scroll order */}
           <nav className="hidden md:flex items-center gap-1 bg-[#170a0d]/90 px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.25)] shadow-lg">
             {navLinks.map((link) => {
               const secId = link.href.replace('#', '');
@@ -130,7 +138,7 @@ export default function Navbar() {
           <div className="pt-20">
             <div className="flex items-center justify-between text-[10px] font-grotesk tracking-widest text-[#c83d4a] uppercase font-bold mb-6">
               <span>3D PORTFOLIO NAVIGATION</span>
-              <span>{activeSectionNum} / 09</span>
+              <span>{activeSectionNum} / 10</span>
             </div>
             <div className="flex flex-col gap-4 font-display font-extrabold text-2xl uppercase tracking-wider">
               {navLinks.map((link) => (

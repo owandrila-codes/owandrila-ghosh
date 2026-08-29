@@ -9,7 +9,7 @@ export default function Stats() {
   ];
 
   return (
-    <section className="py-16 relative z-10 border-t border-[rgba(200,61,74,0.15)] bg-[#100406]/50">
+    <section id="stats" className="py-16 relative z-10 border-t border-[rgba(200,61,74,0.15)] bg-[#100406]/50">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {statsList.map((item, idx) => (

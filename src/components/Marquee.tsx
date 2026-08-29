@@ -19,7 +19,7 @@ export default function Marquee() {
   const list = [...items, ...items, ...items];
 
   return (
-    <div className="py-8 bg-[#170a0d] border-y border-[rgba(200,61,74,0.2)] overflow-hidden select-none relative z-10">
+    <div id="marquee" className="py-8 bg-[#170a0d] border-y border-[rgba(200,61,74,0.2)] overflow-hidden select-none relative z-10">
       <div className="animate-marquee flex items-center gap-8 whitespace-nowrap">
         {list.map((item, idx) => (
           <div key={`${item}-${idx}`} className="flex items-center gap-8">

@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 
 export default function Statement() {
   return (
-    <section className="py-32 relative z-10 overflow-hidden bg-gradient-to-b from-[#120608] via-[#1b090c] to-[#120608] border-t border-[rgba(200,61,74,0.15)] text-center">
+    <section id="statement" className="py-32 relative z-10 overflow-hidden bg-gradient-to-b from-[#120608] via-[#1b090c] to-[#120608] border-t border-[rgba(200,61,74,0.15)] text-center">
       <div className="max-w-5xl mx-auto px-6 space-y-8">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
