@@ -55,9 +55,9 @@ export default function Projects() {
       if (totalScrollable <= 0) return;
 
       const progress = Math.max(0, Math.min(1, -rect.top / totalScrollable));
-      if (progress < 0.35) {
+      if (progress < 0.4) {
         setActiveProjectIdx(0);
-      } else if (progress < 0.7) {
+      } else if (progress < 0.75) {
         setActiveProjectIdx(1);
       } else {
         setActiveProjectIdx(2);
@@ -72,26 +72,26 @@ export default function Projects() {
     <section
       id="projects"
       ref={containerRef}
-      className="relative min-h-[200vh] border-t border-[rgba(200,61,74,0.15)] bg-[#120608]"
+      className="relative min-h-[125vh] border-t border-[rgba(200,61,74,0.15)] bg-[#120608]"
     >
-      {/* Sticky 100vh Pinned 3D Viewport Stage */}
-      <div className="sticky top-0 h-screen flex flex-col justify-between py-12 px-6 overflow-hidden z-10">
+      {/* Sticky Viewport 3D Gallery Stage */}
+      <div className="sticky top-0 h-screen flex flex-col justify-between py-8 px-6 overflow-hidden z-10">
         
         {/* Section Header */}
-        <div className="text-center space-y-2 max-w-4xl mx-auto z-20">
+        <div className="text-center space-y-2 max-w-4xl mx-auto z-20 pt-4">
           <span className="font-grotesk text-xs font-bold tracking-[0.2em] text-[#c83d4a] uppercase bg-[#220b0e] px-4 py-1.5 rounded-full border border-[rgba(200,61,74,0.3)] inline-block">
             03 / PORTFOLIO HIGHLIGHTS
           </span>
 
-          <h2 className="font-display font-black text-4xl sm:text-6xl text-[#f7e9e1] uppercase tracking-tight">
+          <h2 className="font-display font-black text-3xl sm:text-5xl text-[#f7e9e1] uppercase tracking-tight">
             SELECTED <span className="font-serif-title italic text-[#c83d4a]">WORK</span>
           </h2>
 
-          <div className="w-20 h-1 bg-gradient-to-r from-[#8b1e27] to-[#c83d4a] mx-auto rounded-full" />
+          <div className="w-16 h-1 bg-gradient-to-r from-[#8b1e27] to-[#c83d4a] mx-auto rounded-full" />
         </div>
 
         {/* 3D Gallery Stage (3 Cards overlapping with perspective depth) */}
-        <div className="relative w-full max-w-4xl mx-auto h-[420px] my-auto flex items-center justify-center perspective-[1200px]">
+        <div className="relative w-full max-w-4xl mx-auto h-[400px] my-auto flex items-center justify-center perspective-[1200px]">
           {projects.map((proj, idx) => {
             const isCurrent = idx === activeProjectIdx;
             const isPast = idx < activeProjectIdx;
@@ -104,10 +104,10 @@ export default function Projects() {
               opacity = 1;
               zIndex = 30;
             } else if (isPast) {
-              opacity = 0.3;
+              opacity = 0.25;
               zIndex = 10;
             } else {
-              opacity = 0.4;
+              opacity = 0.35;
               zIndex = 20;
             }
 
@@ -117,19 +117,19 @@ export default function Projects() {
                 animate={{
                   scale: isCurrent ? 1 : isPast ? 0.88 : 0.94,
                   opacity: opacity,
-                  y: isCurrent ? 0 : isPast ? -30 : 35,
+                  y: isCurrent ? 0 : isPast ? -25 : 30,
                   rotateX: isCurrent ? 0 : isPast ? -8 : 8,
                 }}
-                transition={{ duration: 0.6, ease: 'easeOut' }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
                 style={{ zIndex }}
-                className={`absolute inset-0 reference-card p-8 sm:p-10 flex flex-col justify-between border-2 ${
+                className={`absolute inset-0 reference-card p-6 sm:p-8 flex flex-col justify-between border-2 ${
                   isCurrent ? 'border-[#c83d4a] shadow-2xl bg-[#170a0d]' : 'border-[rgba(200,61,74,0.2)] bg-[#120608]/90'
-                } transition-all duration-500`}
+                } transition-all duration-300`}
               >
                 {/* Top Row */}
-                <div className="flex items-center justify-between border-b border-[rgba(200,61,74,0.25)] pb-4">
+                <div className="flex items-center justify-between border-b border-[rgba(200,61,74,0.25)] pb-3">
                   <div className="flex items-center gap-3">
-                    <span className="font-display font-black text-4xl text-[#f7e9e1]">
+                    <span className="font-display font-black text-3xl sm:text-4xl text-[#f7e9e1]">
                       {proj.num}
                     </span>
                     <span className="text-xs font-grotesk font-bold text-[#c83d4a] tracking-widest uppercase bg-[#220b0e] px-3 py-1 rounded-full border border-[rgba(200,61,74,0.3)]">
@@ -137,31 +137,31 @@ export default function Projects() {
                     </span>
                   </div>
 
-                  <div className="p-3 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)]">
+                  <div className="p-2.5 rounded-2xl bg-[#120608] border border-[rgba(200,61,74,0.3)]">
                     {proj.icon}
                   </div>
                 </div>
 
                 {/* Center Description */}
-                <div className="my-auto space-y-3">
+                <div className="my-auto space-y-2.5">
                   <span className="text-[10px] font-grotesk font-bold text-[#c83d4a] uppercase tracking-widest block">
                     {proj.category}
                   </span>
 
-                  <h3 className="font-serif-title text-3xl sm:text-5xl text-[#f7e9e1] italic">
+                  <h3 className="font-serif-title text-2xl sm:text-4xl text-[#f7e9e1] italic">
                     {proj.title}
                   </h3>
 
-                  <p className="text-sm sm:text-lg text-[#f7e9e1]/85 leading-relaxed font-body max-w-2xl">
+                  <p className="text-xs sm:text-base text-[#f7e9e1]/85 leading-relaxed font-body max-w-2xl">
                     "{proj.description}"
                   </p>
                 </div>
 
                 {/* Bottom Row */}
-                <div className="flex items-center justify-between border-t border-[rgba(200,61,74,0.25)] pt-4">
-                  <div className="flex flex-wrap gap-2">
+                <div className="flex items-center justify-between border-t border-[rgba(200,61,74,0.25)] pt-3">
+                  <div className="flex flex-wrap gap-1.5">
                     {proj.highlights.map((h) => (
-                      <span key={h} className="text-[10px] font-grotesk font-bold text-[#f7e9e1]/80 bg-[#120608] px-3 py-1 rounded-xl border border-[rgba(200,61,74,0.25)]">
+                      <span key={h} className="text-[10px] font-grotesk font-bold text-[#f7e9e1]/80 bg-[#120608] px-2.5 py-1 rounded-xl border border-[rgba(200,61,74,0.25)]">
                         ✓ {h}
                       </span>
                     ))}
@@ -169,7 +169,7 @@ export default function Projects() {
 
                   <button
                     onClick={() => setActiveModal(proj)}
-                    className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#c83d4a] hover:bg-[#8b1e27] text-[#f7e9e1] text-xs font-grotesk font-bold uppercase tracking-wider transition-all shadow-md shrink-0 cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#c83d4a] hover:bg-[#8b1e27] text-[#f7e9e1] text-xs font-grotesk font-bold uppercase tracking-wider transition-all shadow-md shrink-0 cursor-pointer"
                   >
                     <span>DETAILS</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />
@@ -181,7 +181,7 @@ export default function Projects() {
         </div>
 
         {/* 3D Gallery Stage Controls Indicator */}
-        <div className="flex items-center justify-center gap-3 z-20">
+        <div className="flex items-center justify-center gap-3 z-20 pb-4">
           {projects.map((p, idx) => (
             <button
               key={p.num}
