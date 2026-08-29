@@ -29,7 +29,7 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
     scene.fog = new THREE.FogExp2(0x020202, 0.12);
 
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 0, 8.5);
+    camera.position.set(0, 0, 6.5); // Brought camera closer for prominent rose view
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
     renderer.setSize(width, height);
@@ -50,7 +50,7 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
     greenLeafGlow.position.set(0, -1.5, 2);
     scene.add(greenLeafGlow);
 
-    // --- 3. EXACT VERTICAL NEON ROSE FROM UPLOADED IMAGE (/neon-rose.png) ---
+    // --- 3. PROMINENT BIGGER VERTICAL NEON ROSE FROM UPLOADED IMAGE (/neon-rose.png) ---
     const textureLoader = new THREE.TextureLoader();
     const neonRoseTexture = textureLoader.load('/neon-rose.png');
 
@@ -58,8 +58,8 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
     roseGroup.position.set(0, 0.1, 0);
     scene.add(roseGroup);
 
-    // 1:2 Vertical Aspect Ratio plane matching media_1788021324927.png
-    const rosePlaneGeom = new THREE.PlaneGeometry(3.3, 6.6);
+    // Scaled up geometry (4.8 x 9.6) to fill screen prominently
+    const rosePlaneGeom = new THREE.PlaneGeometry(4.8, 9.6);
     const rosePlaneMat = new THREE.MeshBasicMaterial({
       map: neonRoseTexture,
       transparent: true,
@@ -102,7 +102,7 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
     };
 
     const neonPetalTex = createExactNeonPetalTexture();
-    const fallingPetalGeom = new THREE.PlaneGeometry(1.25, 1.25);
+    const fallingPetalGeom = new THREE.PlaneGeometry(1.4, 1.4);
     const fallingPetalMat = new THREE.MeshBasicMaterial({
       map: neonPetalTex,
       transparent: true,
@@ -110,7 +110,7 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
       opacity: 0,
     });
     const fallingPetal = new THREE.Mesh(fallingPetalGeom, fallingPetalMat);
-    fallingPetal.position.set(0.35, 1.15, 0.45); // Detaches right beside the flower head
+    fallingPetal.position.set(0.5, 1.6, 0.45);
     fallingPetal.rotation.set(0.4, 0.8, -0.5);
     scene.add(fallingPetal);
 
@@ -123,8 +123,8 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
     for (let i = 0; i < sandCount; i++) {
       const u = Math.random();
       const v = Math.random();
-      sandPositions[i * 3] = (u - 0.5) * 0.7;
-      sandPositions[i * 3 + 1] = -1.5 + (v - 0.5) * 0.8;
+      sandPositions[i * 3] = (u - 0.5) * 0.8;
+      sandPositions[i * 3 + 1] = -2.0 + (v - 0.5) * 0.9;
       sandPositions[i * 3 + 2] = (Math.random() - 0.5) * 0.3;
 
       sandVelocities[i * 3] = (Math.random() - 0.3) * 0.035;
@@ -203,18 +203,18 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
         const stage1Alpha = Math.min(1, normProgress / 0.22);
         roseGroup.scale.setScalar(0.75 + stage1Alpha * 0.25);
         rosePlaneMat.opacity = stage1Alpha;
-        fallingPetal.position.set(0.35, 1.15, 0.45);
+        fallingPetal.position.set(0.5, 1.6, 0.45);
         fallingPetal.rotation.set(0.4, 0.8, -0.5);
         fallingPetalMat.opacity = stage1Alpha;
-        camera.position.set(0, 0, 8.5);
+        camera.position.set(0, 0, 6.5);
       }
 
       // --- STAGE 02 (Neon Petal Detaches & Flutters 20% to 48%) ---
       if (normProgress > 0.2 && normProgress <= 0.5) {
         const fallT = (normProgress - 0.2) / 0.3;
         fallingPetalMat.opacity = 1;
-        fallingPetal.position.x = 0.35 - fallT * 0.35 + Math.sin(fallT * Math.PI * 2.5) * 0.2;
-        fallingPetal.position.y = 1.15 - fallT * 2.4;
+        fallingPetal.position.x = 0.5 - fallT * 0.35 + Math.sin(fallT * Math.PI * 2.5) * 0.22;
+        fallingPetal.position.y = 1.6 - fallT * 3.2;
         fallingPetal.position.z = 0.45 + fallT * 0.4;
         fallingPetal.rotation.x = 0.4 + fallT * 2.8;
         fallingPetal.rotation.y = 0.8 + Math.sin(fallT * Math.PI) * 1.4;
@@ -225,7 +225,7 @@ export default function RoseWebGLCanvas({ stage, progress }: RoseWebGLCanvasProp
       if (normProgress > 0.45 && normProgress <= 0.7) {
         const descendT = (normProgress - 0.45) / 0.25;
         fallingPetalMat.opacity = 1;
-        fallingPetal.position.y = -1.25 - descendT * 0.75;
+        fallingPetal.position.y = -1.6 - descendT * 0.85;
         fallingPetal.position.x = 0.2 + Math.sin(descendT * Math.PI * 3) * 0.25;
         fallingPetal.rotation.z += 0.025;
 
